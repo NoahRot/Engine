@@ -2,48 +2,61 @@
 # Variable #
 ############################################################
 
-CC = g++
-CFLAGS = -std=c++17 -Wall -pedantic -g -pthread
-SHARED = -shared
-NO_WIN = -mwindows
+CC 			= g++
+CFLAGS 		= -std=c++20 -Wall -pedantic -g -pthread
+SHARED 		= -shared
+NO_WIN 		= -mwindows
 
-LIBRARY = -L lib
-INCLUDES = -I include
+LIBRARY 	= -L lib
+INCLUDES 	= -I include
 
 # Remove function
-RM = del
+RM 			= del
 
 # Directory
-DIR_SOURCE = src
+DIR_SOURCE 	= src
 DIR_LIBRARY = lib
-DIR_BINARY = bin
+DIR_BINARY 	= bin
 DIR_INCLUDE = include
-DIR_OBJECT = obj
+DIR_OBJECT 	= obj
 
 # Name
 ENGINE_NAME = Engine
 
+############################################################
+# Modules #
+############################################################
+
+MODULES 	= Logger
+
+Logger		= Logger Displayer
 
 ############################################################
 # Compilation #
 ############################################################
 
-ENGINE_OBJECT = Engine Test Window
+### Logger ###
+#logger:
+#	$(MAKE) -C src\Logger $(addsuffix .o, $(LOGGER_OBJECT))
 
-engine: $(addsuffix .o, $(ENGINE_OBJECT))
-	@echo Object compilation : COMPLETE
+all: engine library
 
-%.o: $(DIR_SOURCE)\%.cpp
-	$(CC) $(CFLAGS) -o $(DIR_OBJECT)\$@ -c $< $(INCLUDES) $(LIBRARY)
+engine: $(MODULES)
+	@echo === Engine compilation SUCCESS ===
+
+$(MODULES):
+	$(MAKE) -C src\$@ $(addsuffix .o, $($@))
+	@echo === Module $@ compilation COMPLETE ===
 
 ############################################################
 # Library #
 ############################################################
+
 library:
-	ar rcs $(DIR_LIBRARY)\$(ENGINE_NAME).lib $(addsuffix .o,$(addprefix obj\, $(ENGINE_OBJECT)))
-	@echo Static library : COMPLETE
-	$(CC) $(CFLAGS) $(SHARED) $(addsuffix .o,$(addprefix obj\, $(ENGINE_OBJECT))) -o $(DIR_BINARY)\$(ENGINE_NAME).dll $(INCLUDES) $(LIBRARY)
-	@echo Dynamic library : COMPLETE
+	ar rcs $(DIR_LIBRARY)\$(ENGINE_NAME).lib $(addsuffix .o,$(addprefix obj\, $($(MODULES))))
+	@echo === Static library : COMPLETE ===
+	$(CC) $(CFLAGS) $(SHARED) $(addsuffix .o,$(addprefix obj\, $($(MODULES)))) -o $(DIR_BINARY)\$(ENGINE_NAME).dll $(INCLUDES) $(LIBRARY)
+	@echo === Dynamic library : COMPLETE ===
 
 ############################################################
 # Clean #
@@ -57,8 +70,12 @@ clean:
 ############################################################
 # Help #
 ############################################################
+
 help:
 	@echo Makefile methods to compile the engine :
 	@echo * engine    : Compile the object of the engine
 	@echo * library   : Compile the static and dynamic libraries
+	@echo * "MODULES" : Compile the object of a module
 	@echo * clean     : Clear all object file, the static and the dynamic library
+	@echo Avaiable Module :
+	@echo $(MODULES)

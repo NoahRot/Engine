@@ -1,0 +1,5 @@
+[22:2:26] INFO [Main] Info test
+[22:2:26] WARNING [Main] Warning test
+[22:2:26] ERROR [Main] Error test
+[22:2:26] FATAL [Main] Fatal test
+[22:2:26] FATAL [Main] NEW
