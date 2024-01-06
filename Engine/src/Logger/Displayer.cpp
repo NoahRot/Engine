@@ -7,6 +7,7 @@ namespace eng::log {
 LogDisplayer::~LogDisplayer(){}
 
 std::string LogDisplayer::LogToString(const LogStruct& log) {
+    // Create a string from the type
     std::string type_str;
     switch(log.type) {
         case Fatal:
@@ -28,6 +29,7 @@ std::string LogDisplayer::LogToString(const LogStruct& log) {
             type_str = "UNKNOW";
     }
     
+    // Create the string of the log
     std::string str = "[" + std::to_string((log.time%86400)/3600) + ":" + std::to_string(((log.time%86400)%3600)/60) + ":" + std::to_string(((log.time%86400)%3600)%60) + "] "
     + type_str + " [" + log.sender + "] " + log.message + "\n";
 
@@ -45,17 +47,22 @@ void LogDisplayerCMD::Log(const LogStruct& log) {
 LogDisplayerTXT::LogDisplayerTXT(const std::string& path)
 : m_file(path)
 {
+    // Check if the file has been opend
     if(!m_file.is_open()) {
         std::cerr << "DISPLAYER TXT ERROR : CAN NOT OPEN FILE" << std::endl;
     }
 }
     
 LogDisplayerTXT::~LogDisplayerTXT() {
-    m_file.close();
+    if(m_file.is_open()) {
+        m_file.close();
+    }
 }
 
 void LogDisplayerTXT::Log(const LogStruct& log) {
-    m_file << LogToString(log);
+    if(m_file.is_open()) {
+        m_file << LogToString(log);
+    }
 }
 
 }

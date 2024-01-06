@@ -5,14 +5,17 @@ namespace eng::log {
 Logger::Logger(uint32_t intialListLogLength)
 : m_whichDisplay("11111")
 {
+    // Reserve space to store the logs
     m_listLog.reserve(intialListLogLength);
 }
 
 Logger::~Logger() {
+    // Join the thread
     if (m_logThread.joinable()) {
         m_logThread.join();
     }
 
+    // Free memory by destroying the displayer
     for(auto& displayer : m_displayer) {
         delete displayer;
     }

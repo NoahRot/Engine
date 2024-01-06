@@ -27,17 +27,14 @@ ENGINE_NAME = Engine
 # Modules #
 ############################################################
 
-MODULES 	= Logger
+MODULES 	= Logger Window
 
 Logger		= Logger Displayer
+Window		= Window
 
 ############################################################
 # Compilation #
 ############################################################
-
-### Logger ###
-#logger:
-#	$(MAKE) -C src\Logger $(addsuffix .o, $(LOGGER_OBJECT))
 
 all: engine library
 
@@ -53,9 +50,9 @@ $(MODULES):
 ############################################################
 
 library:
-	ar rcs $(DIR_LIBRARY)\$(ENGINE_NAME).lib $(addsuffix .o,$(addprefix obj\, $($(MODULES))))
+	ar rcs $(DIR_LIBRARY)\$(ENGINE_NAME).lib $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M)))))
 	@echo === Static library : COMPLETE ===
-	$(CC) $(CFLAGS) $(SHARED) $(addsuffix .o,$(addprefix obj\, $($(MODULES)))) -o $(DIR_BINARY)\$(ENGINE_NAME).dll $(INCLUDES) $(LIBRARY)
+	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BINARY)\$(ENGINE_NAME).dll $(INCLUDES) $(LIBRARY)
 	@echo === Dynamic library : COMPLETE ===
 
 ############################################################
@@ -77,5 +74,5 @@ help:
 	@echo * library   : Compile the static and dynamic libraries
 	@echo * "MODULES" : Compile the object of a module
 	@echo * clean     : Clear all object file, the static and the dynamic library
-	@echo Avaiable Module :
+	@echo Avaiable Modules :
 	@echo $(MODULES)

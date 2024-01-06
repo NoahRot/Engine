@@ -17,7 +17,8 @@ int main(int argc, char** args) {
     logger.Debug("Main", "Debug test");
     logger.Error("Main", "Error test");
     logger.Fatal("Main", "Fatal test");
-    logger.Fatal("Main", "NEW");
+
+    eng::Window win;
 
     return 0;
 }

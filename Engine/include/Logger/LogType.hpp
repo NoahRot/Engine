@@ -4,6 +4,7 @@
 
 namespace eng::log {
 
+/// @brief All the type of log
 enum LogType {
     Fatal   = 0,
     Error   = 1,
@@ -12,6 +13,7 @@ enum LogType {
     Debug   = 4
 };
 
+/// @brief Structure of a log
 struct LogStruct {
     time_t      time;
     LogType     type;
