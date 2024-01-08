@@ -23,6 +23,16 @@ DIR_OBJECT 	= obj
 # Name
 ENGINE_NAME = Engine
 
+#**********************************************************#
+# ONLY TO SIMPLIFY | SHOULD BE ERASE FOR FINAL RELEASE #
+#**********************************************************#
+
+DIR_BIN_PROJECT = ..\Application\bin
+
+#**********************************************************#
+# END #
+#**********************************************************#
+
 ############################################################
 # Modules #
 ############################################################
@@ -52,6 +62,7 @@ $(MODULES):
 library:
 	ar rcs $(DIR_LIBRARY)\$(ENGINE_NAME).lib $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M)))))
 	@echo === Static library : COMPLETE ===
+	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BIN_PROJECT)\$(ENGINE_NAME).dll $(INCLUDES) $(LIBRARY)
 	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BINARY)\$(ENGINE_NAME).dll $(INCLUDES) $(LIBRARY)
 	@echo === Dynamic library : COMPLETE ===
 
@@ -62,6 +73,7 @@ library:
 clean:
 	$(RM) $(DIR_OBJECT)\*.o
 	$(RM) $(DIR_LIBRARY)\$(ENGINE_NAME).lib
+	$(RM) $(DIR_BIN_PROJECT)\$(ENGINE_NAME).dll
 	$(RM) $(DIR_BINARY)\$(ENGINE_NAME).dll
 
 ############################################################

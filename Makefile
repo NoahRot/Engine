@@ -10,7 +10,7 @@ EXTENSION_EXE = exe
 
 # Directory for the executable
 #DIR_EXE = Application\bin
-DIR_EXE = Engine\bin
+DIR_EXE = Application\bin
 LIBRARY = -L Engine\lib -lEngine -lmingw32 -lSDL2main -lSDL2 # ATTENTION A L'ORDRE DES INCLUSION DES LIBRAIRIES
 INCLUDES = -I Engine\include
 
