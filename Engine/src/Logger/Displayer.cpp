@@ -11,27 +11,35 @@ std::string LogDisplayer::LogToString(const LogStruct& log) {
     std::string type_str;
     switch(log.type) {
         case Fatal:
-            type_str = "FATAL";
+            type_str = "FATAL     ";
             break;
         case Error:
-            type_str = "ERROR";
+            type_str = "ERROR     ";
             break;
         case Warning:
-            type_str = "WARNING";
+            type_str = "WARNING   ";
             break;
         case Info:
-            type_str = "INFO";
+            type_str = "INFO      ";
             break;
         case Debug:
-            type_str = "DEBUG";
+            type_str = "DEBUG     ";
             break;
         default:
-            type_str = "UNKNOW";
+            type_str = "UNKNOW    ";
     }
     
     // Create the string of the log
-    std::string str = "[" + std::to_string((log.time%86400)/3600) + ":" + std::to_string(((log.time%86400)%3600)/60) + ":" + std::to_string(((log.time%86400)%3600)%60) + "] "
-    + type_str + " [" + log.sender + "] " + log.message + "\n";
+    // Create time
+    std::string str = "[" + (((log.time%86400)/3600 < 10)? (std::string)"0" : (std::string)"") + std::to_string((log.time%86400)/3600)
+         + ":" + ((((log.time%86400)%3600)/60 < 10)? (std::string)"0" : (std::string)"") + std::to_string(((log.time%86400)%3600)/60)
+         + ":" + ((((log.time%86400)%3600)%60 < 10)? (std::string)"0" : (std::string)"") + std::to_string(((log.time%86400)%3600)%60) + "] "
+    // Add the type of log
+         + type_str
+    // Add the sender
+         + " [" + log.sender + "] "
+    // Add message
+         + log.message + "\n";
 
     return str;
 }
@@ -40,6 +48,51 @@ std::string LogDisplayer::LogToString(const LogStruct& log) {
 
 void LogDisplayerCMD::Log(const LogStruct& log) {
     std::cout << LogToString(log);
+}
+
+std::string LogDisplayerCMD::LogToString(const LogStruct& log) {
+    // Create a string from the type
+    std::string type_str;
+    std::string color;
+    switch(log.type) {
+        case Fatal:
+            type_str = "FATAL     ";
+            color = "\x1b[91m"; // Bright red
+            break;
+        case Error:
+            type_str = "ERROR     ";
+            color = "\x1b[31m"; // Red
+            break;
+        case Warning:
+            type_str = "WARNING   ";
+            color = "\x1b[33m"; // Yellow
+            break;
+        case Info:
+            type_str = "INFO      ";
+            color = "\x1b[32m"; // Green
+            break;
+        case Debug:
+            type_str = "DEBUG     ";
+            color = "\x1b[34m"; // Blue
+            break;
+        default:
+            type_str = "UNKNOW    ";
+            color = "\x1b[37m"; // White
+    }
+    
+    // Create the string of the log
+    // Create time
+    std::string str = "[" + (((log.time%86400)/3600 < 10)? (std::string)"0" : (std::string)"") + std::to_string((log.time%86400)/3600)
+         + ":" + ((((log.time%86400)%3600)/60 < 10)? (std::string)"0" : (std::string)"") + std::to_string(((log.time%86400)%3600)/60)
+         + ":" + ((((log.time%86400)%3600)%60 < 10)? (std::string)"0" : (std::string)"") + std::to_string(((log.time%86400)%3600)%60) + "] "
+    // Add the type of log
+         + color + type_str + "\033[0m"
+    // Add the sender
+         + " [" + log.sender + "] "
+    // Add message
+         + log.message + "\n";
+
+    return str;
 }
 
 // Displayer TXT

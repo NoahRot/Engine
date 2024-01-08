@@ -88,6 +88,10 @@ void LogCallback(LogType type, const std::string& sender, const std::string& mes
 
 // Definition of the template method
 
+/// @brief Create a displayer to display the logs
+/// @tparam T The type of displayer
+/// @tparam ...ARG The argument for the constructor of the displayer
+/// @param ...arg The argument for the constructor of the displayer
 template<typename T, typename ...ARG>
 void Logger::CreateDisplayer(ARG ...arg) {
     T* displayer = new T(arg...);

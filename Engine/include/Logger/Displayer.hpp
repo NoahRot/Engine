@@ -25,7 +25,7 @@ protected:
     /// @brief Create a string from a Log. Used to simplify the display.
     /// @param log The log from which the string will be created.
     /// @return The string of the log.
-    std::string LogToString(const LogStruct& log);
+    virtual std::string LogToString(const LogStruct& log);
 
 };
 
@@ -36,6 +36,12 @@ public:
     /// @brief Display a log
     /// @param log The log which will be displayed
     virtual void Log(const LogStruct& log) override;
+
+protected:
+    /// @brief Create a string from a Log. Used to simplify the display.
+    /// @param log The log from which the string will be created.
+    /// @return The string of the log.
+    virtual std::string LogToString(const LogStruct& log) override;
 };
 
 /// @brief Children class of LogDisplayer.
