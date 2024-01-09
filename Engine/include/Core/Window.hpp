@@ -1,13 +1,14 @@
 #pragma once
 
+#include <iostream>
+
 #include <External/SDL2/SDL.h>
-#include <inttypes.h>
 
 namespace eng {
 
 class Window {
 public:
-    Window();
+    Window(uint32_t width, uint32_t height);
 
     ~Window();
 

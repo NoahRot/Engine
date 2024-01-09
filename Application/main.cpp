@@ -1,21 +1,23 @@
 #include <iostream>
 
 #include "Engine.hpp"
+#include "Core/Configuration.hpp"
 
 int main(int argc, char** args) {
-    std::cout << "HELLO WORLD" << std::endl;
 
-    eng::log::Logger logger(100);
+    eng::Configuration config;
+    config.log_displayTXT = true;
+    config.log_displayTXTName = "../Engine.log";
 
-    logger.CreateDisplayer<eng::log::LogDisplayerCMD>();
-    logger.CreateDisplayer<eng::log::LogDisplayerTXT>("../Engine.log");
+    eng::Configure(config);
+
+    eng::Configure(config);
+
+    eng::log::Logger& logger = eng::log::Logger::Instance();
 
     logger.Info("Main", "Program started");
 
-    eng::Window  window;
-
     logger.Info("Main", "Program ended");
-
 
     return 0;
 }

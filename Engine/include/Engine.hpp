@@ -2,8 +2,11 @@
 
 #include <memory>
 
+#include "Core/Core.hpp"
+#include "Core/Window.hpp"
+#include "Core/Configuration.hpp"
+
 #include "Logger/Logger.hpp"
-#include "Window/Window.hpp"
 
 namespace eng {
 

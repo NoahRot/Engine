@@ -37,10 +37,10 @@ DIR_BIN_PROJECT = ..\Application\bin
 # Modules #
 ############################################################
 
-MODULES 	= Logger Window
+MODULES 	= Logger Core
 
 Logger		= Logger Displayer
-Window		= Window
+Core		= Core Window
 
 ############################################################
 # Compilation #

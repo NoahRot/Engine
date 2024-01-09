@@ -5,7 +5,7 @@
 namespace eng::log {
 
 /// @brief All the type of log
-enum LogType {
+enum LogLevel {
     Fatal   = 0,
     Error   = 1,
     Warning = 2,
@@ -16,7 +16,7 @@ enum LogType {
 /// @brief Structure of a log
 struct LogStruct {
     time_t      time;
-    LogType     type;
+    LogLevel    type;
     std::string sender;
     std::string message;
 };

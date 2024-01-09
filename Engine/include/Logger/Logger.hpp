@@ -9,15 +9,36 @@
 
 #include "Logger/LogType.hpp"
 #include "Logger/Displayer.hpp"
+#include "Core/Core.hpp"
 
 namespace eng::log {
+
+class Logger;
+
+namespace _intern_ {
+
+/// @brief Function (friend of Logger) used to log something with a thread.
+/// This function is nessesary because the thread can't make a callback on
+/// a method of a class. This also display the log on all displayer.
+/// @param type Type of log
+/// @param sender Who has sent the log
+/// @param message The content of the log
+/// @param logger A pointer on the Logger on which the log will be store. It
+/// is also used to know if a log has to be display
+void _LogCallback(LogLevel type, const std::string& sender, const std::string& message, Logger* logger);
+
+}
 
 /// @brief A class to create logs and manage how those has to be displayed or even should be display.
 class Logger {
 public:
-    /// @brief Constructor
-    /// @param intialListLogLength The reserve place to store the logs
-    Logger(uint32_t intialListLogLength = 0);
+    // Those methods are deleted because Logger is a singleton class
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
+
+    /// @brief Obtain the instance of Logger
+    /// @return The instance of logger
+    static Logger& Instance();
 
     /// @brief Destructor
     ~Logger();
@@ -58,10 +79,13 @@ public:
     /// be display. 
     /// @param type The type of log
     /// @param display True : will be display, False : won't be display
-    void SetDisplayType(LogType type, bool display);
+    void SetDisplayType(LogLevel type, bool display);
 
 private:
-    friend void LogCallback(LogType type, const std::string& sender, const std::string& message, Logger* logger);
+    friend void _intern_::_LogCallback(LogLevel type, const std::string& sender, const std::string& message, Logger* logger);
+
+    /// @brief Constructor
+    Logger();
 
     /// @brief List of the logs
     std::vector<LogStruct> m_listLog;
@@ -70,21 +94,11 @@ private:
     std::vector<LogDisplayer*> m_displayer;
 
     /// @brief Use to know which type of log should be display
-    std::bitset<LogType::Debug+1> m_whichDisplay;
+    std::bitset<LogLevel::Debug+1> m_whichDisplay;
 
     /// @brief Thread to display the logs
     std::thread m_logThread;
 };
-
-/// @brief Function (friend of Logger) used to log something with a thread.
-/// This function is nessesary because the thread can't make a callback on
-/// a method of a class. This also display the log on all displayer.
-/// @param type Type of log
-/// @param sender Who has sent the log
-/// @param message The content of the log
-/// @param logger A pointer on the Logger on which the log will be store. It
-/// is also used to know if a log has to be display
-void LogCallback(LogType type, const std::string& sender, const std::string& message, Logger* logger);
 
 // Definition of the template method
 
