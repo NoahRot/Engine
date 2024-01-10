@@ -8,6 +8,16 @@ void Configure(const Configuration& config) {
 
 namespace _intern_ {
 
+bool IsConfigure() {
+    return _Core::Instance().IsConfigure();
+}
+
+Configuration GetConfiguration() {
+    return _Core::Instance().GetConfiguration();
+}
+
+
+
 _Core::_Core() {
     std::cout << "DEBUG : Core created" << std::endl;
 }

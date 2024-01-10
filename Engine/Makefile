@@ -37,10 +37,11 @@ DIR_BIN_PROJECT = ..\Application\bin
 # Modules #
 ############################################################
 
-MODULES 	= Logger Core
+MODULES 	= Logger Core Event
 
 Logger		= Logger Displayer
 Core		= Core Window
+Event		= Event Keyboard Mouse
 
 ############################################################
 # Compilation #

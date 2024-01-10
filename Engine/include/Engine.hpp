@@ -8,6 +8,4 @@
 
 #include "Logger/Logger.hpp"
 
-namespace eng {
-
-}
+#include "Event/Event.hpp"

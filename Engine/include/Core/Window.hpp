@@ -4,20 +4,35 @@
 
 #include <External/SDL2/SDL.h>
 
+#include "Core/Core.hpp"
+#include "Logger/Logger.hpp"
+
 namespace eng {
 
 class Window {
 public:
-    Window(uint32_t width, uint32_t height);
-
+    Window(const Window&) = delete;
+    Window& operator=(const Window&) = delete;
     ~Window();
 
+    static Window& Instance();
+
+    void Present();
+
+    uint32_t GetWidth();
+
+    uint32_t GetHeight();
+
 private:
+    Window();
+
     SDL_Window* m_window;
     SDL_GLContext* m_context;
 
     uint32_t m_width;
     uint32_t m_height;
 };
+
+Window& GetWindow();
 
 }

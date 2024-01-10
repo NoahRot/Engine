@@ -100,6 +100,8 @@ private:
     std::thread m_logThread;
 };
 
+Logger& GetLogger();
+
 // Definition of the template method
 
 /// @brief Create a displayer to display the logs

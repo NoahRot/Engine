@@ -12,6 +12,10 @@ void Configure(const Configuration& config);
     
 namespace _intern_ {
 
+bool IsConfigure();
+
+Configuration GetConfiguration();
+
 class _Core {
 public:
     /// @brief Destructor

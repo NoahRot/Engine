@@ -19,6 +19,11 @@ struct Configuration
     bool log_displayCMD = true;
     bool log_displayTXT = false;
     std::string log_displayTXTName = "LogFile";
+
+    // Window
+    uint32_t win_width = 960;
+    uint32_t win_height = 480;
+    std::string win_name = "UNKNOW";
 };
 
 }
