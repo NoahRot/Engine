@@ -40,7 +40,7 @@ DIR_BIN_PROJECT = ..\Application\bin
 MODULES 	= Logger Core Event
 
 Logger		= Logger Displayer
-Core		= Core Window
+Core		= Core Window Timer
 Event		= Event Keyboard Mouse
 
 ############################################################

@@ -20,6 +20,7 @@ int main(int argc, char** args) {
     eng::Event& event = eng::GetEvent();
     eng::Keyboard& keyboard = eng::GetKeyboard();
     eng::Mouse& mouse = eng::GetMouse();
+    eng::Timer& timer = eng::GetTimer();
 
     while(!event.IsQuitting()) {
         event.Manage();
@@ -43,6 +44,8 @@ int main(int argc, char** args) {
             mouse.MousePosition(x,y);
             logger.Info("Main", "Mouse position, x : " + std::to_string(x) + ", y : " + std::to_string(y));
         }
+
+        timer.Loop();
     }
 
     logger.Info("Main", "Program ended");

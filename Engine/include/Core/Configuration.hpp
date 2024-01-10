@@ -24,6 +24,9 @@ struct Configuration
     uint32_t win_width = 960;
     uint32_t win_height = 480;
     std::string win_name = "UNKNOW";
+
+    // Timer
+    uint32_t tim_fps = 60;
 };
 
 }

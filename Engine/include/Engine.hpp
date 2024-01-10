@@ -9,3 +9,5 @@
 #include "Logger/Logger.hpp"
 
 #include "Event/Event.hpp"
+
+#include "Core/Timer.hpp"
