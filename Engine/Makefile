@@ -9,6 +9,7 @@ NO_WIN 		= -mwindows
 
 LIBRARY 	= -L lib -lmingw32 -lSDL2main -lSDL2
 INCLUDES 	= -I include
+INCLUDES_EXTERNAL = -I include\External
 
 # Remove function
 RM 			= del
@@ -19,9 +20,13 @@ DIR_LIBRARY = lib
 DIR_BINARY 	= bin
 DIR_INCLUDE = include
 DIR_OBJECT 	= obj
+DIR_EXTERNAL = External
 
 # Name
 ENGINE_NAME = Engine
+
+# Gald
+GLAD_SRC = $(DIR_SOURCE)/$(DIR_EXTERNAL)/glad/glad.c
 
 #**********************************************************#
 # ONLY TO SIMPLIFY | SHOULD BE ERASE FOR FINAL RELEASE #
@@ -40,7 +45,7 @@ DIR_BIN_PROJECT = ..\Application\bin
 MODULES 	= Logger Core Event
 
 Logger		= Logger Displayer
-Core		= Core Window Timer
+Core		= Core Window Timer CoreFnc
 Event		= Event Keyboard Mouse
 
 ############################################################
@@ -53,7 +58,7 @@ engine: $(MODULES)
 	@echo === Engine compilation SUCCESS ===
 
 $(MODULES):
-	$(MAKE) -C src\$@ $(addsuffix .o, $($@))
+	$(MAKE) -C $(DIR_SOURCE)\$@ $(addsuffix .o, $($@))
 	@echo === Module $@ compilation COMPLETE ===
 
 ############################################################
@@ -63,8 +68,9 @@ $(MODULES):
 library:
 	ar rcs $(DIR_LIBRARY)\$(ENGINE_NAME).lib $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M)))))
 	@echo === Static library : COMPLETE ===
-	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BIN_PROJECT)\$(ENGINE_NAME).dll $(INCLUDES) $(LIBRARY)
-	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BINARY)\$(ENGINE_NAME).dll $(INCLUDES) $(LIBRARY)
+#	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BIN_PROJECT)\$(ENGINE_NAME).dll $(GLAD_SRC) $(INCLUDES) $(INCLUDES_EXTERNAL) $(LIBRARY)
+	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BINARY)\$(ENGINE_NAME).dll $(GLAD_SRC) $(INCLUDES) $(INCLUDES_EXTERNAL) $(LIBRARY)
+	@copy $(DIR_BINARY)\$(ENGINE_NAME).dll $(DIR_BIN_PROJECT)
 	@echo === Dynamic library : COMPLETE ===
 
 ############################################################

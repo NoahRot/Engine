@@ -22,11 +22,25 @@ int main(int argc, char** args) {
     eng::Mouse& mouse = eng::GetMouse();
     eng::Timer& timer = eng::GetTimer();
 
-    while(!event.IsQuitting()) {
+    timer.SetFPS(60);
+
+    logger.Info("Main", "Delta time in ms : " + std::to_string(timer.GetDeltaTime()));
+
+    logger.Info("OpenGL", "Version : " + eng::InfoVersion());
+
+    logger.Info("OpenGL", "Renderer : " + eng::InfoRenderer());
+
+    logger.Info("OpenGL", "Shading language : " + eng::InfoShadingLanguage());
+
+    logger.Info("OpenGL", "Vendor : " + eng::InfoVendor());
+    
+    logger.Info("OpenGL", "Number of texture slots : " + std::to_string(eng::GetMaxTextureSlots()));
+
+    while(eng::IsRunning()) {
         event.Manage();
 
         if(keyboard.KeyDown(SDL_SCANCODE_ESCAPE)) {
-            event.Quit();
+            eng::Quit();
         }
 
         if(keyboard.KeyDown(SDL_SCANCODE_D)) {

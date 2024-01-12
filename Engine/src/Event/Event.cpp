@@ -2,15 +2,17 @@
 
 namespace eng {
 
-Event& GetEvent() {
-    return Event::Instance();
-}
-
-
-
 Event::Event()
-: m_quit(false), m_keyboard(Keyboard::Instance()), m_mouse(Mouse::Instance())
+: m_keyboard(Keyboard::Instance()), m_mouse(Mouse::Instance())
 {
+    eng::log::Logger& logger = eng::GetLogger();
+
+    // Check if the engine has been configure
+    if(!eng::IsConfigure()) {
+        logger.Fatal("Event", "Engine is not configure");
+        exit(EXIT_FAILURE);
+    }
+
     std::cout << "DEBUG : Event created" << std::endl;
 }
 
@@ -40,7 +42,7 @@ void Event::Manage() {
         switch (event.type)
         {
         case SDL_QUIT:
-            m_quit = true;
+            Quit();
             break;
         case SDL_KEYDOWN:
             m_keyboard.m_keyDown[event.key.keysym.scancode] = true;
@@ -60,10 +62,6 @@ void Event::Manage() {
             break;
         }
     }
-}
-
-bool Event::IsQuitting() const {
-    return m_quit;
 }
 
 }

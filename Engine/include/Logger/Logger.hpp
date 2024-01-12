@@ -9,7 +9,7 @@
 
 #include "Logger/LogType.hpp"
 #include "Logger/Displayer.hpp"
-#include "Core/Core.hpp"
+#include "Core/CoreFnc.hpp"
 
 namespace eng::log {
 
@@ -99,8 +99,6 @@ private:
     /// @brief Thread to display the logs
     std::thread m_logThread;
 };
-
-Logger& GetLogger();
 
 // Definition of the template method
 

@@ -48,6 +48,4 @@ private:
     int32_t m_mouseY;
 };
 
-Mouse& GetMouse();
-
 }

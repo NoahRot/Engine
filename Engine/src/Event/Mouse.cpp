@@ -2,12 +2,6 @@
 
 namespace eng {
 
-Mouse& GetMouse() {
-    return Mouse::Instance();
-}
-
-
-
 Mouse::Mouse() {
     m_mouseDown.fill(false);
     m_mousePress.fill(false);

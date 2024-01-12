@@ -2,23 +2,11 @@
 
 namespace eng {
 
-void Configure(const Configuration& config) {
-    eng::_intern_::_Core::Instance().Configure(config);
-}
-
 namespace _intern_ {
 
-bool IsConfigure() {
-    return _Core::Instance().IsConfigure();
-}
-
-Configuration GetConfiguration() {
-    return _Core::Instance().GetConfiguration();
-}
-
-
-
-_Core::_Core() {
+_Core::_Core()
+: m_isConfigure(false), m_isRunning(true)
+{
     std::cout << "DEBUG : Core created" << std::endl;
 }
 
@@ -56,6 +44,20 @@ void _Core::Configure(const Configuration& config) {
         exit(EXIT_FAILURE);
     }
     logger.Debug("Core", "SDL initialize");
+
+    // Set Attribute for OpenGL
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4); // Use version 4.1 of OpenGL
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1); // Use version 4.1 of OpenGL
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE); // Disable old functions
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, true); // Set double buffering
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+    // Create the instance of the window to be sure that the OpenGL Context has been created
+    eng::Window::Instance();
+}
+
+void _Core::Quit() {
+    m_isRunning = false;
 }
 
 Configuration _Core::GetConfiguration() const {
@@ -64,6 +66,10 @@ Configuration _Core::GetConfiguration() const {
 
 bool _Core::IsConfigure() const {
     return m_isConfigure;
+}
+
+bool _Core::IsRunning() const {
+    return m_isRunning;
 }
 
 }

@@ -2,24 +2,18 @@
 
 namespace eng {
 
-Window& GetWindow() {
-    return Window::Instance();
-}
-
-
-
 Window::Window()
-: m_window(nullptr), m_context(nullptr)
+: m_window(nullptr)
 {
-    eng::log::Logger& logger = eng::log::GetLogger();
+    eng::log::Logger& logger = eng::GetLogger();
 
     // Check if the engine has been configure
-    if(!eng::_intern_::IsConfigure()) {
+    if(!eng::IsConfigure()) {
         logger.Fatal("Window", "Engine is not configure");
         exit(EXIT_FAILURE);
     }
 
-    eng::Configuration config = eng::_intern_::GetConfiguration();
+    eng::Configuration config = eng::GetConfiguration();
 
     // Create the window
     m_window = SDL_CreateWindow(config.win_name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, config.win_width, config.win_height, SDL_WINDOW_OPENGL);
@@ -28,7 +22,24 @@ Window::Window()
         exit(EXIT_FAILURE);
     }
 
-    // [TODO] Create the opengl context
+    // Create the opengl context
+    m_context = SDL_GL_CreateContext(m_window);
+    if (m_context == nullptr) {
+        logger.Fatal("Window", "Can't create OpenGL context");
+        exit(EXIT_FAILURE);
+    }
+
+    // Init GLAD
+    if (!gladLoadGLLoader(SDL_GL_GetProcAddress)) {
+        logger.Fatal("Window", "Can't init GLAD");
+        exit(EXIT_FAILURE);
+    }
+
+    // Tell OpenGL where the left bottom corner is and what the dimensions of the windows are
+    glViewport(0, 0, m_width, m_height);
+
+    // Set the clear color to black
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     std::cout << "DEBUG : Window created" << std::endl;
 }

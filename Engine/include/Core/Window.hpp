@@ -4,7 +4,7 @@
 
 #include <External/SDL2/SDL.h>
 
-#include "Core/Core.hpp"
+#include "Core/CoreFnc.hpp"
 #include "Logger/Logger.hpp"
 
 namespace eng {
@@ -27,12 +27,10 @@ private:
     Window();
 
     SDL_Window* m_window;
-    SDL_GLContext* m_context;
+    SDL_GLContext m_context;
 
     uint32_t m_width;
     uint32_t m_height;
 };
-
-Window& GetWindow();
 
 }

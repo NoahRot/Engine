@@ -7,7 +7,7 @@ Logger::Logger()
 {
     // Reserve space to store the logs
     if (eng::_intern_::_Core::Instance().IsConfigure()) {
-        Configuration config = eng::_intern_::GetConfiguration();
+        Configuration config = eng::GetConfiguration();
         m_listLog.reserve(config.log_initialLength);
 
         // Add the required displayer
@@ -81,10 +81,6 @@ void Logger::Debug(const std::string& sender, const std::string& message) {
 
 void Logger::SetDisplayType(LogLevel type, bool display) {
     m_whichDisplay[type] = display;
-}
-
-Logger& GetLogger() {
-    return Logger::Instance();
 }
 
 namespace _intern_ {

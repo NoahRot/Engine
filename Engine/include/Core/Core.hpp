@@ -4,17 +4,8 @@
 #include "Core/Configuration.hpp"
 
 namespace eng {
-
-/// @brief Configuration of the engine
-/// @warning If the configuration has already been set, the new configuration won't be set.
-/// @param config The configuration of the engine.
-void Configure(const Configuration& config);
     
 namespace _intern_ {
-
-bool IsConfigure();
-
-Configuration GetConfiguration();
 
 class _Core {
 public:
@@ -32,6 +23,9 @@ public:
     /// @param config The configuration that will be set
     void Configure(const Configuration& config);
 
+    /// @brief Quit the application
+    void Quit();
+
     /// @brief Getter method to obtain the configuration of the engine
     /// @return The configuration of the engine
     Configuration GetConfiguration() const;
@@ -40,12 +34,19 @@ public:
     /// @return True if the engine has been configured, False otherwise
     bool IsConfigure() const;
 
+    /// @brief Method to know if the application is running
+    /// @return If the application is running
+    bool IsRunning() const;
+
 private:
     /// @brief Constructor
     _Core();
 
     /// @brief If the configuration has been made
     bool m_isConfigure;
+
+    /// @brief If the application is running
+    bool m_isRunning;
 
     /// @brief The configuration of the engine
     Configuration m_config;

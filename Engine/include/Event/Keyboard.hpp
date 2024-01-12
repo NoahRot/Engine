@@ -31,6 +31,4 @@ private:
     std::array<bool, SDL_NUM_SCANCODES> m_keyPress;
 };
 
-Keyboard& GetKeyboard();
-
 }

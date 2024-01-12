@@ -2,16 +2,10 @@
 
 namespace eng {
 
-Timer& GetTimer() {
-    return Timer::Instance();
-}
-
-
-
 Timer::Timer()
 : m_lastFrameTime(0)
 {
-    Configuration config = eng::_intern_::GetConfiguration();
+    Configuration config = eng::GetConfiguration();
 
     m_fps = config.tim_fps;
     m_millisecondPerFrame = 1000/m_fps;
@@ -34,6 +28,11 @@ uint32_t Timer::GetDeltaTime() {
 
 uint32_t Timer::GetFPS() {
     return m_fps;
+}
+
+void Timer::SetFPS(uint32_t fps) {
+    m_fps = fps;
+    m_millisecondPerFrame = 1000/m_fps;
 }
 
 void Timer::Loop() {

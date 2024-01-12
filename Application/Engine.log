@@ -1,6 +1,9 @@
-[22:35:29] DEBUG      [Core] SDL initialize
-[22:35:29] INFO       [Main] Program started
-[22:35:36] INFO       [Main] D DOWN
-[22:35:36] INFO       [Main] D DOWN
-[22:35:36] INFO       [Main] D DOWN
-[22:35:37] INFO       [Main] Program ended
+[23:31:39] DEBUG      [Core] SDL initialize
+[23:31:40] INFO       [Main] Program started
+[23:31:40] INFO       [Main] Delta time in ms : 16
+[23:31:40] INFO       [OpenGL] Version : 4.1.0 Core Profile Context 23.9.3.230915
+[23:31:40] INFO       [OpenGL] Renderer : AMD Radeon RX 6600M
+[23:31:40] INFO       [OpenGL] Shading language : 4.60
+[23:31:40] INFO       [OpenGL] Vendor : ATI Technologies Inc.
+[23:31:40] INFO       [OpenGL] Number of texture slots : 32
+[23:31:42] INFO       [Main] Program ended

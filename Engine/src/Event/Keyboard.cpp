@@ -2,12 +2,6 @@
 
 namespace eng {
 
-Keyboard& GetKeyboard() {
-    return Keyboard::Instance();
-}
-
-
-
 Keyboard::Keyboard(){
     m_keyDown.fill(false);
     m_keyUp.fill(false);

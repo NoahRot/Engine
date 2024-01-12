@@ -7,6 +7,8 @@
 
 #include "Event/Keyboard.hpp"
 #include "Event/Mouse.hpp"
+#include "Core/CoreFnc.hpp"
+#include "Logger/Logger.hpp"
 
 namespace eng {
 
@@ -24,19 +26,11 @@ public:
 
     void Manage();
 
-    void Quit() { m_quit = true; }
-
-    bool IsQuitting() const;
-
 private:
     Event();
-
-    bool m_quit;
 
     Keyboard& m_keyboard;
     Mouse& m_mouse;
 };
-
-Event& GetEvent();
 
 }

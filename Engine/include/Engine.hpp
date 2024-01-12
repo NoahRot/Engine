@@ -5,6 +5,7 @@
 #include "Core/Core.hpp"
 #include "Core/Window.hpp"
 #include "Core/Configuration.hpp"
+#include "Core/CoreFnc.hpp"
 
 #include "Logger/Logger.hpp"
 
