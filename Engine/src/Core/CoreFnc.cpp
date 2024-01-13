@@ -48,6 +48,12 @@ int GetMaxTextureSlots() {
     return nbrTexUnits;
 }
 
+int GetMaxVertexAttributes() {
+    int maxVertex;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertex);
+    return maxVertex;
+}
+
 
 // === Getter functions === //
 
@@ -73,6 +79,10 @@ Keyboard& GetKeyboard() {
 
 Mouse& GetMouse() {
     return Mouse::Instance();
+}
+
+Renderer& GetRenderer() {
+    return Renderer::Instance();
 }
 
 }

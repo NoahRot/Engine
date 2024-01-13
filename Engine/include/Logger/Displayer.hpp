@@ -37,7 +37,7 @@ public:
     /// @param log The log which will be displayed
     virtual void Log(const LogStruct& log) override;
 
-protected:
+private:
     /// @brief Create a string from a Log. Used to simplify the display.
     /// @param log The log from which the string will be created.
     /// @return The string of the log.
@@ -59,7 +59,7 @@ public:
     /// @param log The log which will be displayed
     virtual void Log(const LogStruct& log) override;
 
-public:
+private:
     /// @brief The log file
     std::ofstream m_file;
 };

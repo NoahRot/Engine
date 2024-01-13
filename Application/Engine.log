@@ -1,9 +1,14 @@
-[23:31:39] DEBUG      [Core] SDL initialize
-[23:31:40] INFO       [Main] Program started
-[23:31:40] INFO       [Main] Delta time in ms : 16
-[23:31:40] INFO       [OpenGL] Version : 4.1.0 Core Profile Context 23.9.3.230915
-[23:31:40] INFO       [OpenGL] Renderer : AMD Radeon RX 6600M
-[23:31:40] INFO       [OpenGL] Shading language : 4.60
-[23:31:40] INFO       [OpenGL] Vendor : ATI Technologies Inc.
-[23:31:40] INFO       [OpenGL] Number of texture slots : 32
-[23:31:42] INFO       [Main] Program ended
+[23:52:02] DEBUG      [Core] SDL initialize
+[23:52:03] INFO       [Main] Program started
+[23:52:03] INFO       [Main] Delta time in ms : 16
+[23:52:03] INFO       [OpenGL] Version : 4.1.0 Core Profile Context 23.9.3.230915
+[23:52:03] INFO       [OpenGL] Renderer : AMD Radeon RX 6600M
+[23:52:03] INFO       [OpenGL] Shading language : 4.60
+[23:52:03] INFO       [OpenGL] Vendor : ATI Technologies Inc.
+[23:52:03] INFO       [OpenGL] Number of texture slots : 32
+[23:52:04] INFO       [Main] Mouse position, x : 305, y : 240
+[23:52:04] INFO       [Main] Mouse position, x : 605, y : 152
+[23:52:05] INFO       [Main] Mouse position, x : 772, y : 307
+[23:52:08] INFO       [Main] D DOWN
+[23:52:08] INFO       [Main] D DOWN
+[23:52:09] INFO       [Main] Program ended

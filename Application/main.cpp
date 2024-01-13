@@ -5,13 +5,13 @@
 int main(int argc, char** args) {
 
     eng::Configuration config;
-    config.log_displayTXT = true;
+    config.log_displayTXT = false;
     config.log_displayTXTName = "../Engine.log";
     config.win_name = "Engine DEMO";
 
     eng::Configure(config);
 
-    eng::log::Logger& logger = eng::log::Logger::Instance();
+    eng::log::Logger& logger = eng::GetLogger();
 
     logger.Info("Main", "Program started");
 
@@ -21,22 +21,27 @@ int main(int argc, char** args) {
     eng::Keyboard& keyboard = eng::GetKeyboard();
     eng::Mouse& mouse = eng::GetMouse();
     eng::Timer& timer = eng::GetTimer();
-
-    timer.SetFPS(60);
+    eng::Renderer& renderer = eng::GetRenderer();
 
     logger.Info("Main", "Delta time in ms : " + std::to_string(timer.GetDeltaTime()));
 
     logger.Info("OpenGL", "Version : " + eng::InfoVersion());
-
     logger.Info("OpenGL", "Renderer : " + eng::InfoRenderer());
-
     logger.Info("OpenGL", "Shading language : " + eng::InfoShadingLanguage());
-
     logger.Info("OpenGL", "Vendor : " + eng::InfoVendor());
-    
     logger.Info("OpenGL", "Number of texture slots : " + std::to_string(eng::GetMaxTextureSlots()));
+    logger.Info("OpenGL", "Maximum number of attributes of a vertex : " + std::to_string(eng::GetMaxVertexAttributes()));
+
+    renderer.SetClearColor(0.1f, 0.25f, 0.5f);
+
+    eng::Shader shader("../shader/triangle.vert", "../shader/triangle.frag");
+    if (!shader.IsValid()) {
+        logger.Error("Main", "Shader unvalid");
+    }
 
     while(eng::IsRunning()) {
+        renderer.Clear();
+
         event.Manage();
 
         if(keyboard.KeyDown(SDL_SCANCODE_ESCAPE)) {
@@ -59,6 +64,7 @@ int main(int argc, char** args) {
             logger.Info("Main", "Mouse position, x : " + std::to_string(x) + ", y : " + std::to_string(y));
         }
 
+        window.Present();
         timer.Loop();
     }
 

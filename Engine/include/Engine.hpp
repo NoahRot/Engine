@@ -12,3 +12,6 @@
 #include "Event/Event.hpp"
 
 #include "Core/Timer.hpp"
+
+#include "Graphic/Renderer.hpp"
+#include "Graphic/Shader.hpp"

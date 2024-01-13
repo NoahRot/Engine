@@ -13,10 +13,14 @@ Window::Window()
         exit(EXIT_FAILURE);
     }
 
+    // Configure Window
     eng::Configuration config = eng::GetConfiguration();
+    m_title = config.win_name;
+    m_width = config.win_width;
+    m_height = config.win_height;
 
     // Create the window
-    m_window = SDL_CreateWindow(config.win_name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, config.win_width, config.win_height, SDL_WINDOW_OPENGL);
+    m_window = SDL_CreateWindow(m_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_width, m_height, SDL_WINDOW_OPENGL);
     if (!m_window) {
         logger.Fatal("Window", "Can't create the window");
         exit(EXIT_FAILURE);

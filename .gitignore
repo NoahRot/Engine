@@ -34,3 +34,7 @@
 # vs code
 .vscode\
 Engine.code-workspace
+
+# Documentation DRAWIO
+*.drawio
+*.bkp

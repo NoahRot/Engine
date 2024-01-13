@@ -10,6 +10,8 @@
 
 #include "Event/Event.hpp"
 
+#include "Graphic/Renderer.hpp"
+
 namespace eng {
 
 struct Configuration;
@@ -17,6 +19,7 @@ class Window;
 class Timer;
 class Keyboard;
 class Mouse;
+class Renderer;
 
 namespace log {
 class Logger;
@@ -27,7 +30,7 @@ class Logger;
 // === Core functions === //
 
 /// @brief Configuration of the engine
-/// @warning If the configuration has already been set, the new configuration won't be set.
+/// @warning If the configuration has already been set, the new configuration won't replace the old one.
 /// @param config The configuration of the engine.
 void Configure(const Configuration& config);
 
@@ -60,6 +63,8 @@ std::string InfoShadingLanguage();
 
 int GetMaxTextureSlots();
 
+int GetMaxVertexAttributes();
+
 
 
 // === Getter functions === //
@@ -87,6 +92,10 @@ Keyboard& GetKeyboard();
 /// @brief Function to get the instance of Mouse
 /// @return The instance of Mouse
 Mouse& GetMouse();
+
+/// @brief Function to get the instance of Renderer
+/// @return The instance of Renderer
+Renderer& GetRenderer();
 
 
 }
