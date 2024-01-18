@@ -79,10 +79,10 @@ public:
     /// be display. 
     /// @param type The type of log
     /// @param display True : will be display, False : won't be display
-    void SetDisplayType(LogLevel type, bool display);
+    void SetDisplayType(LogLevel level, bool display);
 
 private:
-    friend void _intern_::_LogCallback(LogLevel type, const std::string& sender, const std::string& message, Logger* logger);
+    friend void _intern_::_LogCallback(LogLevel level, const std::string& sender, const std::string& message, Logger* logger);
 
     /// @brief Constructor
     Logger();

@@ -79,19 +79,19 @@ void Logger::Debug(const std::string& sender, const std::string& message) {
     m_logThread = std::thread(_intern_::_LogCallback, LogLevel::Debug, sender, message, this);
 }
 
-void Logger::SetDisplayType(LogLevel type, bool display) {
-    m_whichDisplay[type] = display;
+void Logger::SetDisplayType(LogLevel level, bool display) {
+    m_whichDisplay[level] = display;
 }
 
 namespace _intern_ {
 
-void _LogCallback(LogLevel type, const std::string& sender, const std::string& message, Logger* logger) {
+void _LogCallback(LogLevel level, const std::string& sender, const std::string& message, Logger* logger) {
     // Add the new log
-    logger->m_listLog.push_back(LogStruct{time(0), type, sender, message});
+    logger->m_listLog.push_back(LogStruct{time(0), level, sender, message});
 
     // Log in each displayer
     for(auto& display : logger->m_displayer) {
-        if (logger->m_whichDisplay[type]) {
+        if (logger->m_whichDisplay[level]) {
             display->Log(logger->m_listLog.back());
         }
     }

@@ -47,7 +47,7 @@ MODULES 	= Core Logger Event Graphic
 Logger		= Logger Displayer
 Core		= Core Window Timer CoreFnc
 Event		= Event Keyboard Mouse
-Graphic		= Renderer Shader
+Graphic		= Renderer Shader VertexArray VertexBuffer IndexBuffer
 
 ############################################################
 # Compilation #
@@ -69,7 +69,6 @@ $(MODULES):
 library:
 	ar rcs $(DIR_LIBRARY)\$(ENGINE_NAME).lib $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M)))))
 	@echo === Static library : COMPLETE ===
-#	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BIN_PROJECT)\$(ENGINE_NAME).dll $(GLAD_SRC) $(INCLUDES) $(INCLUDES_EXTERNAL) $(LIBRARY)
 	$(CC) $(CFLAGS) $(SHARED) $(foreach M, $(MODULES), $(addsuffix .o,$(addprefix obj\, $($(M))))) -o $(DIR_BINARY)\$(ENGINE_NAME).dll $(GLAD_SRC) $(INCLUDES) $(INCLUDES_EXTERNAL) $(LIBRARY)
 	@copy $(DIR_BINARY)\$(ENGINE_NAME).dll $(DIR_BIN_PROJECT)
 	@echo === Dynamic library : COMPLETE ===
@@ -90,6 +89,7 @@ clean:
 
 help:
 	@echo Makefile methods to compile the engine :
+	@echo * all       : Compile everything
 	@echo * engine    : Compile the object of the engine
 	@echo * library   : Compile the static and dynamic libraries
 	@echo * "MODULES" : Compile the object of a module

@@ -15,3 +15,6 @@
 
 #include "Graphic/Renderer.hpp"
 #include "Graphic/Shader.hpp"
+#include "Graphic/VertexArray.hpp"
+#include "Graphic/VertexBuffer.hpp"
+#include "Graphic/IndexBuffer.hpp"

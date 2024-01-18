@@ -16,7 +16,7 @@ enum LogLevel {
 /// @brief Structure of a log
 struct LogStruct {
     time_t      time;
-    LogLevel    type;
+    LogLevel    level;
     std::string sender;
     std::string message;
 };

@@ -73,6 +73,10 @@ bool Shader::IsValid() const {
     return m_valid;
 }
 
+void Shader::Bind() const {
+    glUseProgram(m_shaderProgram);
+}
+
 bool Shader::CreateShader(GLenum type, uint32_t& shaderID, const std::string& source) {
     // Define error variable
     int success;

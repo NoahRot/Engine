@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <map>
 
 #include "Logger/Logger.hpp"
 
@@ -16,6 +17,8 @@ public:
     ~Shader();
 
     bool IsValid() const;
+
+    void Bind() const;
 
 private:
     bool m_valid;

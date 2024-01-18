@@ -9,7 +9,7 @@ LogDisplayer::~LogDisplayer(){}
 std::string LogDisplayer::LogToString(const LogStruct& log) {
     // Create a string from the type
     std::string type_str;
-    switch(log.type) {
+    switch(log.level) {
         case Fatal:
             type_str = "FATAL     ";
             break;
@@ -54,7 +54,7 @@ std::string LogDisplayerCMD::LogToString(const LogStruct& log) {
     // Create a string from the type
     std::string type_str;
     std::string color;
-    switch(log.type) {
+    switch(log.level) {
         case Fatal:
             type_str = "FATAL     ";
             color = "\x1b[91m"; // Bright red
