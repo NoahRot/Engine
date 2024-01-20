@@ -44,15 +44,14 @@ int main(int argc, char** args) {
     // Test OpenGL - Make a triangle
     // ==========
     struct Vertex {
-        float x;
-        float y;
-        float z;
+        float x, y, z; // Position
+        float r, g, b; // Color
     };
     std::vector<Vertex> vertices = {
-        Vertex{-0.5f, -0.5f, 0.0f}, // Down left
-        Vertex{0.5f, -0.5f, 0.0f}, // Dewn right
-        Vertex{0.5f, 0.5f, 0.0f}, // Top right
-        Vertex{-0.5f, 0.5f, 0.0f} // Top Left
+        Vertex{-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f}, // Down left
+        Vertex{0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f}, // Dewn right
+        Vertex{0.5f, 0.5f, 0.0f,    0.0f, 0.0f, 1.0f}, // Top right
+        Vertex{-0.5f, 0.5f, 0.0f,   0.0f, 1.0f, 1.0f} // Top Left
     };
 
     std::vector<uint32_t> indices = {
@@ -74,8 +73,13 @@ int main(int argc, char** args) {
     // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(uint32_t), &indices.front(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    eng::VertexAttributesLayout layout;
+    layout.AddFloat(3); // Position
+    layout.AddFloat(3); // Colors
+    
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    //glEnableVertexAttribArray(0);
+    vao.SetAttributes(vbo, layout);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
