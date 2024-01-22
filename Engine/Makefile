@@ -92,7 +92,7 @@ help:
 	@echo * all       : Compile everything
 	@echo * engine    : Compile the object of the engine
 	@echo * library   : Compile the static and dynamic libraries
-	@echo * "MODULES" : Compile the object of a module
+	@echo * "MODULES" : Compile the object of a module (you can find the avaiable modules bellow)
 	@echo * clean     : Clear all object file, the static and the dynamic library
 	@echo Avaiable Modules :
 	@echo $(MODULES)

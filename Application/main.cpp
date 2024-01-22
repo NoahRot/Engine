@@ -2,6 +2,8 @@
 
 #include "Engine.hpp"
 
+#include "Math/Math.hpp"
+
 int main(int argc, char** args) {
 
     eng::Configuration config;
@@ -59,31 +61,16 @@ int main(int argc, char** args) {
         1, 2, 3
     };
 
-    //glGenVertexArrays(1, &VAO);
-    //glGenBuffers(1, &VBO);
     eng::VertexArray vao;
     vao.Bind();
     eng::IndexBuffer ibo(&indices.front(), indices.size()*sizeof(uint32_t));
     eng::VertexBuffer vbo(&vertices.front(), vertices.size()*sizeof(Vertex));
 
-    //glBindVertexArray(VAO);
-    //glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    //glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(Vertex), &vertices.front(), GL_STATIC_DRAW);
-
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(uint32_t), &indices.front(), GL_STATIC_DRAW);
-
     eng::VertexAttributesLayout layout;
     layout.AddFloat(3); // Position
     layout.AddFloat(3); // Colors
-    
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
-    //glEnableVertexAttribArray(0);
-    vao.SetAttributes(vbo, layout);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    vao.SetAttributes(vbo, layout);
     // ==========
     // ==========
 
@@ -125,11 +112,18 @@ int main(int argc, char** args) {
     }
 
     // ==========
-    // Clear OpenGL stuff
+    // Math
     // ==========
-    //glDeleteVertexArrays(1, &VAO);
-    //glDeleteBuffers(1, &VBO);
-    // glDeleteBuffers(1, &IBO);
+
+    math::Vec3f v1;
+    math::Vec3f v2({1.0f, 4.0f, 2.0f});
+    math::Vec3f v3({2.0f, 1.5f, 2.0f});
+    math::Vec2f v4({2.2f, 3.3f});
+
+    std::cout << v2*2.0f << "\n" << v2+v3 << "\n" << std::endl;
+
+    std::cout << math::merge(math::merge(1.1f, v4), 4.4f) << std::endl;
+
     // ==========
     // ==========
 
