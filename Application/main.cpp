@@ -119,10 +119,13 @@ int main(int argc, char** args) {
     math::Vec3f v2({1.0f, 4.0f, 2.0f});
     math::Vec3f v3({2.0f, 1.5f, 2.0f});
     math::Vec2f v4({2.2f, 3.3f});
+    math::Vec3f v5 = math::merge(1.1f, v4);
+
+    math::Mat3f m1({v2, v3, v5});
 
     std::cout << v2*2.0f << "\n" << v2+v3 << "\n" << std::endl;
 
-    std::cout << math::merge(math::merge(1.1f, v4), 4.4f) << std::endl;
+    std::cout << m1 << std::endl;
 
     // ==========
     // ==========

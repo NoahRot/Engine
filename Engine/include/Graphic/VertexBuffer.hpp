@@ -4,8 +4,6 @@
 
 #include <External/glad/glad.h>
 
-#include "Graphic/Buffer.hpp"
-
 namespace eng {
 
 class VertexBuffer {

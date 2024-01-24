@@ -6,19 +6,33 @@
 
 namespace math {
 
+/// @brief Mathematical vector of type T and dimension N
+/// @tparam T The type of vector
+/// @tparam N The dimension of the vector
 template<typename T, uint32_t N>
 class Vector {
 public:
+    /// @brief Constructor. The vector is fill with 0.
     Vector();
 
+    /// @brief Constructor
+    /// @param component The components of the vector
     Vector(const std::array<T,N>& component);
 
+    /// @brief Compute the norm of the vector
+    /// @return The norm of the vector
     T Norm() const;
 
+    /// @brief Compute the square of the norm
+    /// @return The square of the norm
     T Norm2() const;
 
+    /// @brief Normalize the vector
+    /// @warning Doesn't check if the norm is null
     void Normalize();
 
+    /// @brief Return a reference to the component of the vector
+    /// @return The components
     std::array<T,N>& Data();
 
     Vector& operator+=(const Vector& v);
@@ -54,6 +68,12 @@ Vector<T,N> operator*(Vector<T,N> v1, T a);
 
 template<typename T, uint32_t N>
 Vector<T,N> operator*(T a, Vector<T,N> v1);
+
+template<typename T, uint32_t N>
+T operator*(const Vector<T,N>& v1, const Vector<T,N>& v2);
+
+template<typename T>
+Vector<T,3> operator^(const Vector<T,3>& v1, const Vector<T,3>& v2);
 
 template<typename T, uint32_t N>
 std::ostream& operator<<(std::ostream& stream, const Vector<T,N>& v1);
@@ -174,6 +194,24 @@ Vector<T,N> operator*(Vector<T,N> v1, T a) {
 template<typename T, uint32_t N>
 Vector<T,N> operator*(T a, Vector<T,N> v1) {
     return v1*=a;
+}
+
+template<typename T, uint32_t N>
+T operator*(const Vector<T,N>& v1, const Vector<T,N>& v2) {
+    T result(0);
+    for (uint32_t i(0) ; i < N ; ++i) {
+        result += v1[i]*v2[i];
+    }
+    return result;
+}
+
+template<typename T>
+Vector<T,3> operator^(const Vector<T,3>& v1, const Vector<T,3>& v2) {
+    Vector<T,3> result;
+    result[0] = v1[1]*v2[2] - v1[2]*v2[1];
+    result[1] = -v1[0]*v2[2] + v1[2]*v2[0];
+    result[2] = v1[0]*v2[1] - v1[1]*v2[0];
+    return result;
 }
 
 template<typename T, uint32_t N>
