@@ -77,6 +77,56 @@ void Shader::Bind() const {
     glUseProgram(m_shaderProgram);
 }
 
+// Set Uniform
+
+void Shader::SetUniform1i(const std::string& varName, int var) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniform1i(location, var);
+}
+
+void Shader::SetUniform1f(const std::string& varName, float var) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniform1f(location, var);
+}
+
+void Shader::SetUniform2i(const std::string& varName, int v1, int v2) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniform2i(location, v1, v2);
+}
+
+void Shader::SetUniform2f(const std::string& varName, float v1, float v2) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniform2f(location, v1, v2);
+}
+
+void Shader::SetUniform3i(const std::string& varName, int v1, int v2, int v3) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniform3i(location, v1, v2, v3);
+}
+void Shader::SetUniform3f(const std::string& varName, float v1, float v2, float v3) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniform3f(location, v1, v2, v3);
+}
+
+void Shader::SetUniform4i(const std::string& varName, int v1, int v2, int v3, int v4) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniform4i(location, v1, v2, v3, v4);
+}
+void Shader::SetUniform4f(const std::string& varName, float v1, float v2, float v3, float v4) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniform4f(location, v1, v2, v3, v4);
+}
+
+void Shader::SetUniformMat3f(const std::string& varName, const math::Mat3f& mat) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniformMatrix3fv(location, 1, false, mat.FrontPtr());
+}
+
+void Shader::SetUniformMat4f(const std::string& varName, const math::Mat4f& mat) const {
+    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+    glUniformMatrix4fv(location, 1, false, mat.FrontPtr());
+}
+
 bool Shader::CreateShader(GLenum type, uint32_t& shaderID, const std::string& source) {
     // Define error variable
     int success;

@@ -3,8 +3,13 @@
 #include "Math/Vector.hpp"
 #include "Math/Matrix.hpp"
 #include "Math/Function.hpp"
+#include "Math/TransformMatrix.hpp"
 
 namespace math {
+
+// Constant
+constexpr float     PI_f = 3.14159265358979323846;
+constexpr double    PI_d = 3.14159265358979323846;
 
 // Vector
 typedef math::Vector<int, 2>    Vec2i;

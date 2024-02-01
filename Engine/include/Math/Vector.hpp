@@ -35,6 +35,10 @@ public:
     /// @return The components
     std::array<T,N>& Data();
 
+    /// @brief Return a pointer to the first element
+    /// @return A pointer to the first element
+    T* FrontPtr() const;
+
     Vector& operator+=(const Vector& v);
 
     Vector& operator-=(const Vector& v);
@@ -115,9 +119,13 @@ void Vector<T,N>::Normalize() {
 }
 
 template<typename T, uint32_t N>
-
 std::array<T,N>& Vector<T,N>::Data() {
     return m_component;
+}
+
+template<typename T, uint32_t N>
+T* Vector<T,N>::FrontPtr() const {
+    return (T*)(&m_component[0]);
 }
 
 template<typename T, uint32_t N>

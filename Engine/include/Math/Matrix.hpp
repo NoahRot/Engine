@@ -30,21 +30,46 @@ Store as :
 template<typename T, uint32_t L, uint32_t C>
 class Matrix {
 public:
+    /// @brief Constructor. If the matrix is square, create an identity matrix,
+    /// otherwise it create a matrix fill with 0
     Matrix();
 
-    Matrix(const std::array<T, C+L>& component);
+    /// @brief Constructor
+    /// @param component The components of the matrix
+    Matrix(const std::array<T, C*L>& component);
 
+    /// @brief Constructor
+    /// @param component The vectors that constitute the matrix
     Matrix(const std::array<Vector<T,L>, C>& component);
 
+    /// @brief Get a reference on a component of the matrix
+    /// @param column The column of the element
+    /// @param line The line of the element
+    /// @return A referene to the element
     T& Get(uint32_t column, uint32_t line);
 
+    /// @brief Get a component of the matrix
+    /// @param column The column of the element
+    /// @param line The line of the element
+    /// @return The element
     T Get(uint32_t column, uint32_t line) const;
 
+    /// @brief Get a reference to a column of the matrix
+    /// @param column The column of the matrix
+    /// @return A reference to the vector that constitutes the column
     Vector<T,L>& Get(uint32_t column);
 
-    std::array<T, C+L>& Data();
+    /// @brief Get a reference to the data of the matrix
+    /// @return A reference to the data of the matrix
+    std::array<T, C*L>& Data();
 
+    /// @brief Return a reference to the data of the matrix under vectorial form
+    /// @return A reference to the data of the matrix under vectorial form
     std::array<Vector<T,L>, C>& DataVectorial();
+
+    /// @brief Return a pointer to the first element
+    /// @return A pointer to the first element
+    T* FrontPtr() const;
 
     Matrix& operator+=(const Matrix<T,C,L>& m);
 
@@ -59,7 +84,7 @@ public:
     Vector<T,L> operator[](uint32_t index) const;
 
 private:
-    std::array<T, C+L> m_component;
+    std::array<T, C*L> m_component;
 };
 
 // ========================================
@@ -106,7 +131,7 @@ Matrix<T,L,C>::Matrix() {
 }
 
 template<typename T, uint32_t L, uint32_t C>
-Matrix<T,L,C>::Matrix(const std::array<T, C+L>& component) 
+Matrix<T,L,C>::Matrix(const std::array<T, C*L>& component) 
 : m_component(component)
 {}
 
@@ -131,17 +156,22 @@ T Matrix<T,L,C>::Get(uint32_t column, uint32_t line) const  {
 
 template<typename T, uint32_t L, uint32_t C>
 Vector<T,L>& Matrix<T,L,C>::Get(uint32_t column) {
-    return (Vector<T,L>&)(*static_cast<Vector<T,L>*>(&m_component[column*L]));
+    return (Vector<T,L>&)(*static_cast<T*>(&m_component[column*L]));
 }
 
 template<typename T, uint32_t L, uint32_t C>
-std::array<T, C+L>& Matrix<T,L,C>::Data() {
+std::array<T, C*L>& Matrix<T,L,C>::Data() {
     return m_component;
 }
 
 template<typename T, uint32_t L, uint32_t C>
 std::array<Vector<T,L>, C>& Matrix<T,L,C>::DataVectorial() {
-    return (std::array<Vector<T,L>, C>&)(*static_cast<std::array<Vector<T,L>, C>*>(&m_component[0]));
+    return (std::array<Vector<T,L>, C>&)(*static_cast<T*>(&(m_component[0])));
+}
+
+template<typename T, uint32_t L, uint32_t C>
+T* Matrix<T,L,C>::FrontPtr() const {
+    return (T*)(&m_component[0]);
 }
 
 template<typename T, uint32_t L, uint32_t C>
@@ -149,6 +179,7 @@ Matrix<T,L,C>& Matrix<T,L,C>::operator+=(const Matrix<T,C,L>& m) {
     for(uint32_t i(0) ; i < C*L ; ++i) {
         m_component[i] += m.m_component[i];
     }
+    return *this;
 }
 
 template<typename T, uint32_t L, uint32_t C>
@@ -156,6 +187,7 @@ Matrix<T,L,C>& Matrix<T,L,C>::operator-=(const Matrix<T,C,L>& m) {
     for(uint32_t i(0) ; i < C*L ; ++i) {
         m_component[i] -= m.m_component[i];
     }
+    return *this;
 }
 
 template<typename T, uint32_t L, uint32_t C>
@@ -163,6 +195,7 @@ Matrix<T,L,C>& Matrix<T,L,C>::operator*=(T a) {
     for(uint32_t i(0) ; i < C*L ; ++i) {
         m_component[i] *= a;
     }
+    return *this;
 }
 
 template<typename T, uint32_t L, uint32_t C>
@@ -170,16 +203,17 @@ Matrix<T,L,C>& Matrix<T,L,C>::operator-() {
     for(uint32_t i(0) ; i < C*L ; ++i) {
         m_component[i] = -m_component[i];
     }
+    return *this;
 }
 
 template<typename T, uint32_t L, uint32_t C>
 Vector<T,L>& Matrix<T,L,C>::operator[](uint32_t index) {
-    return (Vector<T,L>&)(*static_cast<Vector<T,L>*>(&m_component[index]));
+    return (Vector<T,L>&)(*static_cast<T*>(&(m_component[index*L])));
 }
 
 template<typename T, uint32_t L, uint32_t C>
 Vector<T,L> Matrix<T,L,C>::operator[](uint32_t index) const {
-    return (Vector<T,L>)(*static_cast<Vector<T,L>*>(&m_component[index]));
+    return (Vector<T,L>)(*static_cast<T*>(&(m_component[index*L])));
 }
 
 // ========================================
@@ -213,9 +247,9 @@ Matrix<T,M,Q> operator*(const Matrix<T,M,N>& m1, const Matrix<T,N,Q>& m2) {
         for (uint32_t j(0) ; j < Q ; ++j) {
             T value(0);
             for(uint32_t k(0) ; k < N ; ++k) {
-                value += m1.Get(i,k)*m2.Get(k,j);
+                value += m1.Get(k,i)*m2.Get(j,k);
             }
-            m.Get(i,j) = value;
+            m.Get(j,i) = value;
         }
     }
     return m;

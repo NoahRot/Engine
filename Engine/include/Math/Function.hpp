@@ -61,6 +61,19 @@ Vector<T, N+1> merge(const Vector<T,N>& v1, T a);
 template<typename T, uint32_t N>
 Vector<T, N+1> merge(T a, const Vector<T,N>& v1);
 
+/// @brief Transpose a square matrix
+/// @tparam T The type of matrix
+/// @tparam N The dimensions of the matrix
+/// @param m The matrix
+template<typename T, uint32_t N>
+void transpose(Matrix<T,N,N>& m);
+
+template<typename T, uint32_t L, uint32_t C>
+Vector<T, L> operator*(const Matrix<T,L,C>& m, const Vector<T, C>& v);
+
+template<typename T, uint32_t L, uint32_t C>
+Vector<T, C> operator*(const Vector<T, L>& v, const Matrix<T,L,C>& m);
+
 // ========================================
 // Definitions 
 // ========================================
@@ -117,4 +130,35 @@ Vector<T, N+1> merge(T a, const Vector<T,N>& v1) {
     return v;
 }
 
+template<typename T, uint32_t N>
+void transpose(Matrix<T,N,N>& m) {
+    for (uint32_t i(1) ; i < N ; ++i) {
+        for (uint32_t k(0) ; k <= i ; ++k) {
+            std::swap(m.Get(i,k), m.Get(k,i));
+        }
+    }
+}
+
+template<typename T, uint32_t L, uint32_t C>
+Vector<T, L> operator*(const Matrix<T,L,C>& m, const Vector<T, C>& v) {
+    Vector<T,L> result;
+    for (uint32_t i(0) ; i < L ; ++i) {
+        for (uint32_t j(0) ; j < C ; ++j) {
+            result[i] += m.Get(j,i)*v[j];
+        }
+    }
+    return result;
+}
+
+template<typename T, uint32_t L, uint32_t C>
+Vector<T, C> operator*(const Vector<T, L>& v, const Matrix<T,L,C>& m){
+    Vector<T,C> result;
+    for (uint32_t i(0) ; i < C ; ++i) {
+        for (uint32_t j(0) ; j < L ; ++j) {
+            result[i] += v[j]*m.Get(i,j);
+        }
+    }
+    return result;
+}
+    
 }

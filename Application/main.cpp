@@ -42,6 +42,24 @@ int main(int argc, char** args) {
         logger.Info("Main", "Shader compiled");
     }
 
+    math::Mat4f orthographic = math::Orthographic3<float>(0, config.win_width, 0, config.win_height, 1, -1);
+    math::Vec3f vecPosition({20.0f, 20.0f, 0.0f});
+    math::Mat4f displacement = math::Translate3<float>(vecPosition);
+    math::Mat4f scale = math::Scale3<float>(2.0f);
+    math::Mat4f mvp = orthographic*scale*displacement;
+
+    math::Matrix<float, 2, 2> m1({
+        math::Vec2f({2.0f, 1.5f}),
+        math::Vec2f({-3.0f, -1.0f})
+    });
+
+    math::Matrix<float, 3, 2> m2({
+        math::Vec3f({1.0f, 3.0f, 2.0f}),
+        math::Vec3f({-2.5f, 2.0f, -2.0f})
+    });
+
+    std::cout << m2 << m1 << m2*m1 << std::endl;
+
     // ==========
     // Test OpenGL - Make a triangle
     // ==========
@@ -50,10 +68,10 @@ int main(int argc, char** args) {
         float r, g, b; // Color
     };
     std::vector<Vertex> vertices = {
-        Vertex{-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f}, // Down left
-        Vertex{0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f}, // Dewn right
-        Vertex{0.5f, 0.5f, 0.0f,    0.0f, 0.0f, 1.0f}, // Top right
-        Vertex{-0.5f, 0.5f, 0.0f,   0.0f, 1.0f, 1.0f} // Top Left
+        Vertex{0.0f, 0.0f, 0.0f,        1.0f, 0.0f, 0.0f}, // Down left
+        Vertex{100.0f, 0.0f, 0.0f,      0.0f, 1.0f, 0.0f}, // Dewn right
+        Vertex{100.0f, 100.0f, 0.0f,    0.0f, 0.0f, 1.0f}, // Top right
+        Vertex{0.0f, 100.0f, 0.0f,      0.0f, 1.0f, 1.0f} // Top Left
     };
 
     std::vector<uint32_t> indices = {
@@ -89,17 +107,16 @@ int main(int argc, char** args) {
         if(keyboard.KeyUp(SDL_SCANCODE_U)) {
             logger.Info("Main", "U UP");
         }
-        if(keyboard.KeyPress(SDL_SCANCODE_P)) {
-            // ==========
-            // Draw Triangle
-            // ==========
-            shader.Bind();
-            vao.Bind();
-            // glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-            glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-            // ==========
-            // ==========
-        }
+        // ==========
+        // Draw Triangle
+        // ==========
+        shader.SetUniformMat4f("u_mvp", mvp);
+        shader.Bind();
+        vao.Bind();
+        // glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        // ==========
+        // ==========
 
         if(mouse.MouseDown(eng::MouseButton::MouseLeft)) {
             int32_t x,y;
@@ -110,25 +127,6 @@ int main(int argc, char** args) {
         window.Present();
         timer.Loop();
     }
-
-    // ==========
-    // Math
-    // ==========
-
-    math::Vec3f v1;
-    math::Vec3f v2({1.0f, 4.0f, 2.0f});
-    math::Vec3f v3({2.0f, 1.5f, 2.0f});
-    math::Vec2f v4({2.2f, 3.3f});
-    math::Vec3f v5 = math::merge(1.1f, v4);
-
-    math::Mat3f m1({v2, v3, v5});
-
-    std::cout << v2*2.0f << "\n" << v2+v3 << "\n" << std::endl;
-
-    std::cout << m1 << std::endl;
-
-    // ==========
-    // ==========
 
     logger.Info("Main", "Program ended");
 
