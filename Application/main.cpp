@@ -23,6 +23,7 @@ int main(int argc, char** args) {
     eng::Mouse& mouse = eng::GetMouse();
     eng::Timer& timer = eng::GetTimer();
     eng::Renderer& renderer = eng::GetRenderer();
+    eng::Audio& audio = eng::GetAudio();
 
     logger.Info("Main", "Delta time in ms : " + std::to_string(timer.GetDeltaTime()));
 
@@ -100,6 +101,16 @@ int main(int argc, char** args) {
     if(!texture.Load("../asset/image/image.jpg", true)) {
         logger.Debug("Main", "Texture not overwritten");
     }
+
+    eng::Music music = audio.LoadMusic("../asset/music/Sky Corsair.mp3");
+    eng::Sound sound = audio.LoadSound("../asset/sound/but.wav");
+    if (audio.MusicValidity(music) and audio.SoundValidity(sound)) {
+        logger.Debug("Main", "Music and sound loaded successfully");
+        audio.PlayMusic(music, 0);
+    }else{
+        logger.Debug("Main", "Music can't be loaded");
+    }
+
     // ==========
     // ==========
 
@@ -117,6 +128,9 @@ int main(int argc, char** args) {
         }
         if(keyboard.KeyUp(SDL_SCANCODE_U)) {
             logger.Info("Main", "U UP");
+        }
+        if (keyboard.KeyDown(SDL_SCANCODE_SPACE)) {
+            audio.PlaySound(sound);
         }
         // ==========
         // Draw Triangle

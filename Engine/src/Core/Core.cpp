@@ -11,8 +11,13 @@ _Core::_Core()
 }
 
 _Core::~_Core() {
+    // Quit MIX
+    Mix_CloseAudio();
+    Mix_Quit();
+
     // Quit SDL
     SDL_Quit();
+
     std::cout << "DEBUG : Core destroyed" << std::endl;
 }
 
@@ -44,6 +49,21 @@ void _Core::Configure(const Configuration& config) {
         exit(EXIT_FAILURE);
     }
     logger.Debug("Core", "SDL initialize");
+
+    // Init MIX
+    if (Mix_Init(config.mix_flags) != config.mix_flags) {
+        Mix_Quit();
+        SDL_Quit();
+        logger.Fatal("Core", "Can't initialize MIX");
+        exit(EXIT_FAILURE);
+    }
+    if (Mix_OpenAudio(config.mix_frequency, config.mix_format, config.mix_channels, config.mix_chunksize) < 0) {
+        Mix_CloseAudio();
+        Mix_Quit();
+        SDL_Quit();
+        logger.Fatal("Core", "Can't open audio audio");
+        exit(EXIT_FAILURE);
+    }
 
     // Set Attribute for OpenGL
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4); // Use version 4.1 of OpenGL

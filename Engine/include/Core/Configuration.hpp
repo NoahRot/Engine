@@ -5,6 +5,7 @@
 #include <string>
 
 #include <External/SDL2/SDL.h>
+#include <External/SDL2/SDL_mixer.h>
 
 namespace eng {
 
@@ -12,7 +13,14 @@ namespace eng {
 struct Configuration
 {
     // SDL2
-    Uint32 sdl_sdlFlags = SDL_INIT_EVERYTHING;
+    uint32_t sdl_sdlFlags = SDL_INIT_EVERYTHING;
+
+    // SDL Mixer
+    int32_t mix_flags = MIX_INIT_FLAC|MIX_INIT_MOD|MIX_INIT_MP3|MIX_INIT_OGG|MIX_INIT_MID|MIX_INIT_OPUS;
+    int32_t mix_frequency = 22050;
+    uint16_t mix_format = 0x8010;
+    int32_t mix_channels = 2;
+    int32_t mix_chunksize = 1024;
 
     // Logger
     uint32_t log_initialLength = 128;

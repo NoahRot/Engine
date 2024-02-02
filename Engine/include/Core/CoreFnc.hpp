@@ -5,12 +5,15 @@
 #include "Core/Core.hpp"
 #include "Core/Window.hpp"
 #include "Core/Timer.hpp"
+#include "Core/Type.hpp"
 
 #include "Logger/Logger.hpp"
 
 #include "Event/Event.hpp"
 
 #include "Graphic/Renderer.hpp"
+
+#include "Audio/Audio.hpp"
 
 namespace eng {
 
@@ -20,6 +23,7 @@ class Timer;
 class Keyboard;
 class Mouse;
 class Renderer;
+class Audio;
 
 namespace log {
 class Logger;
@@ -48,6 +52,11 @@ bool IsConfigure();
 /// @brief Function to know if the application is running
 /// @return If the application is running
 bool IsRunning();
+
+/// @brief Function to know if an index is valid
+/// @param id The index
+/// @return If the index is valid
+bool IsValid(Index id);
 
 
 
@@ -97,5 +106,8 @@ Mouse& GetMouse();
 /// @return The instance of Renderer
 Renderer& GetRenderer();
 
+/// @brief Function to get the instance of Audio
+/// @return The instance of Audio
+Audio& GetAudio();
 
 }

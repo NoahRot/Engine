@@ -43,3 +43,7 @@ Engine.code-workspace
 *.jpg
 *.png
 *.bmp
+
+# Sound and music
+*.mp3
+*.wav

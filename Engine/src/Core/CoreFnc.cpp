@@ -24,6 +24,10 @@ bool IsRunning() {
     return eng::_intern_::_Core::Instance().IsRunning();
 }
 
+bool IsValid(Index id) {
+    return id != UNVALID;
+}
+
 // === OpenGL functions === //
 
 std::string InfoVendor(){
@@ -83,6 +87,10 @@ Mouse& GetMouse() {
 
 Renderer& GetRenderer() {
     return Renderer::Instance();
+}
+
+Audio& GetAudio() {
+    return Audio::Instance();
 }
 
 }

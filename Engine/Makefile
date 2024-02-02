@@ -7,7 +7,7 @@ CFLAGS 		= -std=c++20 -Wall -pedantic -g -pthread
 SHARED 		= -shared
 NO_WIN 		= -mwindows
 
-LIBRARY 	= -L lib -lmingw32 -lSDL2main -lSDL2
+LIBRARY 	= -L lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer
 INCLUDES 	= -I include
 INCLUDES_EXTERNAL = -I include\External
 
@@ -42,12 +42,13 @@ DIR_BIN_PROJECT = ..\Application\bin
 # Modules #
 ############################################################
 
-MODULES 	= Core Logger Event Graphic
+MODULES 	= Core Logger Event Graphic Audio
 
 Logger		= Logger Displayer
 Core		= Core Window Timer CoreFnc
 Event		= Event Keyboard Mouse
 Graphic		= Texture Renderer Shader VertexArray VertexBuffer IndexBuffer
+Audio 		= Audio
 
 ############################################################
 # Compilation #
