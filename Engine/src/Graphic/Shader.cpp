@@ -49,26 +49,6 @@ Shader::~Shader() {
     glDeleteProgram(m_shaderProgram);
 }
 
-bool Shader::LoadSource(const std::string path, std::string& source) {
-    // Open file
-    std::fstream shaderFile;
-    shaderFile.open(path);
-    if (shaderFile.fail()) {
-        eng::GetLogger().Error("Shader", "Can't open shader source file. File name : " + path);
-        return false;
-    }
-
-    // Load the source file
-    std::stringstream stream;
-    stream << shaderFile.rdbuf();
-    source = stream.str();
-
-    // Close file
-    shaderFile.close();
-
-    return true;
-}
-
 bool Shader::IsValid() const {
     return m_valid;
 }
@@ -125,6 +105,28 @@ void Shader::SetUniformMat3f(const std::string& varName, const math::Mat3f& mat)
 void Shader::SetUniformMat4f(const std::string& varName, const math::Mat4f& mat) const {
     int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
     glUniformMatrix4fv(location, 1, false, mat.FrontPtr());
+}
+
+// Private methods
+
+bool Shader::LoadSource(const std::string path, std::string& source) {
+    // Open file
+    std::fstream shaderFile;
+    shaderFile.open(path);
+    if (shaderFile.fail()) {
+        eng::GetLogger().Error("Shader", "Can't open shader source file. File name : " + path);
+        return false;
+    }
+
+    // Load the source file
+    std::stringstream stream;
+    stream << shaderFile.rdbuf();
+    source = stream.str();
+
+    // Close file
+    shaderFile.close();
+
+    return true;
 }
 
 bool Shader::CreateShader(GLenum type, uint32_t& shaderID, const std::string& source) {

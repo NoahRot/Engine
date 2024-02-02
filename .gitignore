@@ -38,3 +38,8 @@ Engine.code-workspace
 # Documentation DRAWIO
 *.drawio
 *.bkp
+
+# Image
+*.jpg
+*.png
+*.bmp

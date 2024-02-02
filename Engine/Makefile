@@ -47,7 +47,7 @@ MODULES 	= Core Logger Event Graphic
 Logger		= Logger Displayer
 Core		= Core Window Timer CoreFnc
 Event		= Event Keyboard Mouse
-Graphic		= Renderer Shader VertexArray VertexBuffer IndexBuffer
+Graphic		= Texture Renderer Shader VertexArray VertexBuffer IndexBuffer
 
 ############################################################
 # Compilation #

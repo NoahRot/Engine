@@ -58,20 +58,19 @@ int main(int argc, char** args) {
         math::Vec3f({-2.5f, 2.0f, -2.0f})
     });
 
-    std::cout << m2 << m1 << m2*m1 << std::endl;
-
     // ==========
     // Test OpenGL - Make a triangle
     // ==========
     struct Vertex {
         float x, y, z; // Position
         float r, g, b; // Color
+        float u, v;    // Texture coord
     };
     std::vector<Vertex> vertices = {
-        Vertex{0.0f, 0.0f, 0.0f,        1.0f, 0.0f, 0.0f}, // Down left
-        Vertex{100.0f, 0.0f, 0.0f,      0.0f, 1.0f, 0.0f}, // Dewn right
-        Vertex{100.0f, 100.0f, 0.0f,    0.0f, 0.0f, 1.0f}, // Top right
-        Vertex{0.0f, 100.0f, 0.0f,      0.0f, 1.0f, 1.0f} // Top Left
+        Vertex{0.0f, 0.0f, 0.0f,        1.0f, 0.0f, 0.0f,   0.0f, 0.0f}, // Down left
+        Vertex{100.0f, 0.0f, 0.0f,      0.0f, 1.0f, 0.0f,   1.0f, 0.0f}, // Dewn right
+        Vertex{100.0f, 100.0f, 0.0f,    0.0f, 0.0f, 1.0f,   1.0f, 1.0f}, // Top right
+        Vertex{0.0f, 100.0f, 0.0f,      0.0f, 1.0f, 1.0f,   0.0f, 1.0f} // Top Left
     };
 
     std::vector<uint32_t> indices = {
@@ -87,8 +86,20 @@ int main(int argc, char** args) {
     eng::VertexAttributesLayout layout;
     layout.AddFloat(3); // Position
     layout.AddFloat(3); // Colors
+    layout.AddFloat(2); // Texture coord
 
     vao.SetAttributes(vbo, layout);
+
+    eng::Texture texture;
+    texture.Load("../asset/image/image.jpg", false);
+    if (texture.IsValid()) {
+        logger.Debug("Main", "Texture loaded");
+    }else{
+        logger.Debug("Main", "Can't load texture");
+    }
+    if(!texture.Load("../asset/image/image.jpg", true)) {
+        logger.Debug("Main", "Texture not overwritten");
+    }
     // ==========
     // ==========
 
@@ -113,6 +124,7 @@ int main(int argc, char** args) {
         shader.SetUniformMat4f("u_mvp", mvp);
         shader.Bind();
         vao.Bind();
+        texture.Bind(0);
         // glDrawArrays(GL_TRIANGLES, 0, vertices.size());
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
         // ==========

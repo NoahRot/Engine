@@ -1,0 +1,21 @@
+PRIMARY
+
+> Audio
+> Texture
+> Font
+> Controller
+> Renderer class
+
+=============================
+
+SECONDARY
+
+> Get a map of uniform in the shaders
+> Mouse wheele
+
+=============================
+
+GENERAL
+
+> Documentation
+> Readme file

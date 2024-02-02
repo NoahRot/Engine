@@ -18,3 +18,4 @@
 #include "Graphic/VertexArray.hpp"
 #include "Graphic/VertexBuffer.hpp"
 #include "Graphic/IndexBuffer.hpp"
+#include "Graphic/Texture.hpp"
