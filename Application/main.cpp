@@ -23,7 +23,6 @@ int main(int argc, char** args) {
     eng::Mouse& mouse = eng::GetMouse();
     eng::Timer& timer = eng::GetTimer();
     eng::Renderer& renderer = eng::GetRenderer();
-    eng::Audio& audio = eng::GetAudio();
 
     logger.Info("Main", "Delta time in ms : " + std::to_string(timer.GetDeltaTime()));
 
@@ -44,10 +43,9 @@ int main(int argc, char** args) {
     }
 
     math::Mat4f orthographic = math::Orthographic3<float>(0, config.win_width, 0, config.win_height, 1, -1);
-    math::Vec3f vecPosition({20.0f, 20.0f, 0.0f});
+    math::Vec3f vecPosition({100.0f, 100.0f, 0.0f});
     math::Mat4f displacement = math::Translate3<float>(vecPosition);
     math::Mat4f scale = math::Scale3<float>(2.0f);
-    math::Mat4f mvp = orthographic*scale*displacement;
 
     math::Matrix<float, 2, 2> m1({
         math::Vec2f({2.0f, 1.5f}),
@@ -79,6 +77,9 @@ int main(int argc, char** args) {
         1, 2, 3
     };
 
+    float angularVelocity = 0.01f;
+    float angle = 0.0f;
+
     eng::VertexArray vao;
     vao.Bind();
     eng::IndexBuffer ibo(&indices.front(), indices.size()*sizeof(uint32_t));
@@ -91,22 +92,23 @@ int main(int argc, char** args) {
 
     vao.SetAttributes(vbo, layout);
 
-    eng::Texture texture;
-    texture.Load("../asset/image/image.jpg", false);
-    if (texture.IsValid()) {
+    eng::Texture* texture = eng::CreateTexture("../asset/image/image.jpg", false);
+    if (texture) {
         logger.Debug("Main", "Texture loaded");
     }else{
         logger.Debug("Main", "Can't load texture");
     }
-    if(!texture.Load("../asset/image/image.jpg", true)) {
+    if(!texture->Load("../asset/image/image.jpg", true)) {
         logger.Debug("Main", "Texture not overwritten");
     }
 
-    eng::Music music = audio.LoadMusic("../asset/music/Sky Corsair.mp3");
-    eng::Sound sound = audio.LoadSound("../asset/sound/but.wav");
-    if (audio.MusicValidity(music) and audio.SoundValidity(sound)) {
+    eng::Music* music = eng::CreateMusic("../asset/music/Sky Corsair.mp3");
+    eng::Sound* sound = eng::CreateSound("../asset/sound/but.wav");
+    if (music and sound) {
         logger.Debug("Main", "Music and sound loaded successfully");
-        audio.PlayMusic(music, 0);
+        music->Volume(0.2f);
+        music->Play();
+        sound->Volume(0.5f);
     }else{
         logger.Debug("Main", "Music can't be loaded");
     }
@@ -130,15 +132,20 @@ int main(int argc, char** args) {
             logger.Info("Main", "U UP");
         }
         if (keyboard.KeyDown(SDL_SCANCODE_SPACE)) {
-            audio.PlaySound(sound);
+            sound->Play();
         }
         // ==========
         // Draw Triangle
         // ==========
+        angle += angularVelocity;
+        math::Mat4f rotation = math::RotateZ(angle);
+        math::Vec3f centerPos({-50.0f, -50.0f, 0.0f});
+        math::Mat4f center = math::Translate3(centerPos);
+        math::Mat4f mvp = orthographic*scale*displacement*rotation*center;
         shader.SetUniformMat4f("u_mvp", mvp);
         shader.Bind();
         vao.Bind();
-        texture.Bind(0);
+        texture->Bind(0);
         // glDrawArrays(GL_TRIANGLES, 0, vertices.size());
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
         // ==========

@@ -8,12 +8,16 @@ namespace eng{
 
 Texture::Texture()
 : m_valid(false), m_textureID(0), m_width(0), m_height(0), m_bpp(0)
-{}
+{
+    _intern_::TextureManager::Instance().AddTexture(this);
+}
 
 Texture::~Texture() {
+    _intern_::TextureManager::Instance().RemoveTexture(this);
     if (m_valid) {
         glDeleteTextures(1, &m_textureID);
     }
+    std::cout << "DEBUG : TEXTURE DESTROYED" << std::endl;
 }
 
 void Texture::Bind(uint32_t slot) {
@@ -89,6 +93,57 @@ int32_t Texture::GetBPP() const {
 void Texture::GetDimension(int32_t& w, int32_t& h) {
     w = m_width;
     h = m_height;
+}
+
+uint32_t Texture::GetTextureIndex() const {
+    return m_textureID;
+}
+
+
+
+
+
+
+Texture* CreateTexture(const std::string& path, bool filterLinear) {
+    Texture* texture = new Texture;
+    texture->Load(path, filterLinear);
+    if (!texture->IsValid()) {
+        delete texture;
+        texture = nullptr;
+    }
+    return texture;
+}
+
+
+
+
+
+namespace _intern_ {
+
+TextureManager::TextureManager(){
+    std::cout << "DEBUG : TextureManager created" << std::endl;
+}
+
+TextureManager::~TextureManager() {
+    for (auto tex : m_textures) {
+        delete tex.second;
+    }
+    std::cout << "DEBUG : TextureManager destroyed" << std::endl;
+}
+
+TextureManager& TextureManager::Instance() {
+    static TextureManager s_instance;
+    return s_instance;
+}
+
+void TextureManager::AddTexture(Texture* texture) {
+    m_textures[texture->GetTextureIndex()] = texture;
+}
+
+void TextureManager::RemoveTexture(Texture* texture) {
+    m_textures.erase(texture->GetTextureIndex());
+}
+
 }
 
 }

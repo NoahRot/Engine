@@ -44,11 +44,11 @@ DIR_BIN_PROJECT = ..\Application\bin
 
 MODULES 	= Core Logger Event Graphic Audio
 
-Logger		= Logger Displayer
 Core		= Core Window Timer CoreFnc
+Logger		= Logger Displayer
 Event		= Event Keyboard Mouse
 Graphic		= Texture Renderer Shader VertexArray VertexBuffer IndexBuffer
-Audio 		= Audio
+Audio 		= Sound Music Audio
 
 ############################################################
 # Compilation #

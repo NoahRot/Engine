@@ -106,8 +106,4 @@ Mouse& GetMouse();
 /// @return The instance of Renderer
 Renderer& GetRenderer();
 
-/// @brief Function to get the instance of Audio
-/// @return The instance of Audio
-Audio& GetAudio();
-
 }

@@ -89,8 +89,4 @@ Renderer& GetRenderer() {
     return Renderer::Instance();
 }
 
-Audio& GetAudio() {
-    return Audio::Instance();
-}
-
 }

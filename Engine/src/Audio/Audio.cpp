@@ -2,6 +2,31 @@
 
 namespace eng {
 
+Music* CreateMusic(const std::string& path) {
+    Music* music = new Music;
+    music->Load(path);
+    if (!music->IsValid()) {
+        delete music;
+        music = nullptr;
+    }
+    return music;
+}
+
+Sound* CreateSound(const std::string& path) {
+    Sound* sound = new Sound;
+    sound->Load(path);
+    if (!sound->IsValid()) {
+        delete sound;
+        sound = nullptr;
+    }
+    return sound;
+}
+
+
+
+
+
+namespace _intern_{
 Audio::Audio()
 : m_nextMusicID(0), m_nextSoundID(0)
 {
@@ -18,14 +43,14 @@ Audio::~Audio() {
     // Free music
     for(auto& music : m_listMusic) {
         if (music.second) {
-            Mix_FreeMusic(music.second);
+            delete music.second;
         }
     }
 
     // Free sound
     for(auto& sound : m_listSound) {
         if (sound.second) {
-            Mix_FreeChunk(sound.second);
+            delete sound.second;
         }
     }
 
@@ -37,17 +62,16 @@ Audio& Audio::Instance() {
     return s_instance;
 }
 
-Music Audio::LoadMusic(const std::string& path) {
-    // Load the music
-    Mix_Music* mixMusic = Mix_LoadMUS(path.c_str());
+void Audio::AddMusic(Music* music) {
+    m_listMusic[music->GetIndex()] = music;
+}
 
-    // Check if the music has been loaded successfully
-    if (!mixMusic) {
-        GetLogger().Error("Audio", "Can't load music. Path : " + path);
-        return Music{UNVALID};
-    }
+void Audio::RemoveMusic(Music* music) {
+    m_listMusic.erase(music->GetIndex());
+    m_musicAvaiableIndex.push(music->GetIndex());
+}
 
-    // Put the music in the list 
+Index Audio::GetMusicIndex() {
     Index id;
     if (m_musicAvaiableIndex.empty()) {
         id = m_nextMusicID;
@@ -56,24 +80,19 @@ Music Audio::LoadMusic(const std::string& path) {
         id = m_musicAvaiableIndex.top();
         m_musicAvaiableIndex.pop();
     }
-    m_listMusic[id] = mixMusic;
-    Music music{id};
-
-    // Return the music ID
-    return music;
+    return id;
 }
 
-Sound Audio::LoadSound(const std::string& path) {
-    // Load sound
-    Mix_Chunk* mixSound = Mix_LoadWAV(path.c_str());
+void Audio::AddSound(Sound* sound) {
+    m_listSound[sound->GetIndex()] = sound;
+}
 
-    // Check if the music has been loaded successfully
-    if (!mixSound) {
-        GetLogger().Error("Audio", "Can't load sound. Path : " + path);
-        return Sound{UNVALID};
-    }
+void Audio::RemoveSound(Sound* sound) {
+    m_listSound.erase(sound->GetIndex());
+    m_soundAvaiableIndex.push(sound->GetIndex());
+}
 
-    // Put the music in the list 
+Index Audio::GetSoundIndex() {
     Index id;
     if (m_soundAvaiableIndex.empty()) {
         id = m_nextSoundID;
@@ -82,91 +101,9 @@ Sound Audio::LoadSound(const std::string& path) {
         id = m_soundAvaiableIndex.top();
         m_soundAvaiableIndex.pop();
     }
-    m_listSound[id] = mixSound;
-    Sound sound{id};
-
-    // Return the music ID
-    return sound;
+    return id;
+}
 }
 
-void Audio::FreeMusic(Music music) {
-    // Check if the music is valid
-    if (MusicValidity(music)) {
-        // Free the music
-        Mix_FreeMusic(m_listMusic[music.id]);
-
-        // Put the index as avaiable
-        m_musicAvaiableIndex.push(music.id);
-
-        // Clear the entry
-        m_listMusic[music.id] = nullptr;
-    }
-}
-
-void Audio::FreeSound(Sound sound) {
-    // Check if the sound is valid
-    if (SoundValidity(sound)) {
-        // Free the music
-        Mix_FreeChunk(m_listSound[sound.id]);
-
-        // Put the index as avaiable
-        m_soundAvaiableIndex.push(sound.id);
-
-        // Clear the entry
-        m_listSound[sound.id] = nullptr;
-    }
-}
-
-bool Audio::MusicValidity(Music music) {
-    return m_listMusic.find(music.id) != m_listMusic.end() and m_listMusic[music.id];
-}
-
-bool Audio::SoundValidity(Sound sound) {
-    return m_listSound.find(sound.id) != m_listSound.end() and m_listSound[sound.id];
-}
-
-void Audio::PlayMusic(Music music, int32_t loop) {
-    Mix_PlayMusic(m_listMusic[music.id], loop);
-}
-
-void Audio::PlayFadeMusic(Music music, int32_t time, int32_t loop) {
-    Mix_FadeInMusic(m_listMusic[music.id], loop, time);
-}
-
-void Audio::VolumeMusic(float volume) const {
-    Mix_VolumeMusic(volume*128);
-}
-
-void Audio::PauseMusic() const {
-    Mix_PauseMusic();
-}
-
-bool Audio::IsMusicPlaying() const {
-    return Mix_PlayingMusic();
-}
-
-void Audio::ResumeMusic() const {
-    Mix_ResumeMusic();
-}
-
-void Audio::StopFadeMusic(int time) const {
-    Mix_FadeOutMusic(time);
-}
-
-void Audio::StopMusic() const {
-    Mix_HaltMusic();
-}
-
-void Audio::PlaySound(Sound sound, int channel, int loop) {
-    Mix_PlayChannel(channel, m_listSound[sound.id], loop);
-}
-
-void Audio::PlayFadeSound(Sound sound, int time, int channel, int loop) {
-    Mix_FadeInChannel(channel, m_listSound[sound.id], loop, time);
-}
-
-void Audio::VolumeSound(Sound sound, float volume) {
-    Mix_VolumeChunk(m_listSound[sound.id], volume*128);
-}
 
 }

@@ -4,6 +4,7 @@
 
 namespace eng {
 
+/// @brief A class that represent an index buffer
 class IndexBuffer {
 public:
     /// @brief Constructor

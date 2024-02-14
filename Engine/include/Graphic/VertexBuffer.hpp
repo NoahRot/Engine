@@ -6,6 +6,7 @@
 
 namespace eng {
 
+/// @brief A class that represent a vertex buffer
 class VertexBuffer {
 public:
     /// @brief Constructor
