@@ -11,7 +11,6 @@ SECONDARY
 
 > Get a map of uniform in the shaders
 > Mouse wheele
-> Texture manager
 
 =============================
 
@@ -19,3 +18,9 @@ GENERAL
 
 > Documentation
 > Readme file
+
+=============================
+
+ERROR 
+
+> Double destruction of texture

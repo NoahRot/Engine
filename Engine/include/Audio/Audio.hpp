@@ -17,13 +17,15 @@ class Music;
 
 Music* CreateMusic(const std::string& path);
 
+void DestroyMusic(Music* music);
+
 Sound* CreateSound(const std::string& path);
+
+void DestroySound(Sound* sound);
 
 namespace _intern_ {
 class Audio {
 public:
-
-    // === Class singleton methods and delete ===
 
     ~Audio();
 

@@ -13,7 +13,6 @@ Texture::Texture()
 }
 
 Texture::~Texture() {
-    _intern_::TextureManager::Instance().RemoveTexture(this);
     if (m_valid) {
         glDeleteTextures(1, &m_textureID);
     }
@@ -114,6 +113,10 @@ Texture* CreateTexture(const std::string& path, bool filterLinear) {
     return texture;
 }
 
+void DestroyTexture(Texture* texture) {
+    eng::_intern_::TextureManager::Instance().RemoveTexture(texture);
+}
+
 
 
 
@@ -126,7 +129,9 @@ TextureManager::TextureManager(){
 
 TextureManager::~TextureManager() {
     for (auto tex : m_textures) {
-        delete tex.second;
+        if (tex.second != nullptr) {
+            delete tex.second;
+        }
     }
     std::cout << "DEBUG : TextureManager destroyed" << std::endl;
 }
@@ -141,7 +146,8 @@ void TextureManager::AddTexture(Texture* texture) {
 }
 
 void TextureManager::RemoveTexture(Texture* texture) {
-    m_textures.erase(texture->GetTextureIndex());
+    m_textures[texture->GetTextureIndex()] = nullptr;
+    delete texture;
 }
 
 }

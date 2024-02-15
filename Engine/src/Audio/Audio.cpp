@@ -12,6 +12,10 @@ Music* CreateMusic(const std::string& path) {
     return music;
 }
 
+void DestroyMusic(Music* music) {
+    eng::_intern_::Audio::Instance().RemoveMusic(music);
+}
+
 Sound* CreateSound(const std::string& path) {
     Sound* sound = new Sound;
     sound->Load(path);
@@ -20,6 +24,10 @@ Sound* CreateSound(const std::string& path) {
         sound = nullptr;
     }
     return sound;
+}
+
+void DestroySound(Sound* sound) {
+    eng::_intern_::Audio::Instance().RemoveSound(sound);
 }
 
 
@@ -42,14 +50,14 @@ Audio::Audio()
 Audio::~Audio() {
     // Free music
     for(auto& music : m_listMusic) {
-        if (music.second) {
+        if (music.second != nullptr) {
             delete music.second;
         }
     }
 
     // Free sound
     for(auto& sound : m_listSound) {
-        if (sound.second) {
+        if (sound.second != nullptr) {
             delete sound.second;
         }
     }
@@ -67,8 +75,12 @@ void Audio::AddMusic(Music* music) {
 }
 
 void Audio::RemoveMusic(Music* music) {
-    m_listMusic.erase(music->GetIndex());
-    m_musicAvaiableIndex.push(music->GetIndex());
+    if (music) {
+        Index index = music->GetIndex();
+        delete m_listMusic[index];
+        m_listMusic[index] = nullptr;
+        m_soundAvaiableIndex.push(index);
+    }
 }
 
 Index Audio::GetMusicIndex() {
@@ -88,8 +100,12 @@ void Audio::AddSound(Sound* sound) {
 }
 
 void Audio::RemoveSound(Sound* sound) {
-    m_listSound.erase(sound->GetIndex());
-    m_soundAvaiableIndex.push(sound->GetIndex());
+    if (sound) {
+        Index index = sound->GetIndex();
+        delete m_listMusic[index];
+        m_listMusic[index] = nullptr;
+        m_soundAvaiableIndex.push(index);
+    }
 }
 
 Index Audio::GetSoundIndex() {

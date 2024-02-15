@@ -9,7 +9,6 @@ Music::Music()
 }
 
 Music::~Music() {
-    eng::_intern_::Audio::Instance().RemoveMusic(this);
     if (m_music) {
         Mix_FreeMusic(m_music);
     }
@@ -17,6 +16,12 @@ Music::~Music() {
 }
 
 bool Music::Load(const std::string& path) {
+    // Check if a music has already been loaded
+    if (m_valid) {
+        eng::GetLogger().Error("Music", "Data already loaded. Can't overwrite data.");
+        return false;
+    }
+
     // Load the music
     m_music = Mix_LoadMUS(path.c_str());
 

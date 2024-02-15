@@ -20,3 +20,4 @@
 
 #include "Audio/Audio.hpp"
 #include "Audio/Music.hpp"
+#include "Audio/Sound.hpp"

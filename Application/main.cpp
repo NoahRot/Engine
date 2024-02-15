@@ -161,6 +161,10 @@ int main(int argc, char** args) {
         timer.Loop();
     }
 
+    eng::DestroyMusic(music);
+    eng::DestroySound(sound);
+    eng::DestroyTexture(texture);
+
     logger.Info("Main", "Program ended");
 
     return 0;

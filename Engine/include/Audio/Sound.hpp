@@ -2,6 +2,8 @@
 
 #include "Audio/Audio.hpp"
 
+#include "Logger/Logger.hpp"
+
 namespace eng {
 
 class Sound {

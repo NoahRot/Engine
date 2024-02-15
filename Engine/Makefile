@@ -42,13 +42,14 @@ DIR_BIN_PROJECT = ..\Application\bin
 # Modules #
 ############################################################
 
-MODULES 	= Core Logger Event Graphic Audio
+MODULES 	= Core Logger Event Graphic Audio Text
 
 Core		= Core Window Timer CoreFnc
 Logger		= Logger Displayer
 Event		= Event Keyboard Mouse
 Graphic		= Texture Renderer Shader VertexArray VertexBuffer IndexBuffer
 Audio 		= Sound Music Audio
+Text		= Font Text
 
 ############################################################
 # Compilation #

@@ -82,6 +82,10 @@ private:
 /// @return A pointer to the texture. It return nullptr if the texture is not valid
 Texture* CreateTexture(const std::string& path, bool filterLinear = true);
 
+/// @brief A function to destroy a texture
+/// @param texture The texture that will be destroyed
+void DestroyTexture(Texture* texture);
+
 namespace _intern_ {
 /// @brief A class to manage the texture, especially to correctly free the memory
 class TextureManager {

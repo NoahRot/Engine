@@ -9,7 +9,6 @@ Sound::Sound()
 }
 
 Sound::~Sound() {
-    eng::_intern_::Audio::Instance().RemoveSound(this);
     if (m_sound) {
         Mix_FreeChunk(m_sound);
     }
@@ -17,6 +16,12 @@ Sound::~Sound() {
 }
 
 bool Sound::Load(const std::string& path) {
+    // Check if a music has already been loaded
+    if (m_valid) {
+        eng::GetLogger().Error("Sound", "Data already loaded. Can't overwrite data.");
+        return false;
+    }
+
     // Load the music
     m_sound = Mix_LoadWAV(path.c_str());
 
