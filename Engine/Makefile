@@ -7,7 +7,7 @@ CFLAGS 		= -std=c++20 -Wall -pedantic -g -pthread
 SHARED 		= -shared
 NO_WIN 		= -mwindows
 
-LIBRARY 	= -L lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer
+LIBRARY 	= -L lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lfreetype
 INCLUDES 	= -I include
 INCLUDES_EXTERNAL = -I include\External
 

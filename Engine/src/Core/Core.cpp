@@ -11,6 +11,9 @@ _Core::_Core()
 }
 
 _Core::~_Core() {
+    // Quit FreeType
+    FT_Done_FreeType(Font::s_ftLib);
+
     // Quit MIX
     Mix_CloseAudio();
     Mix_Quit();
@@ -71,6 +74,15 @@ void _Core::Configure(const Configuration& config) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE); // Disable old functions
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, true); // Set double buffering
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+    // Init the freetype
+    if (FT_Init_FreeType(&Font::s_ftLib) != 0) {
+        Mix_CloseAudio();
+        Mix_Quit();
+        SDL_Quit();
+        logger.Fatal("Core", "Can't initialize");
+        exit(EXIT_FAILURE);
+    }
 
     // Create the instance of the window to be sure that the OpenGL Context has been created
     eng::Window::Instance();

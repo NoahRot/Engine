@@ -11,7 +11,7 @@ EXTENSION_EXE = exe
 # Directory for the executable
 #DIR_EXE = Application\bin
 DIR_EXE = Application\bin
-LIBRARY = -L Engine\lib -lEngine -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer # ATTENTION A L'ORDRE DES INCLUSION DES LIBRAIRIES
+LIBRARY = -L Engine\lib -lEngine -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lfreetype # ATTENTION A L'ORDRE DES INCLUSION DES LIBRAIRIES
 INCLUDES = -I Engine\include -I Engine\include\External
 GLAD_SRC = Engine\src\External\GLAD\glad.c
 

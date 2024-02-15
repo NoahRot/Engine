@@ -129,6 +129,7 @@ TextureManager::TextureManager(){
 
 TextureManager::~TextureManager() {
     for (auto tex : m_textures) {
+        std::cout << "DEBUG : TEXTURE MANAGER : " << tex.second << std::endl;
         if (tex.second != nullptr) {
             delete tex.second;
         }

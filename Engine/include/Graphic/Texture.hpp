@@ -95,7 +95,7 @@ public:
 
     /// @brief Get the instance of the class
     /// @return The instance of the class
-    inline static TextureManager& Instance();
+    static TextureManager& Instance();
 
     /// @brief Destructor
     ~TextureManager();

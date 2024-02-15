@@ -2,6 +2,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Core/Configuration.hpp"
+#include "Text/Font.hpp"
 
 namespace eng {
     
