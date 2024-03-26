@@ -34,7 +34,7 @@ void VertexAttributesLayout::AddAttribute(int32_t size, GLenum type, bool normal
 
     // Check if the type is valid
     if (stride == 0) {
-        GetLogger().Error("VertexAttributesLayout", "Unvalid type of attribute");
+        get_logger().error("VertexAttributesLayout", "Unvalid type of attribute");
         return;
     }
 
@@ -44,7 +44,7 @@ void VertexAttributesLayout::AddAttribute(int32_t size, GLenum type, bool normal
         m_attributes.push_back(eng::_intern_::VertexAttributes{size, type, normalized, stride*size});
         m_stride += stride*size;
     }else{
-        GetLogger().Error("VertexAttributesLayout", "Attribute size too big. size should be between 1 and 4. Current size : " + std::to_string(size));
+        get_logger().error("VertexAttributesLayout", "Attribute size too big. size should be between 1 and 4. Current size : " + std::to_string(size));
     }
 }
 
@@ -99,8 +99,8 @@ void VertexArray::SetAttributes(const VertexBuffer& vbo, const VertexAttributesL
         uint32_t startPointer(0u);
 
         // Check if number of attributes is not too large
-        if (GetMaxVertexAttributes() < (int)layout.Size()) {
-            GetLogger().Error("VertexArray", "Number of attribute in the layout is too big. Number of attribute in the layout : " + std::to_string(GetMaxVertexAttributes())
+        if (get_max_vertex_attributes() < (int)layout.Size()) {
+            get_logger().error("VertexArray", "Number of attribute in the layout is too big. Number of attribute in the layout : " + std::to_string(get_max_vertex_attributes())
             + ". Max number of attribute : " + std::to_string(layout.Size()) + ".");
             return;
         }

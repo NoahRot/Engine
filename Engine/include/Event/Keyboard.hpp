@@ -15,11 +15,11 @@ public:
     Keyboard(const Keyboard&) = delete;
     Keyboard& operator=(const Keyboard&) = delete;
 
-    static Keyboard& Instance();
+    static Keyboard& instance();
 
-    bool KeyDown(SDL_Scancode code) const;
-    bool KeyUp(SDL_Scancode code) const;
-    bool KeyPress(SDL_Scancode code) const;
+    bool key_down(SDL_Scancode code) const;
+    bool key_up(SDL_Scancode code) const;
+    bool key_press(SDL_Scancode code) const;
 
 private:
     friend Event;

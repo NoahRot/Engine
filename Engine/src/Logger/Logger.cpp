@@ -6,20 +6,20 @@ Logger::Logger()
 : m_whichDisplay("11111")
 {
     // Reserve space to store the logs
-    if (eng::_intern_::_Core::Instance().IsConfigure()) {
-        Configuration config = eng::GetConfiguration();
+    if (eng::_intern_::_Core::instance().is_configure()) {
+        Configuration config = eng::get_configuration();
         m_listLog.reserve(config.log_initialLength);
 
         // Add the required displayer
         if (config.log_displayCMD) {
-            CreateDisplayer<LogDisplayerCMD>();
+            create_displayer<LogDisplayerCMD>();
         }
         if (config.log_displayTXT) {
-            CreateDisplayer<LogDisplayerTXT>(config.log_displayTXTName);
+            create_displayer<LogDisplayerTXT>(config.log_displayTXTName);
         }
 
     }else{
-        Warning("Logger", "Instance created, but the configuration is not set");
+        warning("Logger", "Instance created, but the configuration is not set");
     }
 
     std::cout << "DEBUG : Logger created" << std::endl;
@@ -39,47 +39,47 @@ Logger::~Logger() {
     std::cout << "DEBUG : Logger destroyed" << std::endl;
 }
 
-Logger& Logger::Instance() {
+Logger& Logger::instance() {
     static Logger s_instance;
     return s_instance;
 }
     
-void Logger::Fatal(const std::string& sender, const std::string& message) {
+void Logger::fatal(const std::string& sender, const std::string& message) {
     if (m_logThread.joinable()) {
         m_logThread.join();
     }
     m_logThread = std::thread(_intern_::_LogCallback, LogLevel::Fatal, sender, message, this);
 }
 
-void Logger::Error(const std::string& sender, const std::string& message) {
+void Logger::error(const std::string& sender, const std::string& message) {
     if (m_logThread.joinable()) {
         m_logThread.join();
     }
     m_logThread = std::thread(_intern_::_LogCallback, LogLevel::Error, sender, message, this);
 }
 
-void Logger::Warning(const std::string& sender, const std::string& message) {
+void Logger::warning(const std::string& sender, const std::string& message) {
     if (m_logThread.joinable()) {
         m_logThread.join();
     }
     m_logThread = std::thread(_intern_::_LogCallback, LogLevel::Warning, sender, message, this);
 }
 
-void Logger::Info(const std::string& sender, const std::string& message) {
+void Logger::info(const std::string& sender, const std::string& message) {
     if (m_logThread.joinable()) {
         m_logThread.join();
     }
     m_logThread = std::thread(_intern_::_LogCallback, LogLevel::Info, sender, message, this);
 }
 
-void Logger::Debug(const std::string& sender, const std::string& message) {
+void Logger::debug(const std::string& sender, const std::string& message) {
     if (m_logThread.joinable()) {
         m_logThread.join();
     }
     m_logThread = std::thread(_intern_::_LogCallback, LogLevel::Debug, sender, message, this);
 }
 
-void Logger::SetDisplayType(LogLevel level, bool display) {
+void Logger::set_display_type(LogLevel level, bool display) {
     m_whichDisplay[level] = display;
 }
 
@@ -92,7 +92,7 @@ void _LogCallback(LogLevel level, const std::string& sender, const std::string& 
     // Log in each displayer
     for(auto& display : logger->m_displayer) {
         if (logger->m_whichDisplay[level]) {
-            display->Log(logger->m_listLog.back());
+            display->log(logger->m_listLog.back());
         }
     }
 }

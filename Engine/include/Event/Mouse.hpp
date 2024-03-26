@@ -24,16 +24,16 @@ public:
     Mouse(const Mouse&) = delete;
     Mouse& operator=(const Mouse&) = delete;
 
-    static Mouse& Instance();
+    static Mouse& instance();
 
-    bool MouseDown(MouseButton button) const;
-    bool MouseUp(MouseButton button) const;
-    bool MousePress(MouseButton button) const;
+    bool mouse_down(MouseButton button) const;
+    bool mouse_up(MouseButton button) const;
+    bool mouse_press(MouseButton button) const;
 
-    int32_t MouseX();
-    int32_t MouseY();
+    int32_t mouse_x();
+    int32_t mouse_y();
 
-    void MousePosition(int32_t& x, int32_t& y);
+    void mouse_position(int32_t& x, int32_t& y);
 
 private:
     friend Event;

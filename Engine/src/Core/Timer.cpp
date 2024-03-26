@@ -5,7 +5,7 @@ namespace eng {
 Timer::Timer()
 : m_lastFrameTime(0)
 {
-    Configuration config = eng::GetConfiguration();
+    Configuration config = eng::get_configuration();
 
     m_fps = config.tim_fps;
     m_millisecondPerFrame = 1000/m_fps;
@@ -17,25 +17,25 @@ Timer::~Timer() {
     std::cout << "DEBUG : Timer destroyed" << std::endl;
 }
 
-Timer& Timer::Instance() {
+Timer& Timer::instance() {
     static Timer s_instance;
     return s_instance;
 }
 
-uint32_t Timer::GetDeltaTime() {
+uint32_t Timer::get_delta_time() {
     return m_millisecondPerFrame;
 }
 
-uint32_t Timer::GetFPS() {
+uint32_t Timer::get_fps() {
     return m_fps;
 }
 
-void Timer::SetFPS(uint32_t fps) {
+void Timer::set_fps(uint32_t fps) {
     m_fps = fps;
     m_millisecondPerFrame = 1000/m_fps;
 }
 
-void Timer::Loop() {
+void Timer::loop() {
     // Compute the remained time
     int32_t timeRemain(m_lastFrameTime + m_millisecondPerFrame - SDL_GetTicks() );
 

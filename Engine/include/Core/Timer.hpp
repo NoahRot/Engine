@@ -19,22 +19,22 @@ public:
 
     /// @brief Obtain the instance of Timer
     /// @return The instance of Timer
-    static Timer& Instance();
+    static Timer& instance();
 
     /// @brief Get the time for each frame in millisecond
     /// @return The number of millisecond per frame
-    uint32_t GetDeltaTime();
+    uint32_t get_delta_time();
 
     /// @brief Get the FPS of the application
     /// @return The FPS
-    uint32_t GetFPS();
+    uint32_t get_fps();
 
     /// @brief Change the FPS of the application
     /// @param fps The new FPS
-    void SetFPS(uint32_t fps);
+    void set_fps(uint32_t fps);
 
     /// @brief A method to call at each frame. Wait until the next frame.
-    void Loop();
+    void loop();
 
 private:
     /// @brief Constructor

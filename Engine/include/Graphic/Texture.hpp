@@ -34,6 +34,13 @@ public:
     /// @return If the texture has been loaded successfully
     bool Load(const std::string& path, bool filterLinear = true);
 
+    /// @brief Create an empty texture
+    /// @param width Width of the texture
+    /// @param height Height of the texture
+    /// @param alpha If the texture has an alpha canal
+    /// @return If the texture has been created successfully
+    bool Create(uint32_t width, uint32_t height, bool filterLinear = true, bool alpha = true);
+
     /// @brief Return if the texture is valid
     /// @return If the texture is valid
     bool IsValid() const;
@@ -81,6 +88,12 @@ private:
 /// @param filterLinear If the texture is filter linearly or to the nearest pixel
 /// @return A pointer to the texture. It return nullptr if the texture is not valid
 Texture* CreateTexture(const std::string& path, bool filterLinear = true);
+
+/// @brief A function to create an empty texture
+/// @param alpha If the texture should have an alpha canal
+/// @param filterLinear If the texture is filter linearly or to the nearest pixel
+/// @return A pointer to the texture. It return nullptr if the texture is not valid
+Texture* CreateTexture(uint32_t width, uint32_t height, bool alpha = true, bool filterLinear = true);
 
 /// @brief A function to destroy a texture
 /// @param texture The texture that will be destroyed

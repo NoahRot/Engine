@@ -4,55 +4,55 @@ namespace eng {
 
 // === Core functions === //
 
-void Configure(const Configuration& config) {
-    eng::_intern_::_Core::Instance().Configure(config);
+void configure(const Configuration& config) {
+    eng::_intern_::_Core::instance().configure(config);
 }
 
-Configuration GetConfiguration() {
-    return eng::_intern_::_Core::Instance().GetConfiguration();
+Configuration get_configuration() {
+    return eng::_intern_::_Core::instance().get_configuration();
 }
 
-void Quit() {
-    eng::_intern_::_Core::Instance().Quit();
+void quit() {
+    eng::_intern_::_Core::instance().quit();
 }
 
-bool IsConfigure() {
-    return eng::_intern_::_Core::Instance().IsConfigure();
+bool is_configure() {
+    return eng::_intern_::_Core::instance().is_configure();
 }
 
-bool IsRunning() {
-    return eng::_intern_::_Core::Instance().IsRunning();
+bool is_running() {
+    return eng::_intern_::_Core::instance().is_running();
 }
 
-bool IsValid(Index id) {
+bool is_valid(Index id) {
     return id != UNVALID;
 }
 
 // === OpenGL functions === //
 
-std::string InfoVendor(){
+std::string info_vendor(){
     return (const char*)glGetString(GL_VENDOR);
 }
 
-std::string InfoRenderer(){
+std::string info_renderer(){
     return (const char*)glGetString(GL_RENDERER);
 }
 
-std::string InfoVersion(){
+std::string info_version(){
     return (const char*)glGetString(GL_VERSION);
 }
 
-std::string InfoShadingLanguage(){
+std::string info_shading_language(){
     return (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 }
 
-int GetMaxTextureSlots() {
+int get_max_texture_slots() {
     int nbrTexUnits;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &nbrTexUnits);
     return nbrTexUnits;
 }
 
-int GetMaxVertexAttributes() {
+int get_max_vertex_attributes() {
     int maxVertex;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertex);
     return maxVertex;
@@ -61,31 +61,31 @@ int GetMaxVertexAttributes() {
 
 // === Getter functions === //
 
-Window& GetWindow() {
-    return Window::Instance();
+Window& get_window() {
+    return Window::instance();
 }
 
-Timer& GetTimer() {
-    return Timer::Instance();
+Timer& get_timer() {
+    return Timer::instance();
 }
 
-log::Logger& GetLogger() {
-    return log::Logger::Instance();
+log::Logger& get_logger() {
+    return log::Logger::instance();
 }
 
-Event& GetEvent() {
-    return Event::Instance();
+Event& get_event() {
+    return Event::instance();
 }
 
-Keyboard& GetKeyboard() {
-    return Keyboard::Instance();
+Keyboard& get_keyboard() {
+    return Keyboard::instance();
 }
 
-Mouse& GetMouse() {
-    return Mouse::Instance();
+Mouse& get_mouse() {
+    return Mouse::instance();
 }
 
-Renderer& GetRenderer() {
+Renderer& get_renderer() {
     return Renderer::Instance();
 }
 

@@ -11,6 +11,9 @@
 
 #include "Core/Timer.hpp"
 
+#include "Asset/Asset.hpp"
+#include "Asset/AssetManager.hpp"
+
 #include "Graphic/Renderer.hpp"
 #include "Graphic/Shader.hpp"
 #include "Graphic/VertexArray.hpp"
@@ -18,6 +21,8 @@
 #include "Graphic/IndexBuffer.hpp"
 #include "Graphic/Texture.hpp"
 
-#include "Audio/Audio.hpp"
 #include "Audio/Music.hpp"
 #include "Audio/Sound.hpp"
+
+#include "Text/Font.hpp"
+#include "Text/Text.hpp"

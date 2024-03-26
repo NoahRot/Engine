@@ -18,26 +18,26 @@ public:
 
     /// @brief Get the instance of the class
     /// @return The instance of the class
-    static _Core& Instance();
+    static _Core& instance();
 
     /// @brief Set the configuration. Sent a warning if the configuration has already been set.
     /// @param config The configuration that will be set
-    void Configure(const Configuration& config);
+    void configure(const Configuration& config);
 
     /// @brief Quit the application
-    void Quit();
+    void quit();
 
     /// @brief Getter method to obtain the configuration of the engine
     /// @return The configuration of the engine
-    Configuration GetConfiguration() const;
+    Configuration get_configuration() const;
 
     /// @brief To know if the engine has been configured
     /// @return True if the engine has been configured, False otherwise
-    bool IsConfigure() const;
+    bool is_configure() const;
 
     /// @brief Method to know if the application is running
     /// @return If the application is running
-    bool IsRunning() const;
+    bool is_running() const;
 
 private:
     /// @brief Constructor

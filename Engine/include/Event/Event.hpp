@@ -22,9 +22,9 @@ public:
     Event(const Event&) = delete;
     Event& operator=(const Event&) = delete;
 
-    static Event& Instance();
+    static Event& instance();
 
-    void Manage();
+    void manage();
 
 private:
     Event();

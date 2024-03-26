@@ -2,77 +2,37 @@
 
 namespace eng {
 
-Music::Music()
-: m_valid(false), m_index(eng::_intern_::Audio::Instance().GetMusicIndex()), m_music(nullptr)
-{
-    eng::_intern_::Audio::Instance().AddMusic(this);
+Music_::Music_(Mix_Music* music)
+: Asset(AssetType::Music), m_music(music)
+{}
+
+Music_::~Music_() {
+    Mix_FreeMusic(m_music);
 }
 
-Music::~Music() {
-    if (m_music) {
-        Mix_FreeMusic(m_music);
-    }
-    std::cout << "DEBUG : MUSIC DESTROYED" << std::endl;
-}
-
-bool Music::Load(const std::string& path) {
-    // Check if a music has already been loaded
-    if (m_valid) {
-        eng::GetLogger().Error("Music", "Data already loaded. Can't overwrite data.");
-        return false;
-    }
-
-    // Load the music
-    m_music = Mix_LoadMUS(path.c_str());
-
-    // Check if the music has been loaded successfully
-    if (!m_music) {
-        m_valid = false;
-        return false;
-    }
-    m_valid = true;
-
-    // Return the validity
-    return m_valid;
-}
-
-bool Music::IsValid() const {
-    return m_valid;
-}
-
-Index Music::GetIndex() const {
-    return m_index;
-}
-
-void Music::Play(int32_t loop) const {
+void Music_::play(int32_t loop) const {
     Mix_PlayMusic(m_music, loop);
 }
-
-void Music::PlayFade(int32_t time, int32_t loop) const {
+void Music_::play_fade(int32_t time, int32_t loop) const{
     Mix_FadeInMusic(m_music, loop, time);
 }
 
-void Music::Volume(float volume) {
+void Music_::volume(float volume) {
     Mix_VolumeMusic(volume*128);
 }
-
-void Music::Pause() {
+void Music_::pause() {
     Mix_PauseMusic();
 }
-
-bool Music::IsPlaying() {
+bool Music_::is_playing() {
     return Mix_PlayingMusic();
 }
-
-void Music::Resume() {
+void Music_::resume() {
     Mix_ResumeMusic();
 }
-
-void Music::Stop() {
+void Music_::stop() {
     Mix_HaltMusic();
 }
-
-void Music::StopFade(int32_t time) {
+void Music_::stop_fade(int32_t time) {
     Mix_FadeOutMusic(time);
 }
 

@@ -20,19 +20,19 @@ public:
 
     /// @brief Obtain the instance of Window
     /// @return The instance of Window
-    static Window& Instance();
+    static Window& instance();
 
     /// @brief Present the new frame. The window buffers are swap and
     /// the new frame is shown.
-    void Present();
+    void present();
 
     /// @brief Get the width of the window
     /// @return The width of the window
-    uint32_t GetWidth();
+    uint32_t get_width();
 
     /// @brief Get the height of the window
     /// @return The height of the window
-    uint32_t GetHeight();
+    uint32_t get_height();
 
 private:
     /// @brief Constructor

@@ -114,7 +114,7 @@ bool Shader::LoadSource(const std::string path, std::string& source) {
     std::fstream shaderFile;
     shaderFile.open(path);
     if (shaderFile.fail()) {
-        eng::GetLogger().Error("Shader", "Can't open shader source file. File name : " + path);
+        eng::get_logger().error("Shader", "Can't open shader source file. File name : " + path);
         return false;
     }
 
@@ -144,7 +144,7 @@ bool Shader::CreateShader(GLenum type, uint32_t& shaderID, const std::string& so
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(shaderID, 512, NULL, infoLog);
-        GetLogger().Error("Shader", "Error during shader compilation. Error message : " + std::string(infoLog));
+        get_logger().error("Shader", "Error during shader compilation. Error message : " + std::string(infoLog));
 
         return false;
     }
@@ -167,7 +167,7 @@ bool Shader::CreateProgram(uint32_t vertexShader, uint32_t fragmentShader) {
     glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(m_shaderProgram, 512, NULL, infoLog);
-        GetLogger().Error("Shader", "Error during program compilation. Error message : " + std::string(infoLog));
+        get_logger().error("Shader", "Error during program compilation. Error message : " + std::string(infoLog));
         return false;
     }
 

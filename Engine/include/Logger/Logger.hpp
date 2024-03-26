@@ -38,7 +38,7 @@ public:
 
     /// @brief Obtain the instance of Logger
     /// @return The instance of logger
-    static Logger& Instance();
+    static Logger& instance();
 
     /// @brief Destructor
     ~Logger();
@@ -46,40 +46,40 @@ public:
     /// @brief Log a fatal error
     /// @param sender Who has sent the log
     /// @param message The content of the log
-    void Fatal(const std::string& sender, const std::string& message);
+    void fatal(const std::string& sender, const std::string& message);
 
     /// @brief Log an error
     /// @param sender Who has sent the log
     /// @param message The content of the log
-    void Error(const std::string& sender, const std::string& message);
+    void error(const std::string& sender, const std::string& message);
 
     /// @brief Log a warning
     /// @param sender Who has sent the log
     /// @param message The content of the log
-    void Warning(const std::string& sender, const std::string& message);
+    void warning(const std::string& sender, const std::string& message);
 
     /// @brief Log an info
     /// @param sender Who has sent the log
     /// @param message The content of the log
-    void Info(const std::string& sender, const std::string& message);
+    void info(const std::string& sender, const std::string& message);
 
     /// @brief Log a debug
     /// @param sender Who has sent the log
     /// @param message The content of the log
-    void Debug(const std::string& sender, const std::string& message);
+    void debug(const std::string& sender, const std::string& message);
 
     /// @brief Create a displayer to display the logs
     /// @tparam T The type of displayer
     /// @tparam ...ARG The argument for the constructor of the displayer
     /// @param ...arg The argument for the constructor of the displayer
     template<typename T, typename ...ARG>
-    void CreateDisplayer(ARG ...arg);
+    void create_displayer(ARG ...arg);
 
     /// @brief Set a display type. Use to choose which type of log has to
     /// be display. 
     /// @param type The type of log
     /// @param display True : will be display, False : won't be display
-    void SetDisplayType(LogLevel level, bool display);
+    void set_display_type(LogLevel level, bool display);
 
 private:
     friend void _intern_::_LogCallback(LogLevel level, const std::string& sender, const std::string& message, Logger* logger);
@@ -107,7 +107,7 @@ private:
 /// @tparam ...ARG The argument for the constructor of the displayer
 /// @param ...arg The argument for the constructor of the displayer
 template<typename T, typename ...ARG>
-void Logger::CreateDisplayer(ARG ...arg) {
+void Logger::create_displayer(ARG ...arg) {
     T* displayer = new T(arg...);
     m_displayer.push_back(displayer);
 }

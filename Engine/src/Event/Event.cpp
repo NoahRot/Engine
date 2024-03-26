@@ -3,13 +3,13 @@
 namespace eng {
 
 Event::Event()
-: m_keyboard(Keyboard::Instance()), m_mouse(Mouse::Instance())
+: m_keyboard(Keyboard::instance()), m_mouse(Mouse::instance())
 {
-    eng::log::Logger& logger = eng::GetLogger();
+    eng::log::Logger& logger = eng::get_logger();
 
     // Check if the engine has been configure
-    if(!eng::IsConfigure()) {
-        logger.Fatal("Event", "Engine is not configure");
+    if(!eng::is_configure()) {
+        logger.fatal("Event", "Engine is not configure");
         exit(EXIT_FAILURE);
     }
 
@@ -20,12 +20,12 @@ Event::~Event() {
     std::cout << "DEBUG : Event destroyed" << std::endl;
 }
 
-Event& Event::Instance() {
+Event& Event::instance() {
     static Event s_instance;
     return s_instance;
 }
 
-void Event::Manage() {
+void Event::manage() {
     // Fill down and up with false
     m_keyboard.m_keyDown.fill(false);
     m_keyboard.m_keyUp.fill(false);
@@ -42,7 +42,7 @@ void Event::Manage() {
         switch (event.type)
         {
         case SDL_QUIT:
-            Quit();
+            quit();
             break;
         case SDL_KEYDOWN:
             m_keyboard.m_keyDown[event.key.keysym.scancode] = true;

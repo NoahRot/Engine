@@ -21,9 +21,16 @@ public:
     /// @brief Unbind the index buffer
     void Unbind() const;
 
+    /// @brief Give the number of indices of the IBO
+    /// @return The size of the IBO
+    uint32_t Size() const;
+
 private:
     /// @brief The OpenGL index of the index buffer
     uint32_t m_index;
+
+    /// @brief The size of the IBO
+    uint32_t m_size;
 };
 
 }

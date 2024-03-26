@@ -31,7 +31,7 @@ void Texture::Unbind() {
 bool Texture::Load(const std::string& path, bool filterLinear) {
     // Check if the texture has already loaded data
     if (m_valid) {
-        GetLogger().Error("Texture", "Data already loaded. Can't overwrite data.");
+        get_logger().error("Texture", "Data already loaded. Can't overwrite data.");
         return false;
     }
 
@@ -65,12 +65,54 @@ bool Texture::Load(const std::string& path, bool filterLinear) {
         stbi_image_free(buffer);
         m_valid = true;
     }else{
-        GetLogger().Error("Texture", "Can't load texture : " + path);
+        get_logger().error("Texture", "Can't load texture : " + path);
         glDeleteTextures(1, &m_textureID);
         m_valid = false;
     }
 
     return m_valid;
+}
+
+bool Texture::Create(uint32_t width, uint32_t height, bool filterLinear, bool alpha) {
+    // Check if the texture has already loaded data
+    if (m_valid) {
+        get_logger().error("Texture", "Data already loaded. Can't overwrite data.");
+        return false;
+    }
+
+    // Create a buffer of empty data
+    uint32_t nbrCanalsPerPixel(3);
+    if (alpha) {
+        nbrCanalsPerPixel = 4;
+    }
+    std::vector<unsigned char> buffer(width*height*nbrCanalsPerPixel, 0);
+
+    // Generate the texture and bind it
+    glGenTextures(1, &m_textureID);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
+
+    // Set the parameters of the texture
+    if (filterLinear) {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }else{
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    }
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,  GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,  GL_CLAMP_TO_EDGE);
+
+    // Send the texture to openGL
+    if (alpha) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &buffer.front());
+    }else{
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, &buffer.front());
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    m_valid = true;
+
+    return true;
 }
 
 bool Texture::IsValid() const {
@@ -106,6 +148,16 @@ uint32_t Texture::GetTextureIndex() const {
 Texture* CreateTexture(const std::string& path, bool filterLinear) {
     Texture* texture = new Texture;
     texture->Load(path, filterLinear);
+    if (!texture->IsValid()) {
+        delete texture;
+        texture = nullptr;
+    }
+    return texture;
+}
+
+Texture* CreateTexture(uint32_t width, uint32_t height, bool alpha, bool filterLinear) {
+    Texture* texture = new Texture;
+    texture->Create(width, height, alpha, filterLinear);
     if (!texture->IsValid()) {
         delete texture;
         texture = nullptr;

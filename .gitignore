@@ -47,3 +47,10 @@ Engine.code-workspace
 # Sound and music
 *.mp3
 *.wav
+
+# Font
+*.ttf
+*.otf
+
+# Directory
+/.vscode

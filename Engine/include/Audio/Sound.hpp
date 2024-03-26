@@ -1,28 +1,25 @@
 #pragma once
 
-#include "Audio/Audio.hpp"
+#include "Asset/Asset.hpp"
 
 #include "Logger/Logger.hpp"
 
 namespace eng {
 
-class Sound {
+class Sound_ : public Asset {
 public:
-    Sound();
-    ~Sound();
+    Sound_(Mix_Chunk* sound);
 
-    bool Load(const std::string& path);
-    bool IsValid() const;
-    Index GetIndex() const;
+    ~Sound_();
 
-    void Play(int channel = -1, int loop = 0);
-    void PlayFade(int time, int channel = -1, int loop = 0);
-    void Volume(float volume);
+    void play(int channel = -1, int loop = 0);
+    void play_fade(int time, int channel = -1, int loop = 0);
+    void volume(float volume);
 
 private:
-    bool m_valid;
-    Index m_index;
     Mix_Chunk* m_sound;
 };
+
+typedef Sound_* Sound;
 
 }

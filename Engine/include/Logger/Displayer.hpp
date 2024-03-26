@@ -19,13 +19,13 @@ public:
 
     /// @brief Display a log. Pure virtual method.
     /// @param log The log which will be displayed
-    virtual void Log(const LogStruct& log) = 0;
+    virtual void log(const LogStruct& log) = 0;
 
 protected:
     /// @brief Create a string from a Log. Used to simplify the display.
     /// @param log The log from which the string will be created.
     /// @return The string of the log.
-    virtual std::string LogToString(const LogStruct& log);
+    virtual std::string log_to_string(const LogStruct& log);
 
 };
 
@@ -35,13 +35,13 @@ class LogDisplayerCMD : public LogDisplayer {
 public:
     /// @brief Display a log
     /// @param log The log which will be displayed
-    virtual void Log(const LogStruct& log) override;
+    virtual void log(const LogStruct& log) override;
 
 private:
     /// @brief Create a string from a Log. Used to simplify the display.
     /// @param log The log from which the string will be created.
     /// @return The string of the log.
-    virtual std::string LogToString(const LogStruct& log) override;
+    virtual std::string log_to_string(const LogStruct& log) override;
 };
 
 /// @brief Children class of LogDisplayer.
@@ -57,7 +57,7 @@ public:
 
     /// @brief Display a log
     /// @param log The log which will be displayed
-    virtual void Log(const LogStruct& log) override;
+    virtual void log(const LogStruct& log) override;
 
 private:
     /// @brief The log file

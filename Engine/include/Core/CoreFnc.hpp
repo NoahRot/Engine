@@ -5,15 +5,13 @@
 #include "Core/Core.hpp"
 #include "Core/Window.hpp"
 #include "Core/Timer.hpp"
-#include "Core/Type.hpp"
+#include "Core/UniqueIndex.hpp"
 
 #include "Logger/Logger.hpp"
 
 #include "Event/Event.hpp"
 
 #include "Graphic/Renderer.hpp"
-
-#include "Audio/Audio.hpp"
 
 namespace eng {
 
@@ -36,43 +34,43 @@ class Logger;
 /// @brief Configuration of the engine
 /// @warning If the configuration has already been set, the new configuration won't replace the old one.
 /// @param config The configuration of the engine.
-void Configure(const Configuration& config);
+void configure(const Configuration& config);
 
 /// @brief Get the configuration of the engine
 /// @return The configuration of the engine
-Configuration GetConfiguration();
+Configuration get_configuration();
 
 /// @brief Quit the application
-void Quit();
+void quit();
 
 /// @brief Function to know if the engine is configure
 /// @return If the engine is configure
-bool IsConfigure();
+bool is_configure();
 
 /// @brief Function to know if the application is running
 /// @return If the application is running
-bool IsRunning();
+bool is_running();
 
 /// @brief Function to know if an index is valid
 /// @param id The index
 /// @return If the index is valid
-bool IsValid(Index id);
+bool is_valid(Index id);
 
 
 
 // === OpenGL informations === //
 
-std::string InfoVendor();
+std::string info_vendor();
 
-std::string InfoRenderer();
+std::string info_renderer();
 
-std::string InfoVersion();
+std::string info_version();
 
-std::string InfoShadingLanguage();
+std::string info_shading_language();
 
-int GetMaxTextureSlots();
+int get_max_texture_slots();
 
-int GetMaxVertexAttributes();
+int get_max_vertex_attributes();
 
 
 
@@ -80,30 +78,30 @@ int GetMaxVertexAttributes();
 
 /// @brief Function to get the instance of Window
 /// @return The instance of Window
-Window& GetWindow();
+Window& get_window();
 
 /// @brief Function to get the instance of Timer
 /// @return The instance of Timer
-Timer& GetTimer();
+Timer& get_timer();
 
 /// @brief Function to get the instance of Logger
 /// @return The instance of Logger
-eng::log::Logger& GetLogger();
+eng::log::Logger& get_logger();
 
 /// @brief Function to get the instance of Event
 /// @return The instance of Event
-Event& GetEvent();
+Event& get_event();
 
 /// @brief Function to get the instance of Keyboard
 /// @return The instance of Keyboard
-Keyboard& GetKeyboard();
+Keyboard& get_keyboard();
 
 /// @brief Function to get the instance of Mouse
 /// @return The instance of Mouse
-Mouse& GetMouse();
+Mouse& get_mouse();
 
 /// @brief Function to get the instance of Renderer
 /// @return The instance of Renderer
-Renderer& GetRenderer();
+Renderer& get_renderer();
 
 }

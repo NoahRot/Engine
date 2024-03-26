@@ -6,7 +6,7 @@ namespace eng::log {
 
 LogDisplayer::~LogDisplayer(){}
 
-std::string LogDisplayer::LogToString(const LogStruct& log) {
+std::string LogDisplayer::log_to_string(const LogStruct& log) {
     // Create a string from the type
     std::string type_str;
     switch(log.level) {
@@ -46,11 +46,11 @@ std::string LogDisplayer::LogToString(const LogStruct& log) {
 
 // Displayer CMD
 
-void LogDisplayerCMD::Log(const LogStruct& log) {
-    std::cout << LogToString(log);
+void LogDisplayerCMD::log(const LogStruct& log) {
+    std::cout << log_to_string(log);
 }
 
-std::string LogDisplayerCMD::LogToString(const LogStruct& log) {
+std::string LogDisplayerCMD::log_to_string(const LogStruct& log) {
     // Create a string from the type
     std::string type_str;
     std::string color;
@@ -112,9 +112,9 @@ LogDisplayerTXT::~LogDisplayerTXT() {
     }
 }
 
-void LogDisplayerTXT::Log(const LogStruct& log) {
+void LogDisplayerTXT::log(const LogStruct& log) {
     if(m_file.is_open()) {
-        m_file << LogToString(log);
+        m_file << log_to_string(log);
     }
 }
 
