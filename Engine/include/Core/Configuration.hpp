@@ -35,6 +35,9 @@ struct Configuration
 
     // Timer
     uint32_t tim_fps = 60;
+
+    // Texture
+    bool tex_pixel_art = true;
 };
 
 }

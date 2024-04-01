@@ -4,23 +4,36 @@
 
 #include <External/glad/glad.h>
 
+#include "Graphic/VertexArray.hpp"
+#include "Graphic/IndexBuffer.hpp"
+#include "Graphic/Shader.hpp"
+#include "Graphic/Camera.hpp"
+
 namespace eng {
 
-class Renderer {
+class Shader_;
+class VertexArray;
+class IndexBuffer;
+
+class Renderer2D {
 public:
-    Renderer(const Renderer&) = delete;
-    Renderer& operator=(const Renderer&) = delete;
+    Renderer2D(const Renderer2D&) = delete;
+    Renderer2D& operator=(const Renderer2D&) = delete;
 
-    static Renderer& Instance();
+    static Renderer2D& instance();
 
-    ~Renderer();
+    ~Renderer2D();
 
-    void SetClearColor(float r, float g, float b, float a = 1.0f);
+    void set_clear_color(float r, float g, float b, float a = 1.0f);
 
-    void Clear();
+    void set_blend(bool is_blending);
+
+    void clear();
+
+    void draw_vao(const VertexArray& vao, const IndexBuffer& ibo, Shader_* shader);
 
 private:
-    Renderer();
+    Renderer2D();
 };
 
 }

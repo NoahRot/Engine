@@ -2,114 +2,71 @@
 
 namespace eng {
 
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
-: m_valid(true)
-{
-    // Load shaders source code
-    std::string vertexSourceCode;
-    std::string fragmentSourceCode;
-    if (!LoadSource(fragmentPath, fragmentSourceCode)) {
-        m_valid = false;
-        return;
-    }
-    if (!LoadSource(vertexPath, vertexSourceCode)) {
-        m_valid = false;
-        return;
-    }
-    
-    // Create shaders
-    uint32_t vertexShader;
-    uint32_t fragmentShader;
-    if (!CreateShader(GL_VERTEX_SHADER, vertexShader, vertexSourceCode)) {
-        glDeleteShader(vertexShader);
-        m_valid = false;
-        return;
-    }
-    if (!CreateShader(GL_FRAGMENT_SHADER, fragmentShader, fragmentSourceCode)) {
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
-        m_valid = false;
-        return;
-    }
+Shader_::Shader_(uint32_t shader_program)
+: m_shader_program(shader_program)
+{}
 
-    // Create shader program
-    if (!CreateProgram(vertexShader, fragmentShader)) {
-        m_valid = false;
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
-        return;
-    } 
-
-    // Delete shaders
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+Shader_::~Shader_() {
+    glDeleteProgram(m_shader_program);
 }
 
-Shader::~Shader() {
-    glDeleteProgram(m_shaderProgram);
+void Shader_::bind() {
+    glUseProgram(m_shader_program);
 }
 
-bool Shader::IsValid() const {
-    return m_valid;
-}
-
-void Shader::Bind() const {
-    glUseProgram(m_shaderProgram);
-}
-
-// Set Uniform
-
-void Shader::SetUniform1i(const std::string& varName, int var) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+void Shader_::set_uniform_1i(const std::string& varName, int var) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniform1i(location, var);
 }
 
-void Shader::SetUniform1f(const std::string& varName, float var) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+void Shader_::set_uniform_1f(const std::string& varName, float var) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniform1f(location, var);
 }
 
-void Shader::SetUniform2i(const std::string& varName, int v1, int v2) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+void Shader_::set_uniform_2i(const std::string& varName, int v1, int v2) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniform2i(location, v1, v2);
 }
 
-void Shader::SetUniform2f(const std::string& varName, float v1, float v2) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+void Shader_::set_uniform_2f(const std::string& varName, float v1, float v2) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniform2f(location, v1, v2);
 }
 
-void Shader::SetUniform3i(const std::string& varName, int v1, int v2, int v3) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+void Shader_::set_uniform_3i(const std::string& varName, int v1, int v2, int v3) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniform3i(location, v1, v2, v3);
 }
-void Shader::SetUniform3f(const std::string& varName, float v1, float v2, float v3) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+void Shader_::set_uniform_3f(const std::string& varName, float v1, float v2, float v3) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniform3f(location, v1, v2, v3);
 }
 
-void Shader::SetUniform4i(const std::string& varName, int v1, int v2, int v3, int v4) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+void Shader_::set_uniform_4i(const std::string& varName, int v1, int v2, int v3, int v4) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniform4i(location, v1, v2, v3, v4);
 }
-void Shader::SetUniform4f(const std::string& varName, float v1, float v2, float v3, float v4) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
+void Shader_::set_uniform_4f(const std::string& varName, float v1, float v2, float v3, float v4) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniform4f(location, v1, v2, v3, v4);
 }
 
-void Shader::SetUniformMat3f(const std::string& varName, const math::Mat3f& mat) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
-    glUniformMatrix3fv(location, 1, false, mat.FrontPtr());
+void Shader_::set_uniform_mat3f(const std::string& varName, const math::Mat3f& mat) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
+    glUniformMatrix3fv(location, 1, false, mat.front_ptr());
 }
 
-void Shader::SetUniformMat4f(const std::string& varName, const math::Mat4f& mat) const {
-    int location = glGetUniformLocation(m_shaderProgram, varName.c_str());
-    glUniformMatrix4fv(location, 1, false, mat.FrontPtr());
+void Shader_::set_uniform_mat4f(const std::string& varName, const math::Mat4f& mat) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
+    glUniformMatrix4fv(location, 1, false, mat.front_ptr());
 }
 
-// Private methods
 
-bool Shader::LoadSource(const std::string path, std::string& source) {
+
+namespace _intern_ {
+
+bool shader_load_source(const std::string path, std::string& source) {
     // Open file
     std::fstream shaderFile;
     shaderFile.open(path);
@@ -129,21 +86,21 @@ bool Shader::LoadSource(const std::string path, std::string& source) {
     return true;
 }
 
-bool Shader::CreateShader(GLenum type, uint32_t& shaderID, const std::string& source) {
+bool shader_create_shader(GLenum type, uint32_t& shader_index, const std::string& source) {
     // Define error variable
     int success;
     char infoLog[512];
 
     // Compile the shader
-    shaderID = glCreateShader(type);
+    shader_index = glCreateShader(type);
     const char* sourceChar = source.c_str();
-    glShaderSource(shaderID, 1, &sourceChar, nullptr);
-    glCompileShader(shaderID);
+    glShaderSource(shader_index, 1, &sourceChar, nullptr);
+    glCompileShader(shader_index);
 
     // Check for errors
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(shader_index, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(shaderID, 512, NULL, infoLog);
+        glGetShaderInfoLog(shader_index, 512, NULL, infoLog);
         get_logger().error("Shader", "Error during shader compilation. Error message : " + std::string(infoLog));
 
         return false;
@@ -152,26 +109,28 @@ bool Shader::CreateShader(GLenum type, uint32_t& shaderID, const std::string& so
     return true;
 }
 
-bool Shader::CreateProgram(uint32_t vertexShader, uint32_t fragmentShader) {
+bool shader_create_program(uint32_t vertex_shader, uint32_t fragment_shader, uint32_t& shader_program) {
     // Define error variable
     int success;
     char infoLog[512];
 
     // Create shader program
-    m_shaderProgram = glCreateProgram();
-    glAttachShader(m_shaderProgram, vertexShader);
-    glAttachShader(m_shaderProgram, fragmentShader);
-    glLinkProgram(m_shaderProgram);
+    shader_program = glCreateProgram();
+    glAttachShader(shader_program, vertex_shader);
+    glAttachShader(shader_program, fragment_shader);
+    glLinkProgram(shader_program);
     
     // Check for errors
-    glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
+    glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(m_shaderProgram, 512, NULL, infoLog);
+        glGetProgramInfoLog(shader_program, 512, NULL, infoLog);
         get_logger().error("Shader", "Error during program compilation. Error message : " + std::string(infoLog));
         return false;
     }
 
     return true;
+}
+
 }
 
 }

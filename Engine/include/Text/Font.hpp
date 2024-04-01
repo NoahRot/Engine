@@ -2,62 +2,37 @@
 
 #include <map>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H 
-
 #include "Text/Character.hpp"
 #include "Core/Core.hpp"
 #include "Logger/Logger.hpp"
 #include "Graphic/Texture.hpp"
 #include "Graphic/VertexArray.hpp"
+#include "Asset/AssetManager.hpp"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H 
 
 namespace eng {
 
-class Texture;
-class VertexAttributesLayout;
-namespace _intern_ {
-class _Core;
+namespace _intern_{
+    class _Core;
 }
 
-namespace _intern_ {
-class Font_ {
+class Font_ : public Asset {
 public:
-    Font_();
+    Font_(const std::map<char, Character>& table_char, Index texture_index);
+
     ~Font_();
 
-    bool Load(const std::string& path, uint32_t size, unsigned char beginChar = 0, unsigned char endChar = 128, bool filterLinear = true);
+    Index get_texture_index() const { return m_texture_id; }
 
-    bool IsValid();
+    Character& get_character(char c) { return m_table_char[c]; }
 
-    Character GetChar(char c);
-
-    Texture* GetTexture();
+    static FT_Library s_ft_lib;
 
 private:
-    friend eng::_intern_::_Core;
-
-    static FT_Library s_ftLib;
-
-    bool m_valid;
-
-    FT_Face m_ftFace;
-
-    Texture* m_textureAtlas;
-    
-    std::map<char, Character> m_charTable;
+    std::map<char, Character> m_table_char;
+    Index m_texture_id;
 };
-}
-
-typedef eng::_intern_::Font_* Font;
-
-Font CreateFont(const std::string& path, uint32_t size, unsigned char beginChar = 0, unsigned char endChar = 128, bool filterLinear = true);
-
-void DestroyFont(Font font);
-
-/// @brief Standard layout used by font to create the VAO of the text
-/// > 3 float, position
-/// > 2 float, texture coordinate
-/// @return The standard layout
-VertexAttributesLayout GetTextLayout();
 
 }

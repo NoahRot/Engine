@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Math/Vector.hpp"
+#include "Math/Matrix.hpp"
+#include "Math/Complex.hpp"
 
 namespace math {
 
@@ -32,6 +34,22 @@ Vector<T,3> cross(const Vector<T,3>& v1, const Vector<T,3>& v2);
 /// @return The cross product between the two vectors
 template<typename T>
 T cross(const Vector<T,2>& v1, const Vector<T,2>& v2);
+
+/// @brief Compute the angle between two vectors of dimension 3
+/// @tparam T The type of vector
+/// @param v1 The first vector
+/// @param v2 The second vector
+/// @return The angle between the two vectors
+template<typename T>
+T angle(const Vector<T,3>& v1, const Vector<T,3>& v2);
+
+/// @brief Compute the angle between two vectors of dimension 2
+/// @tparam T The type of vector
+/// @param v1 The first vector
+/// @param v2 The second vector
+/// @return The angle between the two vectors
+template<typename T>
+T angle(const Vector<T,2>& v1, const Vector<T,2>& v2);
 
 /// @brief Merge two vectors together
 /// @tparam T The type of vector
@@ -101,6 +119,16 @@ T cross(const Vector<T,2>& v1, const Vector<T,2>& v2) {
     return v1[0]*v2[1] - v1[1]*v2[0];
 }
 
+template<typename T>
+T angle(const Vector<T,3>& v1, const Vector<T,3>& v2) {
+    return atan2f(cross<float>(v1, v2).norm(), dot<float,3>(v1, v2));
+}
+
+template<typename T>
+T angle(const Vector<T,2>& v1, const Vector<T,2>& v2) {
+    return atan2f(cross<float>(v1, v2), dot<float,2>(v1, v2));
+}
+
 template<typename T, uint32_t N, uint32_t M>
 Vector<T, N+M> merge(const Vector<T,N>& v1, const Vector<T,M>& v2) {
     Vector<T, N+M> v;
@@ -151,7 +179,7 @@ Vector<T, L> operator*(const Matrix<T,L,C>& m, const Vector<T, C>& v) {
 }
 
 template<typename T, uint32_t L, uint32_t C>
-Vector<T, C> operator*(const Vector<T, L>& v, const Matrix<T,L,C>& m){
+Vector<T, C> operator*(const Vector<T, L>& v, const Matrix<T,L,C>& m) {
     Vector<T,C> result;
     for (uint32_t i(0) ; i < C ; ++i) {
         for (uint32_t j(0) ; j < L ; ++j) {
@@ -160,5 +188,5 @@ Vector<T, C> operator*(const Vector<T, L>& v, const Matrix<T,L,C>& m){
     }
     return result;
 }
-    
+
 }

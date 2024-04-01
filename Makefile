@@ -1,6 +1,6 @@
 # Define variable
 CC = g++
-CFLAGS = -std=c++17 -Wall -pedantic -g -pthread
+CFLAGS = -std=c++20 -Wall -pedantic -g -pthread
 
 # Name of the executable file
 NAME_EXE = main

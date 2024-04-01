@@ -13,6 +13,8 @@
 
 #include "Graphic/Renderer.hpp"
 
+#include "Asset/AssetManager.hpp"
+
 namespace eng {
 
 struct Configuration;
@@ -20,8 +22,9 @@ class Window;
 class Timer;
 class Keyboard;
 class Mouse;
-class Renderer;
+class Renderer2D;
 class Audio;
+class AssetManager;
 
 namespace log {
 class Logger;
@@ -100,8 +103,12 @@ Keyboard& get_keyboard();
 /// @return The instance of Mouse
 Mouse& get_mouse();
 
+/// @brief Function to get the instance of Asset Manager
+/// @return The instance of Asset Manager
+AssetManager& get_asset_manager();
+
 /// @brief Function to get the instance of Renderer
 /// @return The instance of Renderer
-Renderer& get_renderer();
+Renderer2D& get_renderer_2D();
 
 }

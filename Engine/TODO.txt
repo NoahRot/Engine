@@ -1,11 +1,10 @@
 PRIMARY
 
 > Test
-> Font
 > Controller
-> Renderer class
-> Rework Audio
 > Rework Graphic
+> Renderer class
+> Camera 2D / 3D
 
 =============================
 
@@ -13,6 +12,7 @@ SECONDARY
 
 > Get a map of uniform in the shaders
 > Mouse wheele
+> Texture Atlas
 
 =============================
 
@@ -24,5 +24,3 @@ GENERAL
 =============================
 
 ERROR 
-
-> Double destruction of texture

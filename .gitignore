@@ -43,6 +43,7 @@ Engine.code-workspace
 *.jpg
 *.png
 *.bmp
+*.svg
 
 # Sound and music
 *.mp3
@@ -52,5 +53,14 @@ Engine.code-workspace
 *.ttf
 *.otf
 
+# Latex
+*.aux
+*.fdb_latexmk
+*.fls 
+*.pdf 
+*.log
+*.gz
+
 # Directory
 /.vscode
+/doc/Tex/img/

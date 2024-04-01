@@ -85,8 +85,12 @@ Mouse& get_mouse() {
     return Mouse::instance();
 }
 
-Renderer& get_renderer() {
-    return Renderer::Instance();
+AssetManager& get_asset_manager() {
+    return AssetManager::instance();
+}
+
+Renderer2D& get_renderer_2D() {
+    return Renderer2D::instance();
 }
 
 }

@@ -7,7 +7,9 @@ namespace eng {
 enum struct AssetType {
     None,
     Music,
-    Sound
+    Sound,
+    Texture,
+    Font
     // Texture, Font, Shader
 };
 

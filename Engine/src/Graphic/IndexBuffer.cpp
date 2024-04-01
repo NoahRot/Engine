@@ -3,11 +3,11 @@
 namespace eng {
 
 IndexBuffer::IndexBuffer(const void* data, uint32_t size)
-: m_index(0), m_size(size/sizeof(uint32_t))
+: m_index(0), m_size(size)
 {
     glCreateBuffers(1, &m_index);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size*sizeof(uint32_t), data, GL_STATIC_DRAW);
 }
 
 IndexBuffer::~IndexBuffer() {

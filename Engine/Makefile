@@ -34,6 +34,8 @@ GLAD_SRC = $(DIR_SOURCE)/$(DIR_EXTERNAL)/glad/glad.c
 
 DIR_BIN_PROJECT = ..\Application\bin
 
+### SHOULD ALSO ERASE "$(RM) $(DIR_BIN_PROJECT)\$(ENGINE_NAME).dll" IN CLEAN ###
+
 #**********************************************************#
 # END #
 #**********************************************************#
@@ -48,7 +50,7 @@ Core		= Core UniqueIndex Window Timer CoreFnc
 Logger		= Logger Displayer
 Event		= Event Keyboard Mouse
 Asset 		= Asset AssetManager
-Graphic		= Texture Renderer Shader VertexArray VertexBuffer IndexBuffer
+Graphic		= Camera Texture Renderer Shader VertexArray VertexBuffer IndexBuffer
 Audio 		= Sound Music
 Text		= Font Text
 

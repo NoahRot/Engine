@@ -3,6 +3,7 @@
 #include <array>
 #include <inttypes.h>
 #include <cmath>
+#include <iostream>
 
 namespace math {
 
@@ -21,23 +22,23 @@ public:
 
     /// @brief Compute the norm of the vector
     /// @return The norm of the vector
-    T Norm() const;
+    T norm() const;
 
     /// @brief Compute the square of the norm
     /// @return The square of the norm
-    T Norm2() const;
+    T norm2() const;
 
     /// @brief Normalize the vector
     /// @warning Doesn't check if the norm is null
-    void Normalize();
+    void normalize();
 
     /// @brief Return a reference to the component of the vector
     /// @return The components
-    std::array<T,N>& Data();
+    std::array<T,N>& data();
 
     /// @brief Return a pointer to the first element
     /// @return A pointer to the first element
-    T* FrontPtr() const;
+    T* front_ptr() const;
 
     Vector& operator+=(const Vector& v);
 
@@ -97,12 +98,12 @@ Vector<T,N>::Vector(const std::array<T,N>& component)
 {}
 
 template<typename T, uint32_t N>
-T Vector<T,N>::Norm() const {
-    return sqrt(Norm2());
+T Vector<T,N>::norm() const {
+    return sqrt(norm2());
 }
 
 template<typename T, uint32_t N>
-T Vector<T,N>::Norm2() const {
+T Vector<T,N>::norm2() const {
     T n(0);
     for (auto& com : m_component) {
         n += com;
@@ -111,20 +112,20 @@ T Vector<T,N>::Norm2() const {
 }
 
 template<typename T, uint32_t N>
-void Vector<T,N>::Normalize() {
-    T n(1.0/Norm());
+void Vector<T,N>::normalize() {
+    T n(1.0/norm());
     for (auto& com : m_component) {
         com *= n;
     }
 }
 
 template<typename T, uint32_t N>
-std::array<T,N>& Vector<T,N>::Data() {
+std::array<T,N>& Vector<T,N>::data() {
     return m_component;
 }
 
 template<typename T, uint32_t N>
-T* Vector<T,N>::FrontPtr() const {
+T* Vector<T,N>::front_ptr() const {
     return (T*)(&m_component[0]);
 }
 

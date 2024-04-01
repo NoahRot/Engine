@@ -1,0 +1,117 @@
+% ___      _ _   _      _ _          _   _          
+%|_ _|_ _ (_) |_(_)__ _| (_)___ __ _| |_(_)___ _ _  
+% | || ' \| |  _| / _` | | (_-</ _` |  _| / _ \ ' \ 
+%|___|_||_|_|\__|_\__,_|_|_/__/\__,_|\__|_\___/_||_|                          
+
+\documentclass[a4paper, 12pt,oneside]{article}
+%On peut changer "oneside" en "twoside" si on sait que le résultat sera recto-verso.
+%Cela influence les marges (pas ici car elles sont identiques à droite et à gauche)
+
+% pour l'inclusion de figures en eps,pdf,jpg,....
+\usepackage{graphicx}
+% Pour que les figures soit cote à cote
+\usepackage{subfigure}
+%\usepackage{subcaption}
+% Pour que la figure soit à coté du texte
+\usepackage{wrapfig}
+
+%pour que la figure soit à l'endroit souhaiter [H]
+\usepackage{float} 
+
+\usepackage{multirow}
+
+\usepackage{ upgreek }
+
+\usepackage{amssymb}
+
+\usepackage[usenames,dvipsnames]{color}
+
+
+%Marges. Désactiver pour utiliser les valeurs LaTeX par défaut
+%\usepackage[top=2.5cm, bottom=2cm, left=2cm, right=2cm, showframe]{geometry}
+\usepackage[top=2.5cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+
+% quelques symboles mathematiques en plus
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amsfonts}
+%\usepackage{wasysym}
+
+% on peut ecrire directement les charactères avec l'accent
+\usepackage[T1]{fontenc}
+
+% a utiliser sur Linux/Windows
+%\usepackage[latin1]{inputenc}
+
+% a utiliser avec UTF8
+\usepackage[utf8]{inputenc}
+%Très utiles pour les groupes mixtes mac/PC. Un fichier texte enregistré sous codage UTF-8 est lisible dans les deux environnement.
+%Plus de problème de caractères accentués et spéciaux qui ne s'affichent pas
+
+% pour l'inclusion de liens dans le document (pdflatex)
+\usepackage[colorlinks,bookmarks=false,linkcolor=black,urlcolor=blue, citecolor=black]{hyperref}
+
+%Pour l'utilisation plus simple des unités et fractions
+\usepackage{units}
+
+%Pour utiliser du time new roman... Comenter pour utiliser du ComputerModern
+\usepackage{mathptmx}
+
+%Pour du code non interprété
+\usepackage{verbatim}
+\usepackage{verbdef}% http://ctan.org/pkg/verbdef
+\usepackage{lipsum}
+\usepackage{mathtools}
+
+\usepackage{esvect}
+
+\def \be {\begin{equation}}
+\def \ee {\end{equation}}
+
+%Pour changer la taille des titres de section et subsection. Ajoutez manuellement les autres styles si besoin.
+\makeatletter
+\renewcommand{\section}{\@startsection {section}{1}{\z@}%
+             {-3.5ex \@plus -1ex \@minus -.2ex}%
+             {2.3ex \@plus.2ex}%
+             {\normalfont\normalsize\bfseries}}
+\makeatother
+
+\makeatletter
+\renewcommand{\subsection}{\@startsection {subsection}{1}{\z@}%
+             {-3.5ex \@plus -1ex \@minus -.2ex}%
+             {2.3ex \@plus.2ex}%
+             {\normalfont\normalsize\bfseries}}
+\makeatother
+
+% ___                             _   
+%|   \ ___  __ _  _ _ __  ___ _ _| |_ 
+%| |) / _ \/ _| || | '  \/ -_) ' \  _|
+%|___/\___/\__|\_,_|_|_|_\___|_||_\__|
+                                     
+
+\begin{document}
+\title{Engine Documentation}
+\date{\normalsize{\today}}
+\author{ROTUNNO Noah}
+\maketitle
+
+\section{Flowchart}
+
+\begin{wrapfigure}{R}{0.50\textwidth}
+    \vspace{-\baselineskip}
+    \includegraphics[scale=0.45]{img/Flowchart_lvl_0.drawio.png}
+    \centering
+    \caption{Flowchart level 0. Modules of the engine.}
+    \label{fig:flowchart_0}
+\end{wrapfigure}
+
+In this section, the structure of the will be explained. The Engine is made of modules, one for each major section. The flowchart of the level 0 is on figure \ref{fig:flowchart_0}.
+
+
+\be 
+\derivative{\vv{p}}{t} = \sum \vv{F} = \dot{\vv{p}} \Delta
+\label{eq:Newton}
+\ee 
+
+
+\end{document}

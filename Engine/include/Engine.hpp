@@ -20,6 +20,7 @@
 #include "Graphic/VertexBuffer.hpp"
 #include "Graphic/IndexBuffer.hpp"
 #include "Graphic/Texture.hpp"
+#include "Graphic/Camera.hpp"
 
 #include "Audio/Music.hpp"
 #include "Audio/Sound.hpp"

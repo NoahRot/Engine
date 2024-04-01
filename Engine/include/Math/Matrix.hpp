@@ -46,30 +46,30 @@ public:
     /// @param column The column of the element
     /// @param line The line of the element
     /// @return A referene to the element
-    T& Get(uint32_t column, uint32_t line);
+    T& get(uint32_t column, uint32_t line);
 
     /// @brief Get a component of the matrix
     /// @param column The column of the element
     /// @param line The line of the element
     /// @return The element
-    T Get(uint32_t column, uint32_t line) const;
+    T get(uint32_t column, uint32_t line) const;
 
     /// @brief Get a reference to a column of the matrix
     /// @param column The column of the matrix
     /// @return A reference to the vector that constitutes the column
-    Vector<T,L>& Get(uint32_t column);
+    Vector<T,L>& get(uint32_t column);
 
     /// @brief Get a reference to the data of the matrix
     /// @return A reference to the data of the matrix
-    std::array<T, C*L>& Data();
+    std::array<T, C*L>& data();
 
     /// @brief Return a reference to the data of the matrix under vectorial form
     /// @return A reference to the data of the matrix under vectorial form
-    std::array<Vector<T,L>, C>& DataVectorial();
+    std::array<Vector<T,L>, C>& data_vectorial();
 
     /// @brief Return a pointer to the first element
     /// @return A pointer to the first element
-    T* FrontPtr() const;
+    T* front_ptr() const;
 
     Matrix& operator+=(const Matrix<T,C,L>& m);
 
@@ -145,32 +145,32 @@ Matrix<T,L,C>::Matrix(const std::array<Vector<T,L>, C>& component) {
 }
 
 template<typename T, uint32_t L, uint32_t C>
-T& Matrix<T,L,C>::Get(uint32_t column, uint32_t line) {
+T& Matrix<T,L,C>::get(uint32_t column, uint32_t line) {
     return m_component[column*L + line];
 }
 
 template<typename T, uint32_t L, uint32_t C>
-T Matrix<T,L,C>::Get(uint32_t column, uint32_t line) const  {
+T Matrix<T,L,C>::get(uint32_t column, uint32_t line) const  {
     return m_component[column*L + line];
 }
 
 template<typename T, uint32_t L, uint32_t C>
-Vector<T,L>& Matrix<T,L,C>::Get(uint32_t column) {
+Vector<T,L>& Matrix<T,L,C>::get(uint32_t column) {
     return (Vector<T,L>&)(*static_cast<T*>(&m_component[column*L]));
 }
 
 template<typename T, uint32_t L, uint32_t C>
-std::array<T, C*L>& Matrix<T,L,C>::Data() {
+std::array<T, C*L>& Matrix<T,L,C>::data() {
     return m_component;
 }
 
 template<typename T, uint32_t L, uint32_t C>
-std::array<Vector<T,L>, C>& Matrix<T,L,C>::DataVectorial() {
+std::array<Vector<T,L>, C>& Matrix<T,L,C>::data_vectorial() {
     return (std::array<Vector<T,L>, C>&)(*static_cast<T*>(&(m_component[0])));
 }
 
 template<typename T, uint32_t L, uint32_t C>
-T* Matrix<T,L,C>::FrontPtr() const {
+T* Matrix<T,L,C>::front_ptr() const {
     return (T*)(&m_component[0]);
 }
 
@@ -247,9 +247,9 @@ Matrix<T,M,Q> operator*(const Matrix<T,M,N>& m1, const Matrix<T,N,Q>& m2) {
         for (uint32_t j(0) ; j < Q ; ++j) {
             T value(0);
             for(uint32_t k(0) ; k < N ; ++k) {
-                value += m1.Get(k,i)*m2.Get(j,k);
+                value += m1.get(k,i)*m2.get(j,k);
             }
-            m.Get(j,i) = value;
+            m.get(j,i) = value;
         }
     }
     return m;
@@ -260,7 +260,7 @@ std::ostream& operator<<(std::ostream& stream, const Matrix<T,L,C>& m1) {
     stream << "Mat[" << L << "," << C << "]\n";
     for (uint32_t i(0) ; i < L ; ++i) {
         for (uint32_t j(0) ; j < C ; ++j) {
-            stream << m1.Get(j,i);
+            stream << m1.get(j,i);
             if (j != C-1) {
                 stream << ", ";
             }

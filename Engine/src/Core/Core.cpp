@@ -12,7 +12,7 @@ _Core::_Core()
 
 _Core::~_Core() {
     // Quit FreeType
-    FT_Done_FreeType(eng::_intern_::Font_::s_ftLib);
+    FT_Done_FreeType(eng::Font_::s_ft_lib);
 
     // Quit MIX
     Mix_CloseAudio();
@@ -76,7 +76,7 @@ void _Core::configure(const Configuration& config) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
     // Init the freetype
-    if (FT_Init_FreeType(&eng::_intern_::Font_::s_ftLib) != 0) {
+    if (FT_Init_FreeType(&eng::Font_::s_ft_lib) != 0) {
         Mix_CloseAudio();
         Mix_Quit();
         SDL_Quit();
