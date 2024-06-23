@@ -25,6 +25,8 @@
 \usepackage{amssymb}
 
 \usepackage[usenames,dvipsnames]{color}
+\usepackage{listings}
+\usepackage{xcolor}
 
 
 %Marges. Désactiver pour utiliser les valeurs LaTeX par défaut
@@ -83,6 +85,33 @@
              {\normalfont\normalsize\bfseries}}
 \makeatother
 
+% Prepare code listing package
+\definecolor{codegreen}{rgb}{0,0.6,0.2}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.8,0,0.8}
+\definecolor{backcolour}{rgb}{0.92,0.92,0.95}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
 % ___                             _   
 %|   \ ___  __ _  _ _ __  ___ _ _| |_ 
 %| |) / _ \/ _| || | '  \/ -_) ' \  _|
@@ -90,28 +119,60 @@
                                      
 
 \begin{document}
-\title{Engine Documentation}
+\title{PIXIE Engine - Documentation}
 \date{\normalsize{\today}}
-\author{ROTUNNO Noah}
+\author{Rotunno Noah}
 \maketitle
 
-\section{Flowchart}
+\section{Introduction}
 
-\begin{wrapfigure}{R}{0.50\textwidth}
-    \vspace{-\baselineskip}
-    \includegraphics[scale=0.45]{img/Flowchart_lvl_0.drawio.png}
+This project is an implementation of an Game Engine based on OpenGL for the graphics and SDL2 for the window opening.
+
+Test code
+
+\begin{lstlisting}[language=C++]
+void _LogCallback(LogLevel level, const std::string& sender, const std::string& message, Logger* logger) {
+    // Add the new log
+    logger->m_listLog.push_back(LogStruct{time(0), level, sender, message});
+
+    // Log in each displayer
+    for(auto& display : logger->m_displayer) {
+        if (logger->m_whichDisplay[level]) {
+            display->log(logger->m_listLog.back());
+        }
+    }
+    x = 55;
+}
+\end{lstlisting}
+
+\section{General architecture}
+
+\begin{figure}[H]
     \centering
-    \caption{Flowchart level 0. Modules of the engine.}
-    \label{fig:flowchart_0}
-\end{wrapfigure}
+    \includegraphics[scale=0.35]{img/Flowchart_lvl_0.drawio.png}
+    \caption{General flowchart of the architecture of the engine}
+    \label{fig:flowchart_lvl0}
+\end{figure}
 
-In this section, the structure of the will be explained. The Engine is made of modules, one for each major section. The flowchart of the level 0 is on figure \ref{fig:flowchart_0}.
+\section{External libraries}
 
+\section{Modules}
+\subsection{Core}
 
-\be 
-\derivative{\vv{p}}{t} = \sum \vv{F} = \dot{\vv{p}} \Delta
-\label{eq:Newton}
-\ee 
+\subsection{Logger}
 
+\subsection{Event}
+
+\subsection{Asset}
+
+\subsection{Graphic}
+
+\subsection{Audio}
+
+\subsection{Text}
+
+\section{Examples}
+
+\section{References}
 
 \end{document}

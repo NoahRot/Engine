@@ -33,8 +33,12 @@ void Text::add_text(const std::string& text, ColorFloat color) {
     m_text += text;
 
     // Add color
-    std::vector<ColorFloat>temp(text.size(), color);
+    std::vector<ColorFloat> temp(text.size(), color);
     m_color_char.insert(m_color_char.end(), temp.begin(), temp.end());
+}
+
+void Text::set_position(math::Vec2i position) {
+    m_position = position;
 }
 
 void Text::generate(float depth) {
@@ -50,8 +54,8 @@ void Text::generate(float depth) {
         Character& c = font->get_character(m_text[i]);
         ColorFloat color = m_color_char[i];
 
-        float x(x_progression + c.left);
-        float y(-c.bh + c.top);
+        float x(x_progression + c.left + m_position[0]);
+        float y(-c.bh + c.top + m_position[1]);
 
         if (m_height < c.bh) {
             m_height = c.bh;

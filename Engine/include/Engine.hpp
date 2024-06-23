@@ -4,12 +4,13 @@
 #include "Core/Window.hpp"
 #include "Core/Configuration.hpp"
 #include "Core/CoreFnc.hpp"
+#include "Core/Timer.hpp"
 
 #include "Logger/Logger.hpp"
 
-#include "Event/Event.hpp"
+#include "Tools/Color.hpp"
 
-#include "Core/Timer.hpp"
+#include "Event/Event.hpp"
 
 #include "Asset/Asset.hpp"
 #include "Asset/AssetManager.hpp"
@@ -27,3 +28,5 @@
 
 #include "Text/Font.hpp"
 #include "Text/Text.hpp"
+
+#include "Test/Test.hpp"

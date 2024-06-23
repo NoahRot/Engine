@@ -53,5 +53,4 @@ void Camera2D::compute_matrices() {
     m_view_projection = m_projection * m_view;
 }
 
-
 }

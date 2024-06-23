@@ -18,4 +18,7 @@ GLAD_SRC = Engine\src\External\GLAD\glad.c
 # Compile executable
 all:
 	$(CC) $(CFLAGS) -o $(DIR_EXE)/$(NAME_EXE).$(EXTENSION_EXE) Application/main.cpp $(GLAD_SRC) $(LIBRARY) $(INCLUDES)
+
+test:
+	$(CC) $(CFLAGS) -o $(DIR_EXE)/Test_modules.$(EXTENSION_EXE) Application/Test_modules.cpp $(GLAD_SRC) $(LIBRARY) $(INCLUDES)
 # ATTENTION A L'ORDRE DES LIB ET INCLUDES

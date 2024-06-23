@@ -1,13 +1,17 @@
-[18:43:34] DEBUG      [Core] SDL initialize
-[18:43:35] INFO       [Main] Program started
-[18:43:35] INFO       [Main] Delta time in ms : 16
-[18:43:35] INFO       [OpenGL] Version : 4.1.0 Core Profile Context 24.2.1.240215
-[18:43:35] INFO       [OpenGL] Renderer : AMD Radeon RX 6600M
-[18:43:35] INFO       [OpenGL] Shading language : 4.60
-[18:43:35] INFO       [OpenGL] Vendor : ATI Technologies Inc.
-[18:43:35] INFO       [OpenGL] Number of texture slots : 32
-[18:43:35] INFO       [OpenGL] Maximum number of attributes of a vertex : 32
-[18:43:35] DEBUG      [Asset Manager] BPP = 3
-[18:43:35] DEBUG      [Main] Music and sound loaded successfully
-[18:43:35] DEBUG      [DEBUG] Text generated
-[18:43:41] INFO       [Main] Program ended
+[15:59:22] DEBUG      [Core] SDL initialize
+[15:59:22] DEBUG      [Core] MIX initialize
+[15:59:22] DEBUG      [Core] FreeType initialize
+[15:59:23] INFO       [Main] Program started
+[15:59:23] INFO       [Main] Delta time in ms : 16
+[15:59:23] INFO       [OpenGL] Version : 4.1.0 Core Profile Context 24.5.1.240502
+[15:59:23] INFO       [OpenGL] Renderer : AMD Radeon RX 6600M
+[15:59:23] INFO       [OpenGL] Shading language : 4.60
+[15:59:23] INFO       [OpenGL] Vendor : ATI Technologies Inc.
+[15:59:23] INFO       [OpenGL] Number of texture slots : 32
+[15:59:23] INFO       [OpenGL] Maximum number of attributes of a vertex : 32
+[15:59:23] DEBUG      [Asset Manager] BPP = 3
+[15:59:23] DEBUG      [DEBUG] Text generated
+[15:59:24] INFO       [Main] Mouse position, x : 234, y : 368
+[15:59:24] INFO       [Main] Mouse position, x : 278, y : 193
+[15:59:25] INFO       [Main] Mouse position, x : 585, y : 250
+[15:59:26] INFO       [Main] End programm

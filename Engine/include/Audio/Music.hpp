@@ -26,6 +26,8 @@ public:
 
     static bool is_playing();
 
+    static bool is_paused();
+
     static void resume();
 
     static void stop();

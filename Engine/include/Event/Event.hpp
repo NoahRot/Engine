@@ -8,12 +8,14 @@
 #include "Event/Keyboard.hpp"
 #include "Event/Mouse.hpp"
 #include "Core/CoreFnc.hpp"
+#include "Core/Window.hpp"
 #include "Logger/Logger.hpp"
 
 namespace eng {
 
 class Keyboard;
 class Mouse;
+class Window;
 
 class Event {
 public:
@@ -31,6 +33,8 @@ private:
 
     Keyboard& m_keyboard;
     Mouse& m_mouse;
+
+    Window& m_window;
 };
 
 }

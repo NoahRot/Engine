@@ -27,6 +27,8 @@ public:
 
     void add_text(const std::string& text, ColorFloat color);
 
+    void set_position(math::Vec2i position);
+
     void generate(float depth = 0.0f);
 
     void erase();
@@ -43,6 +45,7 @@ public:
 private:
     std::string m_text;
     std::vector<ColorFloat> m_color_char;
+    math::Vec2i m_position;
     float m_width;
     float m_height;
 

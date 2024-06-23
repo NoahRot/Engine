@@ -10,4 +10,8 @@ void main()
 {
     //FragColor = vertexColor;
     FragColor = texture(ourTexture, textureCoord);// * vertexColor;
+
+    // Grey :
+    //float mean = (FragColor.x + FragColor.y + FragColor.z) / 3;
+    //FragColor = vec4(mean, mean, mean, 1.0);
 }

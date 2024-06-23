@@ -26,6 +26,11 @@ void Music_::pause() {
 bool Music_::is_playing() {
     return Mix_PlayingMusic();
 }
+
+bool Music_::is_paused() {
+    return Mix_PausedMusic();
+}
+
 void Music_::resume() {
     Mix_ResumeMusic();
 }

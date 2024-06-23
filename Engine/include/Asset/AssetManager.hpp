@@ -2,6 +2,7 @@
 
 #include "Core/UniqueIndex.hpp"
 #include "Core/CoreFnc.hpp"
+
 #include "Tools/Color.hpp"
 
 #include "Asset/Asset.hpp"
@@ -30,6 +31,7 @@ class Sound_;
 class Music_;
 class Texture_;
 class Shader_;
+struct ShaderSource;
 class Font_;
 
 class AssetManager {

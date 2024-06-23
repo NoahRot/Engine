@@ -23,7 +23,7 @@ int main(int argc, char** args) {
     eng::Keyboard&      keyboard        = eng::get_keyboard();
     eng::Mouse&         mouse           = eng::get_mouse();
     eng::Timer&         timer           = eng::get_timer();
-    eng::Renderer2D&      renderer      = eng::get_renderer_2D();
+    eng::Renderer2D&    renderer        = eng::get_renderer_2D();
     eng::AssetManager&  asset_manager   = eng::get_asset_manager();
 
     logger.info("Main", "Delta time in ms : " + std::to_string(timer.get_delta_time()));
@@ -47,16 +47,6 @@ int main(int argc, char** args) {
 
     eng::Camera2D camera(0, config.win_width, 0, config.win_height);
 
-    math::Matrix<float, 2, 2> m1({
-        math::Vec2f({2.0f, 1.5f}),
-        math::Vec2f({-3.0f, -1.0f})
-    });
-
-    math::Matrix<float, 3, 2> m2({
-        math::Vec3f({1.0f, 3.0f, 2.0f}),
-        math::Vec3f({-2.5f, 2.0f, -2.0f})
-    });
-
     // ==========
     // Test OpenGL - Make a triangle
     // ==========
@@ -71,12 +61,6 @@ int main(int argc, char** args) {
     //eng::Index tex_id_2 = asset_manager.load_texture("../asset/image/Saphir_logo_1.png");
     eng::Index tex_id_2 = asset_manager.create_texture(100, 100, eng::ColorBit{255, 0, 0, 255});
     eng::Texture texture2 = asset_manager.get_texture(tex_id_2);
-
-    eng::Index music_index = asset_manager.load_music("../asset/music/Sky Corsair.mp3");
-    eng::Music music = asset_manager.get_music(music_index);
-
-    eng::Index sound_index = asset_manager.load_sound("../asset/sound/but.wav");
-    eng::Sound sound = asset_manager.get_sound(sound_index);
 
     eng::Text text(font_index);
     text.add_text("Hello ", eng::ColorFloat{1, 0, 0, 1});
@@ -129,23 +113,19 @@ int main(int argc, char** args) {
 
     vao.SetAttributes(vbo, layout);
 
-    if (music and sound) {
-        logger.debug("Main", "Music and sound loaded successfully");
-        music->volume(0.5f);
-        music->play();
-        sound->volume(0.5f);
-    }else{
-        logger.debug("Main", "Music can't be loaded");
-    }
-
     logger.debug("DEBUG", "Text generated");
 
     // ==========
     // ==========
 
+    timer.create_point("event");
+    timer.create_point("draw");
+    timer.create_point("present");
+
     while(eng::is_running()) {
         renderer.clear();
 
+        timer.start_point("event");
         event.manage();
 
         if(keyboard.key_down(SDL_SCANCODE_ESCAPE)) {
@@ -180,9 +160,14 @@ int main(int argc, char** args) {
         }
         camera.move_position(cam_disp);
         camera.move_rotation(cam_angle);
+
+        timer.end_point("event");
+
         // ==========
         // Draw Triangle
         // ==========
+
+        timer.start_point("draw");
         math::Mat4f vp = camera.get_view_projection();
 
         angle += angularVelocity;
@@ -220,6 +205,7 @@ int main(int argc, char** args) {
         text.bind_font();
         renderer.draw_vao(txt_vao, txt_ibo, txt_shader);
 
+        timer.end_point("draw");
         // ==========
         // ==========
 
@@ -229,11 +215,21 @@ int main(int argc, char** args) {
             logger.info("Main", "Mouse position, x : " + std::to_string(x) + ", y : " + std::to_string(y));
         }
 
+        timer.start_point("present");
         window.present();
+        timer.end_point("present");
+
         timer.loop();
     }
 
-    logger.info("Main", "Program ended");    
+    auto time_map = timer.get_map_time_point();
+    for (auto element : time_map) {
+        std::cout << "TIME | Event " << element.first << ", time " << element.second.get_mean_delta() << std::endl;
+    }
+
+    std::cout << "TIME | Event Total, time " << timer.get_total_frame_point().get_mean_delta() << std::endl;
+    
+    logger.info("Main", "End programm");
 
     return 0;
 }

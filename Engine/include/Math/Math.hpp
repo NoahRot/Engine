@@ -4,6 +4,7 @@
 #include "Math/Matrix.hpp"
 #include "Math/Function.hpp"
 #include "Math/TransformMatrix.hpp"
+#include "Math/Formula.hpp"
 
 namespace math {
 

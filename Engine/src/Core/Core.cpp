@@ -67,6 +67,7 @@ void _Core::configure(const Configuration& config) {
         logger.fatal("Core", "Can't open audio audio");
         exit(EXIT_FAILURE);
     }
+    logger.debug("Core", "MIX initialize");
 
     // Set Attribute for OpenGL
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4); // Use version 4.1 of OpenGL
@@ -83,6 +84,7 @@ void _Core::configure(const Configuration& config) {
         logger.fatal("Core", "Can't initialize");
         exit(EXIT_FAILURE);
     }
+    logger.debug("Core", "FreeType initialize");
 
     // Create the instance of the window to be sure that the OpenGL Context has been created
     eng::Window::instance();

@@ -237,7 +237,7 @@ Index AssetManager::load_font(const std::string& path, uint32_t size) {
     }
 
     // Create the font
-    Font_* font = new Font_(table_character, texutre_id);
+    Font_* font = new Font_(table_character, texutre_id, size);
     m_table_asset[font->get_index()] = font;
     
     return font->get_index();

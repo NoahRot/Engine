@@ -3,7 +3,7 @@
 namespace eng {
 
 Event::Event()
-: m_keyboard(Keyboard::instance()), m_mouse(Mouse::instance())
+: m_keyboard(Keyboard::instance()), m_mouse(Mouse::instance()), m_window(eng::get_window())
 {
     eng::log::Logger& logger = eng::get_logger();
 
@@ -35,6 +35,7 @@ void Event::manage() {
 
     // Mouse position
     SDL_GetMouseState(&m_mouse.m_mouseX, &m_mouse.m_mouseY);
+    m_mouse.m_mouseY = m_window.get_height() - m_mouse.m_mouseY;
 
     // Manage event
     SDL_Event event;

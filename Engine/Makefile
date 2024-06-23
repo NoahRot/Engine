@@ -44,7 +44,7 @@ DIR_BIN_PROJECT = ..\Application\bin
 # Modules #
 ############################################################
 
-MODULES 	= Core Logger Event Asset Graphic Audio Text
+MODULES 	= Core Logger Event Asset Graphic Audio Text Test
 
 Core		= Core UniqueIndex Window Timer CoreFnc
 Logger		= Logger Displayer
@@ -53,6 +53,7 @@ Asset 		= Asset AssetManager
 Graphic		= Camera Texture Renderer Shader VertexArray VertexBuffer IndexBuffer
 Audio 		= Sound Music
 Text		= Font Text
+Test		= Test
 
 ############################################################
 # Compilation #

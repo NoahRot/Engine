@@ -9,6 +9,8 @@
 #include "Graphic/Shader.hpp"
 #include "Graphic/Camera.hpp"
 
+#include "Tools/Color.hpp"
+
 namespace eng {
 
 class Shader_;
@@ -26,7 +28,15 @@ public:
 
     void set_clear_color(float r, float g, float b, float a = 1.0f);
 
+    void set_clear_color(const ColorBit& color);
+
+    void set_clear_color(const ColorFloat& color);
+
     void set_blend(bool is_blending);
+
+    void set_cull_face(bool cull_face);
+
+    void set_depth_test(bool depth_test);
 
     void clear();
 
@@ -35,5 +45,12 @@ public:
 private:
     Renderer2D();
 };
+
+/*
+glFrontFace(GL_CCW);
+glEnable(GL_CULL_FACE);
+glEnable(GL_DEPTH_TEST);
+glDepthFunc(GL_LESS);
+*/
 
 }

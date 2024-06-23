@@ -20,19 +20,24 @@ namespace _intern_{
 
 class Font_ : public Asset {
 public:
-    Font_(const std::map<char, Character>& table_char, Index texture_index);
+    Font_(const std::map<char, Character>& table_char, Index texture_index, uint32_t size);
 
     ~Font_();
 
-    Index get_texture_index() const { return m_texture_id; }
+    void bind(uint32_t slot = 0) const;
 
-    Character& get_character(char c) { return m_table_char[c]; }
+    Index get_texture_index() const;
+
+    Character& get_character(char c);
+
+    uint32_t get_size() const;
 
     static FT_Library s_ft_lib;
 
 private:
     std::map<char, Character> m_table_char;
     Index m_texture_id;
+    uint32_t m_size;
 };
 
 }

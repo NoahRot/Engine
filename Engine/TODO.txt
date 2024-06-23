@@ -5,6 +5,8 @@ PRIMARY
 > Rework Graphic
 > Renderer class
 > Camera 2D / 3D
+> Memory
+> Implement new mat functions and classes
 
 =============================
 
