@@ -3,7 +3,7 @@
 namespace eng {
 
 Shader_::Shader_(uint32_t shader_program)
-: m_shader_program(shader_program)
+: Asset(AssetType::Shader), m_shader_program(shader_program)
 {}
 
 Shader_::~Shader_() {
@@ -60,6 +60,16 @@ void Shader_::set_uniform_mat3f(const std::string& varName, const math::Mat3f& m
 void Shader_::set_uniform_mat4f(const std::string& varName, const math::Mat4f& mat) const {
     int location = glGetUniformLocation(m_shader_program, varName.c_str());
     glUniformMatrix4fv(location, 1, false, mat.front_ptr());
+}
+
+void Shader_::set_uniform_mat3f(const std::string& varName, const mat::Mat3f& mat) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
+    glUniformMatrix3fv(location, 1, false, &mat(0,0));
+}
+
+void Shader_::set_uniform_mat4f(const std::string& varName, const mat::Mat4f& mat) const {
+    int location = glGetUniformLocation(m_shader_program, varName.c_str());
+    glUniformMatrix4fv(location, 1, false, &mat(0,0));
 }
 
 
@@ -134,3 +144,4 @@ bool shader_create_program(uint32_t vertex_shader, uint32_t fragment_shader, uin
 }
 
 }
+

@@ -8,6 +8,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Math/Math.hpp"
+#include "mat/Math.hpp"
 
 #include "Asset/Asset.hpp"
 
@@ -37,6 +38,9 @@ public:
 
     void set_uniform_mat3f(const std::string& varName, const math::Mat3f& mat) const;
     void set_uniform_mat4f(const std::string& varName, const math::Mat4f& mat) const;
+
+    void set_uniform_mat3f(const std::string& varName, const mat::Mat3f& mat) const;
+    void set_uniform_mat4f(const std::string& varName, const mat::Mat4f& mat) const;
 
 private:
     uint32_t m_shader_program;

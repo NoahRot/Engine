@@ -4,9 +4,8 @@ PRIMARY
 > Controller
 > Rework Graphic
 > Renderer class
-> Camera 2D / 3D
+> Camera 3D
 > Memory
-> Implement new mat functions and classes
 
 =============================
 
@@ -26,3 +25,10 @@ GENERAL
 =============================
 
 ERROR 
+
+=============================
+
+COMPLETE
+
+> Implement new mat functions and classes
+> Camera 2D

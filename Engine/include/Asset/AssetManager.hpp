@@ -31,7 +31,6 @@ class Sound_;
 class Music_;
 class Texture_;
 class Shader_;
-struct ShaderSource;
 class Font_;
 
 class AssetManager {

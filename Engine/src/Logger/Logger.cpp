@@ -90,9 +90,9 @@ void _LogCallback(LogLevel level, const std::string& sender, const std::string& 
     logger->m_listLog.push_back(LogStruct{time(0), level, sender, message});
 
     // Log in each displayer
-    for(auto& display : logger->m_displayer) {
-        if (logger->m_whichDisplay[level]) {
-            display->log(logger->m_listLog.back());
+    if (logger->m_whichDisplay[level]) {
+        for(auto& display : logger->m_displayer) {
+                display->log(logger->m_listLog.back());
         }
     }
 }

@@ -9,7 +9,8 @@ enum struct AssetType {
     Music,
     Sound,
     Texture,
-    Font
+    Font,
+    Shader
     // Texture, Font, Shader
 };
 

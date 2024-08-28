@@ -1,17 +1,25 @@
-[15:59:22] DEBUG      [Core] SDL initialize
-[15:59:22] DEBUG      [Core] MIX initialize
-[15:59:22] DEBUG      [Core] FreeType initialize
-[15:59:23] INFO       [Main] Program started
-[15:59:23] INFO       [Main] Delta time in ms : 16
-[15:59:23] INFO       [OpenGL] Version : 4.1.0 Core Profile Context 24.5.1.240502
-[15:59:23] INFO       [OpenGL] Renderer : AMD Radeon RX 6600M
-[15:59:23] INFO       [OpenGL] Shading language : 4.60
-[15:59:23] INFO       [OpenGL] Vendor : ATI Technologies Inc.
-[15:59:23] INFO       [OpenGL] Number of texture slots : 32
-[15:59:23] INFO       [OpenGL] Maximum number of attributes of a vertex : 32
-[15:59:23] DEBUG      [Asset Manager] BPP = 3
-[15:59:23] DEBUG      [DEBUG] Text generated
-[15:59:24] INFO       [Main] Mouse position, x : 234, y : 368
-[15:59:24] INFO       [Main] Mouse position, x : 278, y : 193
-[15:59:25] INFO       [Main] Mouse position, x : 585, y : 250
-[15:59:26] INFO       [Main] End programm
+[22:14:25] DEBUG      [Core] SDL initialize
+[22:14:26] DEBUG      [Core] MIX initialize
+[22:14:26] DEBUG      [Core] FreeType initialize
+[22:14:26] INFO       [Main] Program started
+[22:14:26] INFO       [Main] Delta time in ms : 16
+[22:14:26] INFO       [OpenGL] Version : 4.1.0 Core Profile Context 24.7.1.240711
+[22:14:26] INFO       [OpenGL] Renderer : AMD Radeon RX 6600M
+[22:14:26] INFO       [OpenGL] Shading language : 4.60
+[22:14:26] INFO       [OpenGL] Vendor : ATI Technologies Inc.
+[22:14:26] INFO       [OpenGL] Number of texture slots : 32
+[22:14:26] INFO       [OpenGL] Maximum number of attributes of a vertex : 32
+[22:14:26] DEBUG      [Asset Manager] BPP = 3
+[22:14:26] DEBUG      [DEBUG] Text generated
+[22:14:29] INFO       [Main] Mouse position, x : 370, y : 271
+[22:14:30] INFO       [Main] Mouse position, x : 160, y : 372
+[22:14:30] INFO       [Main] Mouse position, x : 606, y : 142
+[22:14:31] INFO       [Main] Mouse position, x : 802, y : 287
+[22:14:31] INFO       [Main] Mouse position, x : 711, y : 387
+[22:14:31] INFO       [Main] Mouse position, x : 377, y : 273
+[22:14:32] INFO       [Main] Mouse position, x : 207, y : 331
+[22:14:32] INFO       [Main] Mouse position, x : 193, y : 316
+[22:14:32] INFO       [Main] Mouse position, x : 185, y : 246
+[22:14:32] INFO       [Main] Mouse position, x : 210, y : 192
+[22:14:54] INFO       [Main] Mouse position, x : 731, y : 308
+[22:14:55] INFO       [Main] End programm

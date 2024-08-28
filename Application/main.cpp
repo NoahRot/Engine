@@ -41,9 +41,9 @@ int main(int argc, char** args) {
     eng::Index shader_index = asset_manager.load_shader("../shader/triangle.vert", "../shader/triangle.frag");
     eng::Shader shader = asset_manager.get_shader(shader_index);
 
-    math::Vec3f vecPosition({100.0f, 100.0f, 0.0f});
-    math::Mat4f displacement = math::translate3<float>(vecPosition);
-    math::Mat4f scale = math::scale3<float>(2.0f);
+    mat::Vec3f vecPosition({100.0f, 100.0f, 0.0f});
+    mat::Mat4f displacement = mat::translate3<float>(vecPosition);
+    mat::Mat4f scale = mat::scale3<float>(2.0f);
 
     eng::Camera2D camera(0, config.win_width, 0, config.win_height);
 
@@ -132,7 +132,7 @@ int main(int argc, char** args) {
             eng::quit();
         }
 
-        math::Vec3f cam_disp;
+        mat::Vec3f cam_disp;
         float cam_angle(0);
         float disp(2);
         float angle_disp(M_PI/60);
@@ -155,7 +155,7 @@ int main(int argc, char** args) {
             cam_angle -= angle_disp;
         }
         if(keyboard.key_down(SDL_SCANCODE_RETURN)) {
-            camera.set_position(math::Vec3f({0.0f, 0.0f, 0.0f}));
+            camera.set_position(mat::Vec3f({0.0f, 0.0f, 0.0f}));
             camera.set_rotation(0.0f);
         }
         camera.move_position(cam_disp);
@@ -168,13 +168,15 @@ int main(int argc, char** args) {
         // ==========
 
         timer.start_point("draw");
-        math::Mat4f vp = camera.get_view_projection();
+        mat::Mat4f vp = camera.get_view_projection();
 
         angle += angularVelocity;
-        math::Mat4f rotation = math::rotateZ(angle);
-        math::Vec3f centerPos({-50.0f, -50.0f, 0.0f});
-        math::Mat4f center = math::translate3(centerPos);
-        math::Mat4f mvp = vp*scale*displacement*rotation*center;
+        mat::Mat4f rotation = mat::rotateZ(angle);
+        mat::Vec3f centerPos({-50.0f, -50.0f, 0.0f});
+        mat::Mat4f center = mat::translate3(centerPos);
+        //mat::Mat4f mvp = mat::dot(vp, mat::dot(scale, mat::dot(displacement, mat::dot(rotation,center))));
+        mat::Mat4f d1 = mat::translate3(mat::Vec3f{-50.0f, -50.0f, 0.0f});
+        mat::Mat4f mvp = mat::dot(mat::dot(vp, scale), displacement);
         shader->bind();
         shader->set_uniform_mat4f("u_mvp", mvp);
         texture->bind(0);
@@ -187,9 +189,10 @@ int main(int argc, char** args) {
         int32_t x, y;
         mouse.mouse_position(x, y);
 
-        math::Mat4f displacement2 = math::translate3(math::Vec3f({x, y, 0.0f}));
-        center = math::translate3(math::Vec3f({-50.0f, -50.0f, 0.0f}));
-        mvp = vp*displacement2*center;
+        mat::Mat4f displacement2 = mat::translate3(mat::Vec3f({(float)x, (float)y, 0.0f}));
+        center = mat::translate3(mat::Vec3f({-50.0f, -50.0f, 0.0f}));
+        //mvp = mat::dot(mat::dot(vp, displacement2), center);
+        mvp = vp;
         shader->set_uniform_mat4f("u_mvp", mvp);
         texture2->bind(0);
 
@@ -198,8 +201,8 @@ int main(int argc, char** args) {
         //glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
         renderer.draw_vao(vao, ibo, shader);
 
-        displacement2 = math::translate3(math::Vec3f({200.0f, 200.0f, 0.0f}));
-        math::Mat4f txt_mvp = vp;
+        displacement2 = mat::translate3(mat::Vec3f{200.0f, 200.0f, 0.0f});
+        mat::Mat4f txt_mvp = vp;
         txt_shader->bind();
         txt_shader->set_uniform_mat4f("u_MVP", txt_mvp);
         text.bind_font();
@@ -230,6 +233,11 @@ int main(int argc, char** args) {
     std::cout << "TIME | Event Total, time " << timer.get_total_frame_point().get_mean_delta() << std::endl;
     
     logger.info("Main", "End programm");
+
+    mat::Mat4f m1 = mat::translate3(mat::Vec3f{20.0f, 10.0f, 5.0f});
+    math::Mat4f m2 = math::translate3(math::Vec3f({20.0f, 10.0f, 5.0f}));
+
+    std::cout << m1 << std::endl << m2 << std::endl;
 
     return 0;
 }
