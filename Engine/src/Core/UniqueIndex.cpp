@@ -12,4 +12,10 @@ UniqueIndex::operator Index() {
     return m_index;
 }
 
+Index get_unique() {
+    static uint64_t s_current(0);
+    ++s_current;
+    return s_current;
+}
+
 }

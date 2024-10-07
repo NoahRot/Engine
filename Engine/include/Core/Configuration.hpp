@@ -32,6 +32,7 @@ struct Configuration
     uint32_t win_width = 960;
     uint32_t win_height = 480;
     std::string win_name = "UNKNOW";
+    uint32_t win_flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
 
     // Timer
     uint32_t tim_fps = 60;

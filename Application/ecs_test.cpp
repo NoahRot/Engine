@@ -1,102 +1,56 @@
 #include <iostream>
 
-#include "ECS/ECS.hpp"
+#define ENG_LOG_THREAD
+
+#include "Logger/Log.hpp"
+#include "Core/Window_.hpp"
+#include "Core/Initialization.hpp"
 
 #include <cmath>
 
-typedef eng::ECS<64> ECS;
+#include <random>
+#include <chrono>
 
-struct Position {
-    float x, y;
-};
-
-struct Velocity {
-    float vx, vy;
-};
-
-struct Mass {
-    float m;
-};
-
-struct Forces {
-    float fx, fy;
-};
-
-void momentum(Velocity* v, Mass* m) {
-    std::cout << "momentum : " << sqrtf(v->vx*v->vx + v->vy*v->vy)*m->m << std::endl;
+void test_logger(eng::Logger& logger) {
+    logger.log(eng::FATAL, "Test FATAL");
+    logger.log(eng::ERROR, "Test ERROR");
+    logger.log(eng::WARNING, "Test WARNING");
+    logger.log(eng::INFO, "Test INFO");
+    logger.log(eng::DEBUG, "Test DEBUG");
+    logger.log(eng::TRACE, "Test TRACE");
 }
 
-void print_position(Position* p) {
-    std::cout << "position : " << p->x << ", " << p->y << std::endl;
-}
-
-void gravity(Forces* f) {
-    f->fy += -9.81;
-}
-
-void force_init(Forces* f) {
-    f->fx = 0;
-    f->fy = 0;
-}
-
-float get_time() {
-    return 0.5f;
-}
-
-void newton(Position* p, Velocity* v, Forces* f) {
-    float t = get_time();
-
-    v->vx += f->fx*t;
-    v->vy += f->fy*t;
-
-    p->x += v->vx*t;
-    p->y += v->vy*t;
-}
-
-void print_mask(ECS& ecs) {
-    auto l = ecs.list_mask();
-
-    for (auto i : l) {
-        std::cout << "Bitmask : " << ecs.to_string(i.first) << ", nbr element : " << i.second << std::endl; 
-    }
-}
-
-int main() {
+int main(int argc, char* argv[]) {
     std::cout << "Begin program" << std::endl;
 
-    ECS ecs;
-
-    ecs.register_component<Position>();
-    ecs.register_component<Velocity>();
-    ecs.register_component<Mass>();
-    ecs.register_component<Forces>();
-
-    ECS::EntityID ent1 = ecs.create_entity();
-    ecs.give_component(ent1, Position{1,2});
-    ecs.give_component(ent1, Velocity{0,0});
-    ecs.give_component(ent1, Mass{3});
-
-    ECS::EntityID ent2 = ecs.create_entity();
-    ecs.give_component(ent2, Position{0,0});
-    ecs.give_component(ent2, Velocity{1,0});
-    ecs.give_component(ent2, Mass{5});
-    ecs.give_component(ent2, Forces{0,0});
-
-    ECS::EntityID ent3 = ecs.create_entity();
-    ecs.give_component(ent3, Position{5,5});
-
-    auto l1 = ecs.list_mask();
-    for (auto i : l1) {
-        std::cout << "Bitmask : " << ecs.to_string(i.first) << ", # element = " << i.second << std::endl;
+    eng::Logger logger;
+    if (logger.init(true, false, "log_file")) {
+        test_logger(logger);
+    }else{
+        std::cout << "FATAL::Can not init logger" << std::endl;
+        exit(EXIT_FAILURE);
     }
 
-    ecs.erase_empty_arena(true);
-
-    l1 = ecs.list_mask();
-    for (auto i : l1) {
-        std::cout << "Bitmask : " << ecs.to_string(i.first) << ", # element = " << i.second << std::endl;
+    if (!eng::init(&logger)) {
+        logger.log(eng::FATAL, "Can not initialize ENGINE");
+        exit(EXIT_FAILURE);
     }
 
+    // Window
+
+    eng::Window window("DEMO", 1000, 800);
+    if (!window.init(&logger)) {
+        logger.log(eng::FATAL, "Can not create window");
+        exit(EXIT_FAILURE);
+    }
+
+    SDL_Delay(1000);
+
+    window.quit();
+
+    eng::quit();
+    logger.quit();
+    
     std::cout << "End program" << std::endl;
 
     return 0;

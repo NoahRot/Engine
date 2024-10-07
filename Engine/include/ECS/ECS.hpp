@@ -233,6 +233,11 @@ public:
     /// @return An EntitySpec object containing the bitmask and the position
     EntitySpec get_entity_specification(EntityID ent);
 
+    /// @brief Check if an entity is valid
+    /// @param ent The entity index
+    /// @return True if the entity is valid
+    bool valid_entity(EntityID ent);
+
     /* =====
        Utils 
        ===== */
@@ -738,6 +743,11 @@ void ECS<MAX_COMPONENT>::remove_component(EntityID ent) {
 template<uint32_t MAX_COMPONENT>
 typename ECS<MAX_COMPONENT>::EntitySpec ECS<MAX_COMPONENT>::get_entity_specification(EntityID ent) {
     return m_entity_spec[ent];
+}
+
+template<uint32_t MAX_COMPONENT>
+bool ECS<MAX_COMPONENT>::valid_entity(EntityID ent) {
+    return m_entity_spec.find(ent) != m_entity_spec.end();
 }
 
 template<uint32_t MAX_COMPONENT>
