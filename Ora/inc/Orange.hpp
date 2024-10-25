@@ -16,3 +16,7 @@
 #pragma once
 
 #include "Engine/Engine.hpp"
+
+#include "Graphic/VertexArray.hpp"
+#include "Graphic/VertexBuffer.hpp"
+#include "Graphic/IndexBuffer.hpp"

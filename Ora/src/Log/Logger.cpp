@@ -1,8 +1,11 @@
 #include "Log/Logger.hpp"
 
+ora::LogState ora::Logger::s_state = 0b11111111;
+std::string ora::Logger::s_log_file_path = "UNKNOWN.log";
+
 namespace ora {
 
-void _log_callback(LogLevel level, const std::string& message, bool cmd, bool txt, std::ofstream& stream) {
+void _log_callback(LogLevel level, const std::string& message, bool cmd, bool txt, std::ofstream* stream) {
     // Create log string and take the time of the log
     std::string log_lvl;
     std::string color_lvl;
@@ -49,16 +52,17 @@ void _log_callback(LogLevel level, const std::string& message, bool cmd, bool tx
     
     // Txt Display
     if (txt) {
-        stream << time_str << " " << log_lvl << " : " << message << "\n";
+        *stream << time_str << " " << log_lvl << " : " << message << "\n";
     }
 }
 
 Logger::Logger(const std::string& log_file_path)
 : m_state(0b11111111)
 {
-    m_log_file.open(log_file_path);
+    m_log_file = new std::ofstream;
+    m_log_file->open(log_file_path);
 
-    if (!m_log_file.is_open()) {
+    if (!m_log_file->is_open()) {
         set_display_txt(false);
 
         log(Error, "Logger can not open log file. Log file path : " + log_file_path);
@@ -70,9 +74,10 @@ Logger::Logger(const std::string& log_file_path)
 Logger::Logger(LogState state, const std::string& log_file_path)
 : m_state(state)
 {
-    m_log_file.open(log_file_path);
+    m_log_file = new std::ofstream;
+    m_log_file->open(log_file_path);
 
-    if (!m_log_file.is_open()) {
+    if (!m_log_file->is_open()) {
         set_display_txt(false);
 
         log(Error, "Logger can not open log file. Log file path : " + log_file_path);
@@ -82,9 +87,20 @@ Logger::Logger(LogState state, const std::string& log_file_path)
 }
 
 Logger::~Logger() {
-    m_log_file.close();
-
     log(ora::Info, "Logger destroyed");
+
+    m_log_file->close();
+    delete m_log_file;
+}
+
+void Logger::init(LogState state, const std::string& log_file_path) {
+    s_state = state;
+    s_log_file_path = log_file_path;
+}
+
+const Logger& Logger::instance() {
+    static Logger s_instance = Logger(s_state, s_log_file_path);
+    return s_instance;
 }
 
 void Logger::set_display_cmd(bool state) {
@@ -92,7 +108,7 @@ void Logger::set_display_cmd(bool state) {
 }
 
 void Logger::set_display_txt(bool state) {
-    if (state && !m_log_file.is_open()){
+    if (state && !m_log_file->is_open()){
         log(Error, "Logger file has not been open, thus can not write in it.");
         return;
     }
@@ -100,7 +116,7 @@ void Logger::set_display_txt(bool state) {
 }
 
 void Logger::set_level(LogLevel level, bool state) {
-    if (state && (level & DispTXT) == DispTXT && !m_log_file.is_open()){
+    if (state && (level & DispTXT) == DispTXT && !m_log_file->is_open()){
         log(Error, "Logger file has not been open, thus can not write in it.");
         return;
     }
@@ -115,10 +131,15 @@ LogState Logger::get_state() const {
     return m_state;
 }
 
-void Logger::log(LogLevel level, const std::string& message) {
+void Logger::log(LogLevel level, const std::string& message) const {
     if ((m_state &  level) == level){
         _log_callback(level, message, (m_state & DispCMD) == DispCMD, (m_state & DispTXT) == DispTXT, m_log_file);
     }
+}
+
+const Logger& _init_logger(LogState state, const std::string& log_file_path) {
+    Logger::init(state, log_file_path);
+    return Logger::instance();
 }
 
 }

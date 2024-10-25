@@ -7,6 +7,12 @@ Timer::Timer(uint32_t fps)
 {
     m_fps = fps;
     m_millisecond_per_frame = 1000/m_fps;
+
+    Logger::instance().log(Info, "Timer created");
+}
+
+Timer::~Timer() {
+    Logger::instance().log(Info, "Timer destroyed");
 }
 
 uint32_t Timer::get_delta_time() {

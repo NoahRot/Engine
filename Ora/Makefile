@@ -4,7 +4,7 @@
 
 # Define compilator and flags
 CC = g++
-CFLAGS = -std=c++20 -Wall -pedantic -g -pthread
+CFLAGS = -std=c++20 -Wall -pedantic -g -pthread -O2 -ftree-vectorize -march=native -DDEBUG
 SHARED = -shared
 NO_WIN = -mwindows
 

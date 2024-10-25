@@ -2,10 +2,14 @@
 
 namespace ora {
 
-Event::Event(Logger* logger)
+Event::Event()
 : m_quit(false)
 {
-    logger->log(ora::Info, "Event created");
+    Logger::instance().log(Info, "Event created");
+}
+
+Event::~Event() {
+    Logger::instance().log(Info, "Event destroyed");
 }
 
 void Event::manage() {

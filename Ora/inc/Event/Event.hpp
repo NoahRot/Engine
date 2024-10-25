@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <iostream>
 
 #include "Event/Keyboard.hpp"
 #include "Event/Mouse.hpp"
@@ -10,7 +11,9 @@ namespace ora {
 
 class Event {
 public:
-    Event(Logger* logger);
+    Event();
+
+    ~Event();
 
     void manage();
 

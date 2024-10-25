@@ -1,8 +1,11 @@
 #pragma once
 
 #include <inttypes.h>
+#include <iostream>
 
 #include <SDL2/SDL.h>
+
+#include "Log/Logger.hpp"
 
 namespace ora {
 
@@ -10,6 +13,9 @@ class Timer {
 public:
     /// @brief Constructor
     Timer(uint32_t fps);
+
+    /// @brief Destructor
+    ~Timer();
 
     /// @brief Get the time for each frame in millisecond
     /// @return The number of millisecond per frame

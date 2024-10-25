@@ -6,21 +6,9 @@
 #include <fstream>
 #include <ctime>
 
+#include "Log/LogLevel.hpp"
+
 namespace ora {
-
-/// @brief Level of log and display modes
-enum LogLevel {
-    // Levels
-    Fatal   = 0b00000001,
-    Error   = 0b00000010,
-    Warning = 0b00000100,
-    Info    = 0b00001000,
-    Debug   = 0b00010000,
-
-    //Display modes
-    DispCMD = 0b00100000,
-    DispTXT = 0b01000000
-};
 
 /// @brief State of the log class
 typedef uint8_t LogState;
@@ -36,17 +24,12 @@ void _log_callback(LogLevel level, const std::string& message, bool cmd, bool tx
 /// @brief Logger class
 class Logger {
 public:
-    /// @brief Constructor
-    /// @param log_file_path Path to the log file 
-    Logger(const std::string& log_file_path);
-
-    /// @brief Constructor
-    /// @param state State of the log class
-    /// @param log_file_path Path to the log file
-    Logger(LogState state, const std::string& log_file_path);
-
     /// @brief Destructor
     ~Logger();
+
+    static void init(LogState state, const std::string& log_file_path);
+
+    static const Logger& instance();
 
     /// @brief Set display in CMD
     /// @param state True for display in CMD
@@ -73,14 +56,28 @@ public:
     /// @brief Log a message
     /// @param level Level of the log
     /// @param message Message of the log
-    void log(LogLevel level, const std::string& message);
+    void log(LogLevel level, const std::string& message) const;
 
 private:
+    /// @brief Constructor
+    /// @param log_file_path Path to the log file 
+    Logger(const std::string& log_file_path);
+
+    /// @brief Constructor
+    /// @param state State of the log class
+    /// @param log_file_path Path to the log file
+    Logger(LogState state, const std::string& log_file_path);
+
     /// @brief Current state of the log class
     LogState m_state;
 
     /// @brief Log file
-    std::ofstream m_log_file;
+    std::ofstream* m_log_file;
+
+    static LogState s_state;
+    static std::string s_log_file_path;
 };
+
+const Logger& _init_logger(LogState state, const std::string& log_file_path);
 
 }

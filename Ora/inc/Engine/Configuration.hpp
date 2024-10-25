@@ -2,12 +2,16 @@
 
 #include <string>
 #include <inttypes.h>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 namespace ora {
 
-struct InitializationList
+struct Configuration
 {
     // Logger parameters
 
@@ -25,6 +29,14 @@ struct InitializationList
     // Timer parameter
 
     uint32_t tim_fps = 60;
+
+    // Audio parameters
+
+    int32_t aud_mix_flags = MIX_INIT_FLAC|MIX_INIT_MOD|MIX_INIT_MP3|MIX_INIT_OGG|MIX_INIT_MID|MIX_INIT_OPUS;
+    int32_t aud_frequency = 22050;
+    uint16_t aud_format = 0x8010;
+    int32_t aud_channels = 2;
+    int32_t aud_chunksize = 1024;
 
 };
 

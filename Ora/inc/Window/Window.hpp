@@ -20,7 +20,7 @@ public:
     /// @param sdl_flags SDL flags
     /// @param win_flags SDL window flags
     /// @param logger Pointer to the logger class
-    Window(uint32_t width, uint32_t height, std::string title, uint32_t sdl_flags, uint32_t win_flags, Logger* logger);
+    Window(uint32_t width, uint32_t height, std::string title, uint32_t sdl_flags, uint32_t win_flags);
 
     /// @brief Destructor
     ~Window();
