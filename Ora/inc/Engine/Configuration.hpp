@@ -38,6 +38,9 @@ struct Configuration
     int32_t aud_channels = 2;
     int32_t aud_chunksize = 1024;
 
+    // Texture parameters
+
+    bool tex_pixel_perfect = true;
 };
 
 }

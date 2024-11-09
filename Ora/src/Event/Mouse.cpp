@@ -2,7 +2,9 @@
 
 namespace ora {
 
-Mouse::Mouse() {
+Mouse::Mouse() 
+: m_window_height(0)
+{
     m_button_down.fill(false);
     m_button_press.fill(false);
     m_button_up.fill(false);
@@ -35,6 +37,7 @@ void Mouse::mouse_position(int32_t& x, int32_t& y) const {
 
 void Mouse::reset() {
     SDL_GetMouseState(&m_mouse_x, &m_mouse_y);
+    m_mouse_y = m_window_height - m_mouse_y;
 
     m_button_down.fill(false);
     m_button_up.fill(false);
@@ -48,6 +51,10 @@ void Mouse::manage_down(uint8_t button) {
 void Mouse::manage_up(uint8_t button) {
     m_button_up[button] = true;
     m_button_press[button] = false;
+}
+
+void Mouse::set_window_height(int32_t height) {
+    m_window_height = height;
 }
 
 }

@@ -20,3 +20,6 @@
 #include "Graphic/VertexArray.hpp"
 #include "Graphic/VertexBuffer.hpp"
 #include "Graphic/IndexBuffer.hpp"
+#include "Graphic/Camera2D.hpp"
+
+#include "mat/Math.hpp"

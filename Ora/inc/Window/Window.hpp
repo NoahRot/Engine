@@ -36,6 +36,16 @@ public:
     /// @brief Swap window buffer. Present the new frame.
     void present() const;
 
+    /// @brief Set the clear color of the window
+    /// @param r Red
+    /// @param g Green
+    /// @param b Blue
+    /// @param a Alpha
+    void set_clear_color(float r, float g, float b, float a = 1.0f) const;
+
+    /// @brief Clear the window
+    void clear_window() const;
+
 private:
     /// @brief Width of the window
     uint32_t m_width;

@@ -27,6 +27,8 @@ public:
 
     void set_index_buffer(IndexBuffer* index_buffer);
 
+    uint32_t get_index_buffer_size() const;
+
 private:
     uint32_t m_index;
 

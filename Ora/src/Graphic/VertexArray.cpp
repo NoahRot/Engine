@@ -67,4 +67,8 @@ void VertexArray::set_index_buffer(IndexBuffer* index_buffer) {
     m_index_buffer = index_buffer;
 }
 
+uint32_t VertexArray::get_index_buffer_size() const {
+    return m_index_buffer->size();
+}
+
 }

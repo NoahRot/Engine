@@ -1,0 +1,9 @@
+- Text manager
+- Renderer2D
+- Finish and/or rework Camera2D 
+- Manage Joystick
+
+- Camera3D
+- Renderer3D
+
+- GUI

@@ -7,11 +7,13 @@
 #include "Event/Mouse.hpp"
 #include "Log/Logger.hpp"
 
+#include "Window/Window.hpp"
+
 namespace ora {
 
 class Event {
 public:
-    Event();
+    Event(Window* window);
 
     ~Event();
 

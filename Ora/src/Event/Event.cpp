@@ -2,10 +2,12 @@
 
 namespace ora {
 
-Event::Event()
+Event::Event(Window* window)
 : m_quit(false)
 {
     Logger::instance().log(Info, "Event created");
+
+    m_mouse.set_window_height(window->get_height());
 }
 
 Event::~Event() {

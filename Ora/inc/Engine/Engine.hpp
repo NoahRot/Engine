@@ -9,6 +9,7 @@
 #include "Event/Event.hpp"
 #include "Audio/AudioManager.hpp"
 #include "Graphic/Shader.hpp"
+#include "Graphic/Texture.hpp"
 
 namespace ora {
 
@@ -23,6 +24,7 @@ struct OrangeEngine {
     Timer timer;
     AudioManager audio_manager;
     ShaderManager shader_manager;
+    TextureManager texture_manager;
 };
 
 }

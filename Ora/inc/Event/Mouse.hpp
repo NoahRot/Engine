@@ -37,6 +37,8 @@ public:
 
     void manage_up(uint8_t button);
 
+    void set_window_height(int32_t height);
+
 private:
     std::array<bool, MOUSE_BUTTON_COUNT> m_button_down;
     std::array<bool, MOUSE_BUTTON_COUNT> m_button_up;
@@ -44,6 +46,8 @@ private:
 
     int32_t m_mouse_x;
     int32_t m_mouse_y;
+
+    int32_t m_window_height;
 };
 
 }
