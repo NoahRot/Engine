@@ -10,6 +10,7 @@
 #include "Audio/AudioManager.hpp"
 #include "Graphic/Shader.hpp"
 #include "Graphic/Texture.hpp"
+#include "Graphic/Font.hpp"
 
 namespace ora {
 
@@ -25,6 +26,7 @@ struct OrangeEngine {
     AudioManager audio_manager;
     ShaderManager shader_manager;
     TextureManager texture_manager;
+    FontManager font_manager;
 };
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "inttypes.h"
+#include <cmath>
 
 namespace mat {
 
@@ -32,6 +33,10 @@ template<typename T>
 inline T quintic_interpolation(T a, T b, float t) {
     float fade(fade_function_5(t));
     return (1.0f-fade)*a + fade*b;
+}
+
+inline float sigmoid(float x) {
+    return 2/(1 + expf(-x)) - 1;
 }
 
 }

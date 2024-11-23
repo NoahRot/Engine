@@ -5,11 +5,11 @@
 //                       |___/               |___/            
 
 /**
- * @author N. Rotunno
+ * @author Noah ROTUNNO
  * @version 0.1
  * @date 21.20.2024
  * 
- * Orange engine is a library base on SDL2 and OpenGL. It provide tools to create games
+ * Orange engine is a library based on SDL2 and OpenGL. It provide tools to create 2D games.
  */
 
 
@@ -21,5 +21,6 @@
 #include "Graphic/VertexBuffer.hpp"
 #include "Graphic/IndexBuffer.hpp"
 #include "Graphic/Camera2D.hpp"
+#include "Graphic/Text.hpp"
 
 #include "mat/Math.hpp"

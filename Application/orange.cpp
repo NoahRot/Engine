@@ -45,18 +45,11 @@ int main(int argc, char** args) {
     ora::VertexArray VAO_Background;
     VAO_Background.unbind();
     {
-        /*std::vector<float> vertices = {
-            -1.0f, -1.0f, -0.99f,    // Bottom left
-             1.0f, -1.0f, -0.99f,    // Bottom right
-             1.0f,  1.0f, -0.99f,    // Top right
-            -1.0f,  1.0f, -0.99f,    // Top left
-        };*/
-
-        float vertices[] = {
-            0.0f, 0.0f, -0.99f,    // Bottom left
-            0.0f, (float)eng.window.get_height(), -0.99f,    // Bottom right
-            (float)eng.window.get_width(),  (float)eng.window.get_height(), -0.99f,    // Top right
-            (float)eng.window.get_width(),  0.0f, -0.99f,    // Top left
+        std::vector<float> vertices = {
+            0.0f,                           0.0f,                           -1.0f,    // Bottom left
+            0.0f,                           (float)eng.window.get_height(), -1.0f,    // Bottom right
+            (float)eng.window.get_width(),  (float)eng.window.get_height(), -1.0f,    // Top right
+            (float)eng.window.get_width(),  0.0f,                           -1.0f,    // Top left
         };
 
         std::vector<uint32_t> indices = {
@@ -64,7 +57,7 @@ int main(int argc, char** args) {
             2, 3, 0
         };
 
-        VBO_Background = new ora::VertexBuffer(&vertices, sizeof(vertices));
+        VBO_Background = new ora::VertexBuffer(&vertices.front(), sizeof(float)*vertices.size());
         IBO_Background = new ora::IndexBuffer(indices);
         ora::VertexAttribLayout layout;
         layout.add_float(3);
@@ -148,11 +141,43 @@ int main(int argc, char** args) {
 
     ora::Camera2D camera(&eng.window, false);
 
-    ora::Chrono chrono;
-    chrono.set_time_point();
-
     mat::Vec3f mouse_tmp_position{0.0f, 0.0f, 0.0f};
     mat::Vec3f cam_pos_0{0.0f, 0.0f, 0.0f};
+
+    uint32_t font = eng.font_manager.load_font("../asset/font/OpenSans.ttf", 30);
+    if (font == ora::UNVALID_32) {
+        eng.logger.log(ora::Error, "Can not load font");
+        exit(EXIT_FAILURE);
+    }
+
+    VAO.unbind();
+
+    std::vector<ora::VertexText> txt_vertex;
+    std::vector<uint32_t> txt_index;
+    ora::create_text("Hello Orange", eng.font_manager.get_font(font), 255, 125, 0, txt_vertex, txt_index);
+
+    ora::VertexBuffer* VBO_txt = new ora::VertexBuffer(&txt_vertex.front(), sizeof(ora::VertexText)*txt_vertex.size());
+    ora::IndexBuffer* EBO_txt = new ora::IndexBuffer(txt_index);
+    ora::VertexAttribLayout layout_txt;
+    layout_txt.add_float(3);
+    layout_txt.add_float(2);
+    layout_txt.add_float(3);
+    ora::VertexArray VAO_txt;
+    VAO_txt.bind();
+    VAO_txt.add_vertex_buffer(VBO_txt, layout_txt);
+    VAO_txt.set_index_buffer(EBO_txt);
+    uint32_t shader_txt = eng.shader_manager.load_shader("../shader/Text.vert", "../shader/Text.frag");
+    if (shader_txt == ora::UNVALID_32) {
+        eng.logger.log(ora::Error, "Can not load text shader");
+        exit(EXIT_FAILURE);
+    }
+
+    // Enable blend
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    ora::Chrono chrono;
+    chrono.set_time_point();
 
     while(!eng.event.is_quitting()) {
 
@@ -222,6 +247,15 @@ int main(int argc, char** args) {
         VAO_Background.bind();
         VAO_Background.bind_index();
         glDrawElements(GL_TRIANGLES, IBO_Background->size(), GL_UNSIGNED_INT, 0);
+
+
+        mat::Mat4f displacement_txt = mat::translate3(mat::Vec3f{200, 200, 0});
+        eng.shader_manager.use_shader(shader_txt);
+        eng.shader_manager.set_unif_mat4f(shader_txt, "u_MVP", mat::dot(camera.get_proj(), displacement_txt));
+        eng.font_manager.bind_texture(font);
+        VAO_txt.bind();
+        VAO_txt.bind_index();
+        glDrawElements(GL_TRIANGLES, EBO_txt->size(), GL_UNSIGNED_INT, 0);
 
 
         eng.shader_manager.use_shader(shader);

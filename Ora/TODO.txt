@@ -1,9 +1,14 @@
-- Text manager
+================ TODO ================
 - Renderer2D
 - Finish and/or rework Camera2D 
 - Manage Joystick
+- Serialisation
+- Batch renderer
 
 - Camera3D
 - Renderer3D
 
 - GUI
+
+================ DONE ================
+- Text manager
