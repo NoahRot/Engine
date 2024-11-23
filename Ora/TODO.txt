@@ -1,14 +1,17 @@
 ================ TODO ================
-- Renderer2D
 - Finish and/or rework Camera2D 
 - Manage Joystick
 - Serialisation
-- Batch renderer
+- Instancing
+- Texture Atlas
 
 - Camera3D
 - Renderer3D
+- Create my own data file
 
 - GUI
 
 ================ DONE ================
 - Text manager
+- Renderer2D
+- Batch renderer

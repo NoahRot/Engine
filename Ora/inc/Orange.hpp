@@ -22,5 +22,8 @@
 #include "Graphic/IndexBuffer.hpp"
 #include "Graphic/Camera2D.hpp"
 #include "Graphic/Text.hpp"
+#include "Graphic/Renderer.hpp"
+
+#include "Memory/Batching.hpp"
 
 #include "mat/Math.hpp"

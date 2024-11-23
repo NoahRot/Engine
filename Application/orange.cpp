@@ -20,8 +20,10 @@ int main(int argc, char** args) {
 
     ora::OrangeEngine eng(init);
 
+    ora::Renderer renderer(&eng.shader_manager);
+
     // Set clear color
-    eng.window.set_clear_color(0.05f, 0.1f, 0.2f);
+    renderer.set_clear_color(0.05f, 0.1f, 0.2f);
 
     // Create shader
     uint32_t shader = eng.shader_manager.load_shader("../shader/test.vert", "../shader/test.frag");
@@ -46,10 +48,10 @@ int main(int argc, char** args) {
     VAO_Background.unbind();
     {
         std::vector<float> vertices = {
-            0.0f,                           0.0f,                           -1.0f,    // Bottom left
-            0.0f,                           (float)eng.window.get_height(), -1.0f,    // Bottom right
-            (float)eng.window.get_width(),  (float)eng.window.get_height(), -1.0f,    // Top right
-            (float)eng.window.get_width(),  0.0f,                           -1.0f,    // Top left
+            0.0f,                           0.0f,                           0.99f,    // Bottom left
+            0.0f,                           (float)eng.window.get_height(), 0.99f,    // Bottom right
+            (float)eng.window.get_width(),  (float)eng.window.get_height(), 0.99f,    // Top right
+            (float)eng.window.get_width(),  0.0f,                           0.99f,    // Top left
         };
 
         std::vector<uint32_t> indices = {
@@ -144,7 +146,7 @@ int main(int argc, char** args) {
     mat::Vec3f mouse_tmp_position{0.0f, 0.0f, 0.0f};
     mat::Vec3f cam_pos_0{0.0f, 0.0f, 0.0f};
 
-    uint32_t font = eng.font_manager.load_font("../asset/font/OpenSans.ttf", 30);
+    uint32_t font = eng.font_manager.load_font("../asset/font/OpenSans.ttf", 40);
     if (font == ora::UNVALID_32) {
         eng.logger.log(ora::Error, "Can not load font");
         exit(EXIT_FAILURE);
@@ -154,27 +156,36 @@ int main(int argc, char** args) {
 
     std::vector<ora::VertexText> txt_vertex;
     std::vector<uint32_t> txt_index;
-    ora::create_text("Hello Orange", eng.font_manager.get_font(font), 255, 125, 0, txt_vertex, txt_index);
 
-    ora::VertexBuffer* VBO_txt = new ora::VertexBuffer(&txt_vertex.front(), sizeof(ora::VertexText)*txt_vertex.size());
-    ora::IndexBuffer* EBO_txt = new ora::IndexBuffer(txt_index);
-    ora::VertexAttribLayout layout_txt;
-    layout_txt.add_float(3);
-    layout_txt.add_float(2);
-    layout_txt.add_float(3);
-    ora::VertexArray VAO_txt;
-    VAO_txt.bind();
-    VAO_txt.add_vertex_buffer(VBO_txt, layout_txt);
-    VAO_txt.set_index_buffer(EBO_txt);
     uint32_t shader_txt = eng.shader_manager.load_shader("../shader/Text.vert", "../shader/Text.frag");
     if (shader_txt == ora::UNVALID_32) {
         eng.logger.log(ora::Error, "Can not load text shader");
         exit(EXIT_FAILURE);
     }
 
+    ora::VertexAttribLayout layout_txt;
+    layout_txt.add_float(3);
+    layout_txt.add_float(2);
+    layout_txt.add_float(3);
+
+    ora::Batch<ora::VertexText> batch_txt;
+
+    ora::create_text("Orange Engine", eng.font_manager.get_font(font), 255, 125, 0, txt_vertex, txt_index);
+    batch_txt.add(txt_vertex, txt_index);
+
+    ora::create_text("Batch testing", eng.font_manager.get_font(font), 255, 125, 0, txt_vertex, txt_index);
+    for (auto& i : txt_vertex) {
+        i.x += 300;
+        i.y -= 100;
+    }
+    batch_txt.add(txt_vertex, txt_index);
+
+    batch_txt.set_shader(shader_txt);
+    batch_txt.generate(layout_txt);
+
     // Enable blend
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    renderer.set_blend(true);
+    renderer.set_depth_test(true);
 
     ora::Chrono chrono;
     chrono.set_time_point();
@@ -234,7 +245,7 @@ int main(int argc, char** args) {
         }
 
         // Clear window
-        eng.window.clear_window();
+        renderer.clear();
 
         // Update
         mat::Mat4f model = ora::model_matrix(transform); 
@@ -244,27 +255,20 @@ int main(int argc, char** args) {
         eng.shader_manager.use_shader(shader_Background);
         eng.shader_manager.set_unif_mat4f(shader_Background, "u_Proj", camera.get_proj());
         eng.shader_manager.set_unif_3f(shader_Background, "u_cam_position", camera.get_position());
-        VAO_Background.bind();
-        VAO_Background.bind_index();
-        glDrawElements(GL_TRIANGLES, IBO_Background->size(), GL_UNSIGNED_INT, 0);
-
-
-        mat::Mat4f displacement_txt = mat::translate3(mat::Vec3f{200, 200, 0});
-        eng.shader_manager.use_shader(shader_txt);
-        eng.shader_manager.set_unif_mat4f(shader_txt, "u_MVP", mat::dot(camera.get_proj(), displacement_txt));
-        eng.font_manager.bind_texture(font);
-        VAO_txt.bind();
-        VAO_txt.bind_index();
-        glDrawElements(GL_TRIANGLES, EBO_txt->size(), GL_UNSIGNED_INT, 0);
+        renderer.draw(VAO_Background);
 
 
         eng.shader_manager.use_shader(shader);
         eng.shader_manager.set_unif_mat4f(shader, "u_MVP", mvp);
         eng.texture_manager.bind_texture(texture, 0);
-        VAO.bind(); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        VAO.bind_index();
-        glDrawElements(GL_TRIANGLES, VAO.get_index_buffer_size(), GL_UNSIGNED_INT, 0);
+        renderer.draw(VAO);
 
+
+        mat::Mat4f displacement_txt = mat::translate3(mat::Vec3f{50.0f, 200.0f, -1.0f});
+        eng.shader_manager.use_shader(batch_txt.get_shader());
+        eng.shader_manager.set_unif_mat4f(batch_txt.get_shader(), "u_MVP", mat::dot(camera.get_proj(), displacement_txt));
+        eng.font_manager.bind_texture(font);
+        renderer.draw(batch_txt);
         
         chrono.accumulate();
         
