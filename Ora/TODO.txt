@@ -4,10 +4,12 @@
 - Serialisation
 - Instancing
 - Texture Atlas
+- Mouse wheele
 
 - Camera3D
 - Renderer3D
 - Create my own data file
+- Scene manager
 
 - GUI
 
@@ -15,3 +17,4 @@
 - Text manager
 - Renderer2D
 - Batch renderer
+- Sprite Sheet

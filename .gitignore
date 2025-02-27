@@ -64,3 +64,6 @@ Engine.code-workspace
 # Directory
 /.vscode
 /doc/Tex/img/
+
+# Specific file format
+*.ora_data

@@ -11,7 +11,6 @@ public:
     Camera2D(Window* window, bool rotate) 
     :   m_orthographic(mat::orthographic3<float>(0.0f, window->get_width(), 0.0f, window->get_height(), 1.0f, -1.0f)), 
         m_position({0.0f, 0.0f, 0.0f}),
-        m_centre({0.5f*window->get_width(), 0.5f*window->get_height(), 0.0f}),
         m_rotation(0.0f),
         m_rotate(rotate)
     {}
@@ -50,9 +49,9 @@ public:
 
     mat::Mat4f get_view() const {
         if (m_rotate) {
-            return mat::dot(mat::translate3<float>(m_position + m_centre), mat::rotateZ<float>(m_rotation));
+            return mat::dot(mat::translate3<float>(m_position), mat::rotateZ<float>(m_rotation));
         }else{
-            return mat::translate3<float>(m_position + m_centre);
+            return mat::translate3<float>(m_position);
         }
     }
 
@@ -63,7 +62,6 @@ public:
 private:
     mat::Mat4f m_orthographic;
     mat::Vec3f m_position;
-    mat::Vec3f m_centre;
     float m_rotation;
     bool m_rotate;
 };

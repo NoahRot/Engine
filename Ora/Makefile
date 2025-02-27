@@ -21,6 +21,7 @@ DIR_BIN = bin
 DIR_INC = inc
 DIR_OBJ = $(DIR_BIN)\obj
 DIR_EXT = $(DIR_INC)\External
+DIR_TEST = test
 
 LIBRARY = -L lib -lOrange -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lfreetype # ATTENTION A L'ORDRE DES INCLUSION DES LIBRAIRIES
 INCLUDES = -I $(DIR_INC) -I $(DIR_EXT)
@@ -40,6 +41,10 @@ COBJECT = $(foreach OBJ, $(OBJECT), $(DIR_OBJ)/$(notdir $(OBJ)))
 
 # Modules
 MODULE = $(subst /.,,$(subst $(DIR_SRC)/,,$(SUB_DIR)))
+
+# Test
+TEST_FILE = $(wildcard $(DIR_TEST)/*.cpp)
+EXTENSION_EXE = exe
 
 # Define new line command
 define \n
@@ -80,13 +85,26 @@ $(MODULE):
 	@echo Module $@ compilation : SUCCESS
 
 # ===========================================================
-# CLEAR OBJECT FILES,, THE STATIC AND THE DYNAMIC LIBRARIES
+# CLEAR OBJECT FILES, THE STATIC AND THE DYNAMIC LIBRARIES
 # ===========================================================
 clear:
 	$(RM) $(DIR_OBJ)\*.o
 	$(RM) $(DIR_LIB)\$(ENGINE_NAME).lib
 	$(RM) $(DIR_BIN_PROJECT)\$(ENGINE_NAME).dll
 	$(RM) $(DIR_BIN)\$(ENGINE_NAME).dll
+	$(RM) $(DIR_BIN)\*.exe
+
+# ===========================================================
+# COMPILE ALL TEST FILES
+# ===========================================================
+testing:
+	$(foreach FILE, $(TEST_FILE), $(CC) $(CFLAGS) -o $(DIR_BIN)\$(notdir $(basename $(FILE))).$(EXTENSION_EXE) $(FILE) $(GLAD_SRC) $(INCLUDES) $(LIBRARY) ${\n})
+
+# ===========================================================
+# COMPILE ONE TEST FILE
+# ===========================================================
+$(notdir $(TEST_FILE)):
+	$(CC) $(CFLAGS) -o $(DIR_BIN)\$(basename $@).$(EXTENSION_EXE) $(DIR_TEST)\$@ $(GLAD_SRC) $(INCLUDES) $(LIBRARY)
 
 # ===========================================================
 # PRINT HELP FUNCTIONS FOR THE USER
@@ -98,3 +116,6 @@ help:
 	@echo + "Module" : Compile a module. Here is the list of all the modules:
 	$(foreach MODE,$(MODULE), @echo   - $(MODE)${\n})
 	@echo + clear : Delete the object files, the static and the dynamic library 
+	@echo + testing : Compile all test files in the test directory
+	@echo + "Test" : Compile one test program. Here is the list of the test program:
+	$(foreach T, $(notdir $(TEST_FILE)), @echo   - $(T)${\n})

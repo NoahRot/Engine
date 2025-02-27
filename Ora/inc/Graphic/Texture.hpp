@@ -21,7 +21,6 @@ struct Texture
     int32_t bpp;
 };
     
-
 class TextureManager {
 public:
     TextureManager(bool pixel_perfect);
@@ -39,6 +38,10 @@ public:
     void unbind_texture();
 
     uint32_t get_texture_openg_gl_id(uint32_t ora_id);
+
+    const Texture& get_texture(uint32_t texture) {
+        return m_textures[texture];
+    }
 
 private:
     VectorContinuous<Texture> m_textures;

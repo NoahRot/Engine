@@ -16,6 +16,7 @@
 #pragma once
 
 #include "Engine/Engine.hpp"
+#include "Engine/Configuration.hpp"
 
 #include "Graphic/VertexArray.hpp"
 #include "Graphic/VertexBuffer.hpp"
@@ -23,6 +24,7 @@
 #include "Graphic/Camera2D.hpp"
 #include "Graphic/Text.hpp"
 #include "Graphic/Renderer.hpp"
+#include "Graphic/SpriteSheet.hpp"
 
 #include "Memory/Batching.hpp"
 
