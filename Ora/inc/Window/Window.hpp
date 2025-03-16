@@ -13,13 +13,13 @@ namespace ora {
 /// @brief Window class
 class Window {
 public:
+
     /// @brief Constructor
     /// @param width Width of the window
     /// @param height Height of the window
     /// @param title Title of the window
     /// @param sdl_flags SDL flags
     /// @param win_flags SDL window flags
-    /// @param logger Pointer to the logger class
     Window(uint32_t width, uint32_t height, std::string title, uint32_t sdl_flags, uint32_t win_flags);
 
     /// @brief Destructor

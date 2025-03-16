@@ -242,7 +242,7 @@ Matrix<T,N,M>::Matrix(const std::initializer_list<Vector<T,N>>& init_list) {
 template<typename T, uint32_t N, uint32_t M>
 Matrix<T,N,M>::Matrix(const std::initializer_list<T>& init_list) {
     m_component.fill(T(0));
-    uint32_t end = std::min(N*M, init_list.size());
+    uint32_t end = std::min((size_t)(N*M), init_list.size());
     std::copy(init_list.begin(), init_list.begin() + end, m_component.begin());
 }
 

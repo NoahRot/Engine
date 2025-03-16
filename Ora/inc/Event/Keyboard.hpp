@@ -4,28 +4,49 @@
 
 #include <SDL2/SDL.h>
 
+#include "Event/KeyCode.hpp"
+
 namespace ora {
 
 class Keyboard {
 public:
+
+    /// @brief Constructor
     Keyboard();
 
-    bool key_down(SDL_Scancode code) const;
+    /// @brief To know if a key is down
+    /// @param code Code of the key
+    /// @return True if the key is down
+    bool key_down(KeyCode code) const;
 
-    bool key_up(SDL_Scancode code) const;
+    /// @brief To know if a key is up
+    /// @param code Code of the key
+    /// @return True if the key is up
+    bool key_up(KeyCode code) const;
 
-    bool key_press(SDL_Scancode code) const;
+    /// @brief To know if a key is pressed
+    /// @param code Code of the key
+    /// @return True if the key is pressed
+    bool key_press(KeyCode code) const;
 
+    /// @brief Manage the keyboard event
+    void manage();
+
+    /// @brief Reset the keyboard. Everything put at 0.
     void reset();
 
-    void manage_down(SDL_Scancode code);
+    /// @brief A key has been pressed
+    /// @param code Code of the key
+    void manage_down(KeyCode code);
 
-    void manage_up(SDL_Scancode code);
+    /// @brief A key has been released
+    /// @param code Code of the key
+    void manage_up(KeyCode code);
 
 private:
-    std::array<bool, SDL_NUM_SCANCODES> m_key_down;
-    std::array<bool, SDL_NUM_SCANCODES> m_key_up;
-    std::array<bool, SDL_NUM_SCANCODES> m_key_press;
+
+    // Key state 0 = nothing, 1 = down, 2 = pressed, 3 = up
+    std::array<uint8_t, KEY_NUM_CODES> m_key_state;
 };
 
 }

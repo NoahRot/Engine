@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<engine>
+  <logger>
+    <file_name>test/Log_event_time.log</file_name>
+    <state>255</state>
+  </logger>
+  <window>
+    <width>800</width>
+    <height>600</height>
+    <title>Event and timer test</title>
+    <sdl_flags>62001</sdl_flags>
+    <win_flags>2</win_flags>
+  </window>
+  <timer>
+    <fps>120</fps>
+  </timer>
+  <audio>
+    <mix_flags>123</mix_flags>
+    <frequency>22050</frequency>
+    <format>32784</format>
+    <channels>2</channels>
+    <chunksize>1024</chunksize>
+  </audio>
+  <texture>
+    <pixel_perfect>1</pixel_perfect>
+  </texture>
+</engine>

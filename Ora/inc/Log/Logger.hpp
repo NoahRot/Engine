@@ -4,7 +4,10 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <ctime>
+#include <chrono>
+#include <iomanip>
+#include <memory>
+#include <sstream>
 
 #include "Log/LogLevel.hpp"
 
@@ -22,14 +25,13 @@ typedef uint8_t LogState;
 void _log_callback(LogLevel level, const std::string& message, bool cmd, bool txt, std::ofstream& stream);
 
 /// @brief Logger class
+/// Singleton class to log content
 class Logger {
 public:
-    /// @brief Destructor
-    ~Logger();
 
     static void init(LogState state, const std::string& log_file_path);
 
-    static const Logger& instance();
+    static Logger& instance();
 
     /// @brief Set display in CMD
     /// @param state True for display in CMD
@@ -59,25 +61,37 @@ public:
     void log(LogLevel level, const std::string& message) const;
 
 private:
-    /// @brief Constructor
-    /// @param log_file_path Path to the log file 
-    Logger(const std::string& log_file_path);
 
     /// @brief Constructor
     /// @param state State of the log class
     /// @param log_file_path Path to the log file
-    Logger(LogState state, const std::string& log_file_path);
+    Logger(const std::string& log_file_path, LogState state = 0b11111111);
+
+    /// @brief Destructor
+    ~Logger();
+
+    Logger(const Logger&) = delete;             // Deleted because singleton
+
+    Logger operator=(const Logger&) = delete;   // Deleted because singleton
 
     /// @brief Current state of the log class
     LogState m_state;
 
     /// @brief Log file
-    std::ofstream* m_log_file;
+    std::unique_ptr<std::ofstream> m_log_file;
 
+    /// @brief Static State. It can be change before initializing the Logger.
+    /// Once the logger is created, it will use its own m_state 
     static LogState s_state;
+
+    /// @brief Path the the log file.
     static std::string s_log_file_path;
 };
 
-const Logger& _init_logger(LogState state, const std::string& log_file_path);
+/// @brief Initialize Logger
+/// @param state The state of the logger. What to display and how.
+/// @param log_file_path The log file.
+/// @return A constant reference to the logger
+Logger& _init_logger(LogState state, const std::string& log_file_path);
 
 }

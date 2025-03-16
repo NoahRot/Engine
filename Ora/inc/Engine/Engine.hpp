@@ -3,14 +3,11 @@
 #include <memory>
 
 #include "Log/Logger.hpp"
-#include "Window/Window.hpp"
+
 #include "Engine/Configuration.hpp"
-#include "Engine/Timer.hpp"
+#include "Window/Window.hpp"
 #include "Event/Event.hpp"
-#include "Audio/AudioManager.hpp"
-#include "Graphic/Shader.hpp"
-#include "Graphic/Texture.hpp"
-#include "Graphic/Font.hpp"
+#include "Time/Timer.hpp"
 
 namespace ora {
 
@@ -19,14 +16,17 @@ struct OrangeEngine {
 
     ~OrangeEngine();
 
-    const Logger& logger;
+    Logger& logger;
     Window window;
-    Event event;
+    EventManager event_manager;
+    const Keyboard& keyboard;
+    const Mouse& mouse;
     Timer timer;
-    AudioManager audio_manager;
-    ShaderManager shader_manager;
-    TextureManager texture_manager;
-    FontManager font_manager;
+    
+    //AudioManager audio_manager;
+    //ShaderManager shader_manager;
+    //TextureManager texture_manager;
+    //FontManager font_manager;
 };
 
 }

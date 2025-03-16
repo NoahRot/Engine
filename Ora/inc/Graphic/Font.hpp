@@ -21,10 +21,6 @@ struct Font {
     uint32_t texture;
     uint32_t size;
     uint32_t height;
-
-    //Character get_char(char c) const  {
-    //    return character[c];
-    //}
 };
 
 class FontManager {

@@ -4,16 +4,9 @@
 
 #include <SDL2/SDL.h>
 
-namespace ora {
+#include "Event/MouseButton.hpp"
 
-enum MouseButton {
-    MOUSE_LEFT          = 0,
-    MOUSE_MIDDLE        = 1,
-    MOUSE_RIGHT         = 2,
-    MOUSE_EXTRA_1       = 3,
-    MOUSE_EXTRA_2       = 4,
-    MOUSE_BUTTON_COUNT  = 5
-};
+namespace ora {
 
 class Mouse {
 public:
@@ -31,6 +24,8 @@ public:
 
     void mouse_position(int32_t& x, int32_t& y) const;
 
+    void manage();
+
     void reset();
 
     void manage_down(uint8_t button);
@@ -40,9 +35,9 @@ public:
     void set_window_height(int32_t height);
 
 private:
-    std::array<bool, MOUSE_BUTTON_COUNT> m_button_down;
-    std::array<bool, MOUSE_BUTTON_COUNT> m_button_up;
-    std::array<bool, MOUSE_BUTTON_COUNT> m_button_press;
+
+    // Button state 0 = nothing, 1 = down, 2 = pressed, 3 = up
+    std::array<uint8_t, MOUSE_BUTTON_COUNT> m_button_state;
 
     int32_t m_mouse_x;
     int32_t m_mouse_y;

@@ -23,6 +23,7 @@ DIR_OBJ = $(DIR_BIN)\obj
 DIR_EXT = $(DIR_INC)\External
 DIR_TEST = test
 
+#LIBRARY = -L lib -lOrange -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lfreetype # ATTENTION A L'ORDRE DES INCLUSION DES LIBRAIRIES
 LIBRARY = -L lib -lOrange -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lfreetype # ATTENTION A L'ORDRE DES INCLUSION DES LIBRAIRIES
 INCLUDES = -I $(DIR_INC) -I $(DIR_EXT)
 

@@ -9,6 +9,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
+#include "Tools/xml_manager.hpp"
+#include "Log/Logger.hpp"
+
 namespace ora {
 
 struct Configuration
@@ -42,5 +45,9 @@ struct Configuration
 
     bool tex_pixel_perfect = true;
 };
+
+Configuration load_config_xml(const std::string& path);
+
+void save_config_xml(const Configuration& config, const std::string& path);
 
 }

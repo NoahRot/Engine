@@ -164,7 +164,7 @@ BaseVector<T,N>::BaseVector(const std::array<T,N>& init_array)
 template<typename T, uint32_t N>
 BaseVector<T,N>::BaseVector(const std::initializer_list<T>& init_list) {
     m_component.fill(T(0));
-    uint32_t last = std::min(N, init_list.size());
+    uint32_t last = std::min((size_t)N, init_list.size());
     std::copy(init_list.begin(), init_list.begin()+last, m_component.begin());
 }
 

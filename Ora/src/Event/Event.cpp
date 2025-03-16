@@ -2,7 +2,7 @@
 
 namespace ora {
 
-Event::Event(Window* window)
+EventManager::EventManager(Window* window)
 : m_quit(false)
 {
     Logger::instance().log(Info, "Event created");
@@ -10,14 +10,15 @@ Event::Event(Window* window)
     m_mouse.set_window_height(window->get_height());
 }
 
-Event::~Event() {
+EventManager::~EventManager() {
     Logger::instance().log(Info, "Event destroyed");
 }
 
-void Event::manage() {
+void EventManager::manage() {
+
     // Reset events
-    m_keyboard.reset();
-    m_mouse.reset();
+    m_keyboard.manage();
+    m_mouse.manage();
 
     // Poll events
     SDL_Event event;
@@ -28,11 +29,11 @@ void Event::manage() {
                 break;
 
             case SDL_KEYDOWN:
-                m_keyboard.manage_down(event.key.keysym.scancode);
+                m_keyboard.manage_down((KeyCode)event.key.keysym.scancode);
                 break;
 
             case SDL_KEYUP:
-                m_keyboard.manage_up(event.key.keysym.scancode);
+                m_keyboard.manage_up((KeyCode)event.key.keysym.scancode);
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
@@ -46,19 +47,24 @@ void Event::manage() {
     }
 }
 
-bool Event::is_quitting() const {
+void EventManager::reset() {
+    m_keyboard.reset();
+    m_quit = false;
+}
+
+bool EventManager::is_quitting() const {
     return m_quit;
 }
 
-void Event::quit() {
+void EventManager::quit() {
     m_quit = true;
 }
 
-const Keyboard& Event::keyboard() const {
+const Keyboard& EventManager::keyboard() const {
     return m_keyboard;
 }
 
-const Mouse& Event::mouse() const {
+const Mouse& EventManager::mouse() const {
     return m_mouse;
 }
 

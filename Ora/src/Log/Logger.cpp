@@ -5,11 +5,10 @@ std::string ora::Logger::s_log_file_path = "UNKNOWN.log";
 
 namespace ora {
 
-void _log_callback(LogLevel level, const std::string& message, bool cmd, bool txt, std::ofstream* stream) {
+void _log_callback(LogLevel level, const std::string& message, bool cmd, bool txt, std::ofstream& stream) {
     // Create log string and take the time of the log
     std::string log_lvl;
     std::string color_lvl;
-    time_t log_time = time(0);
 
     // Add the level of the log and color
     switch (level)
@@ -40,41 +39,26 @@ void _log_callback(LogLevel level, const std::string& message, bool cmd, bool tx
         break;
     }
 
-    // Time to string
-    std::string time_str = "[" + (((log_time%86400)/3600 < 10)? (std::string)"0" : (std::string)"") + std::to_string((log_time%86400)/3600)
-         + ":" + ((((log_time%86400)%3600)/60 < 10)? (std::string)"0" : (std::string)"") + std::to_string(((log_time%86400)%3600)/60)
-         + ":" + ((((log_time%86400)%3600)%60 < 10)? (std::string)"0" : (std::string)"") + std::to_string(((log_time%86400)%3600)%60) + "] ";
+    auto now = std::chrono::system_clock::now();
+    auto time = std::chrono::system_clock::to_time_t(now);
+    std::ostringstream time_str;
+    time_str << std::put_time(std::localtime(&time), "%H:%M:%S");
     
     // CMD Display
     if (cmd) {
-        std::cout << "\033[90m" << time_str << color_lvl << log_lvl << "\033[37m : " << message << "\033[0m" << std::endl;
+        std::cout << "\033[90m[" << time_str.str() << "] " << color_lvl << log_lvl << "\033[37m : " << message << "\033[0m" << std::endl;
     }
     
     // Txt Display
     if (txt) {
-        *stream << time_str << " " << log_lvl << " : " << message << "\n";
+        stream << "[" << time_str.str() << "] " << log_lvl << " : " << message << "\n";
     }
 }
 
-Logger::Logger(const std::string& log_file_path)
-: m_state(0b11111111)
-{
-    m_log_file = new std::ofstream;
-    m_log_file->open(log_file_path);
-
-    if (!m_log_file->is_open()) {
-        set_display_txt(false);
-
-        log(Error, "Logger can not open log file. Log file path : " + log_file_path);
-    }
-
-    log(ora::Info, "Logger created");
-}
-
-Logger::Logger(LogState state, const std::string& log_file_path)
+Logger::Logger(const std::string& log_file_path, LogState state)
 : m_state(state)
 {
-    m_log_file = new std::ofstream;
+    m_log_file = std::make_unique<std::ofstream>();
     m_log_file->open(log_file_path);
 
     if (!m_log_file->is_open()) {
@@ -89,8 +73,9 @@ Logger::Logger(LogState state, const std::string& log_file_path)
 Logger::~Logger() {
     log(ora::Info, "Logger destroyed");
 
-    m_log_file->close();
-    delete m_log_file;
+    if (m_log_file && m_log_file->is_open()) {
+        m_log_file->close();
+    }
 }
 
 void Logger::init(LogState state, const std::string& log_file_path) {
@@ -98,8 +83,8 @@ void Logger::init(LogState state, const std::string& log_file_path) {
     s_log_file_path = log_file_path;
 }
 
-const Logger& Logger::instance() {
-    static Logger s_instance = Logger(s_state, s_log_file_path);
+Logger& Logger::instance() {
+    static Logger s_instance = Logger(s_log_file_path, s_state);
     return s_instance;
 }
 
@@ -109,7 +94,7 @@ void Logger::set_display_cmd(bool state) {
 
 void Logger::set_display_txt(bool state) {
     if (state && !m_log_file->is_open()){
-        log(Error, "Logger file has not been open, thus can not write in it.");
+        std::cerr << "Logger Error : Logger file has not been open, thus can not write in it." << std::endl;
         return;
     }
     m_state = (m_state & ~(DispTXT)) | (DispTXT*state);
@@ -133,11 +118,11 @@ LogState Logger::get_state() const {
 
 void Logger::log(LogLevel level, const std::string& message) const {
     if ((m_state &  level) == level){
-        _log_callback(level, message, (m_state & DispCMD) == DispCMD, (m_state & DispTXT) == DispTXT, m_log_file);
+        _log_callback(level, message, (m_state & DispCMD) == DispCMD, (m_state & DispTXT) == DispTXT, *m_log_file);
     }
 }
 
-const Logger& _init_logger(LogState state, const std::string& log_file_path) {
+Logger& _init_logger(LogState state, const std::string& log_file_path) {
     Logger::init(state, log_file_path);
     return Logger::instance();
 }

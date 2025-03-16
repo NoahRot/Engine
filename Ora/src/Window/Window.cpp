@@ -29,6 +29,7 @@ Window::Window(uint32_t width, uint32_t height, std::string title, uint32_t sdl_
         SDL_Quit();
         exit(EXIT_FAILURE);
     }
+    Logger::instance().log(Info, "SDL Window created");
 
     // Create the opengl context
     m_context = SDL_GL_CreateContext(m_window);
@@ -39,7 +40,7 @@ Window::Window(uint32_t width, uint32_t height, std::string title, uint32_t sdl_
         SDL_Quit();
         exit(EXIT_FAILURE);
     }
-    Logger::instance().log(Info, "SDL Window and OpenGL context created");
+    Logger::instance().log(Info, "OpenGL context created");
 
     // Init GLAD
     if (!gladLoadGLLoader(SDL_GL_GetProcAddress)) {
