@@ -2,53 +2,40 @@
 
 #include <SDL2/SDL_mixer.h>
 
+#include <algorithm>
+
 namespace ora {
 
 class Music {
 public:
-    Music(Mix_Music* music) 
-    : m_music(music)
-    {}
+    Music(Mix_Music* music);
 
-    ~Music() {
-        Mix_FreeMusic(m_music);
-    }
+    ~Music();
 
-    void play(int32_t loop = 0) const {
-        Mix_PlayMusic(m_music, loop);
-    }
+    void play(int32_t loop = 0) const;
 
-    void play_fade(int32_t time_fade, int32_t loop = 0) const {
-        Mix_FadeInMusic(m_music, loop, time_fade);
-    }
+    void play_fade(int32_t time_fade, int32_t loop = 0) const;
 
-    static void volume(float vol) {
-        vol *= MIX_MAX_VOLUME;
-        Mix_VolumeMusic(vol);
-    }
+    static void volume(float vol);
 
-    static void pause() {
-        Mix_PauseMusic();
-    }
+    static float get_volume();
 
-    static void resume() {
-        Mix_ResumeMusic();
-    }
+    static void pause();
 
-    static void stop() {
-        Mix_HaltMusic();
-    }
+    static void resume();
 
-    static bool is_playing() {
-        return Mix_PlayingMusic();
-    }
+    static void stop();
 
-    static bool is_paused() {
-        return Mix_PausedMusic();
-    }
+    static void stop_fade(int32_t time);
+
+    static bool is_playing();
+
+    static bool is_paused();
 
 private:
     Mix_Music* m_music;
+
+    static float s_volume;
 };
 
 }

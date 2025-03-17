@@ -8,6 +8,7 @@
 #include "Window/Window.hpp"
 #include "Event/Event.hpp"
 #include "Time/Timer.hpp"
+#include "Audio/AudioManager.hpp"
 
 namespace ora {
 
@@ -23,7 +24,7 @@ struct OrangeEngine {
     const Mouse& mouse;
     Timer timer;
     
-    //AudioManager audio_manager;
+    AudioManager audio_manager;
     //ShaderManager shader_manager;
     //TextureManager texture_manager;
     //FontManager font_manager;

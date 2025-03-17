@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     config.win_title = "Event and timer test";
     config.win_width = 800;
     config.win_height = 600;
-    config.log_file_name = "test/Log_event_time.log";
+    config.log_file_name = "test/log/Log_event_time.log";
     config.tim_fps = 120;
 
     ora::save_config_xml(config, "test/config.xml");

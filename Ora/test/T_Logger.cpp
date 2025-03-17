@@ -5,7 +5,7 @@
 int main(int argc, char* argv[]) {
 
     ora::Configuration config;
-    config.log_file_name = "test/Log_test.log";
+    config.log_file_name = "test/log/Log_test.log";
 
     ora::_init_logger(config.log_state, config.log_file_name);
     ora::Logger& logger = ora::Logger::instance();

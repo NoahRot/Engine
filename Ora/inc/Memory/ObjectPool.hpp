@@ -51,6 +51,10 @@ public:
     /// @return True if it is valid, false otherwise
     bool validity(int32_t index) const;
 
+    int32_t nbr_free_elements() const {
+        return m_available_index.size();
+    }
+
 private:
     std::array<std::optional<T>, MAX_ELEMENTS> m_data;  // Container of the objects
     std::stack<uint32_t> m_available_index;             // Available indices

@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]) {
     
-    ora::Configuration config = ora::load_config_xml("test/config.xml");
+    ora::Configuration config = ora::load_config_xml("test/log/config.xml");
 
     ora::_init_logger(config.log_state, config.log_file_name);
 

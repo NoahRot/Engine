@@ -42,7 +42,7 @@ These are not strictly required but make the engine more functional and optimize
 
 7️⃣ Audio
 
-    [ ] AudioManager (Using SDL_mixer or OpenAL for sound effects and music)
+    [V] AudioManager (Using SDL_mixer or OpenAL for sound effects and music)
     [ ] AudioSource (Component to play sounds in 3D space)
 
 8️⃣ Scene & Entity System
