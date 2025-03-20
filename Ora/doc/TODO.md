@@ -11,8 +11,8 @@ These are the absolute essentials to get your engine running. Start with these.
 
     [V] Window (SDL2-based window creation and management)
     [ ] Renderer (OpenGL context setup and rendering pipeline)
-    [ ] ShaderManager (Handles GLSL shaders)
-    [ ] TextureManager (Loads and manages OpenGL textures)
+    [V] ShaderManager (Handles GLSL shaders)
+    [V] TextureManager (Loads and manages OpenGL textures)
 
 3️⃣ Input Handling
 

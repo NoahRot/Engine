@@ -1,50 +1,60 @@
 #pragma once
 
 #include <array>
+#include <vector>
 
 #include <glad/glad.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H 
 
-#include "Memory/ContinuousVector.hpp"
+#include "Memory/ObjectPool.hpp"
 #include "Log/Logger.hpp"
 #include "Engine/UniqueIndex.hpp"
 
 namespace ora {
 
-struct Texture
+class Texture
 {
-    uint32_t texture_id;
-    int32_t width;
-    int32_t height;
-    int32_t bpp;
+
+public:
+    Texture(uint32_t texture_id, int32_t width, int32_t height, int32_t bpp);
+
+    ~Texture();
+
+    void bind(int32_t slot = 0);
+
+    void unbind();
+
+private:
+    uint32_t m_texture_id;
+    int32_t m_width;
+    int32_t m_height;
+    int32_t m_bpp;
 };
-    
+
+#ifndef ORA_MAX_TEXTURE
+#define ORA_MAX_TEXTURE 2048
+#endif    
+
 class TextureManager {
 public:
     TextureManager(bool pixel_perfect);
 
     ~TextureManager();
 
-    uint32_t load_texture(const std::string& file_path, bool pixel_perfect);
+    int32_t load_texture(const std::string& file_path);
 
-    uint32_t create_texture(int32_t width, int32_t height, uint8_t r, uint8_t g, uint8_t b, uint8_t a, bool pixel_perfect);
+    int32_t create_texture(int32_t width, int32_t height, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-    void free_texture(uint32_t id);
+    bool free_texture(int32_t index);
 
-    void bind_texture(uint32_t id, int32_t slot = 0);
+    Texture* get_texture(int32_t index);
 
-    void unbind_texture();
-
-    uint32_t get_texture_openg_gl_id(uint32_t ora_id);
-
-    const Texture& get_texture(uint32_t texture) {
-        return m_textures[texture];
-    }
+    bool valid_texture(int32_t index);
 
 private:
-    VectorContinuous<Texture> m_textures;
+    ObjectPool<Texture, ORA_MAX_TEXTURE> m_textures;
 
     bool m_pixel_perfect; 
 };

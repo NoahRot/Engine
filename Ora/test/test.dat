@@ -1,0 +1,14 @@
+matrix:1 2 3 4 5 6 
+texture:
+ tree:
+  bpp:3.000000
+  pixel:300.000000 200.000000 
+  path:asset/img/tree.png
+engine:
+ Logger:
+  LogFile:output.log
+ timer:
+  fps:120
+ window:
+  height:1080
+  width:1920

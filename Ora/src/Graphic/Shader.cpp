@@ -2,61 +2,155 @@
 
 namespace ora {
 
+Shader::Shader(int32_t index)
+: m_index(index)
+{
+    // Find all uniform variables
+    int uniform_count = 0;
+
+    // Query the number of active uniforms in the shader program
+    glGetProgramiv(m_index, GL_ACTIVE_UNIFORMS, &uniform_count);
+
+    char uniform_name[256];
+    for (int i = 0; i < uniform_count; i++) {
+        GLint size;
+        GLenum type;
+
+        // Get uniform info
+        glGetActiveUniform(m_index, i, sizeof(uniform_name), nullptr, &size, &type, uniform_name);
+
+        // Get uniform location
+        int location = glGetUniformLocation(m_index, uniform_name);
+        if (location != -1) {  // If uniform exists in the program
+            m_uniform_map[uniform_name] = location;
+        }
+    }
+}
+
+Shader::~Shader() {
+    glDeleteProgram(m_index);
+}
+
+void Shader::use_shader() const {
+    glUseProgram(m_index);
+}
+
+const std::unordered_map<std::string, int>& Shader::get_uniform_map() const {
+    return m_uniform_map;
+}
+
+bool Shader::uniform_validity(const std::string& var_name) const {
+    return m_uniform_map.find(var_name) != m_uniform_map.end();
+}
+
+void Shader::set_1i(const std::string& var_name, int var) {
+    glUniform1i(m_uniform_map[var_name], var);
+}
+
+void Shader::set_1f(const std::string& var_name, float var) {
+    glUniform1f(m_uniform_map[var_name], var);
+}
+
+void Shader::set_1d(const std::string& var_name, double var) {
+    glUniform1d(m_uniform_map[var_name], var);
+}
+
+void Shader::set_2i(const std::string& var_name, const mat::Vec2i& var) {
+    glUniform2i(m_uniform_map[var_name], var[0], var[1]);
+}
+
+void Shader::set_2f(const std::string& var_name, const mat::Vec2f& var) {
+    glUniform2f(m_uniform_map[var_name], var[0], var[1]);
+}
+
+void Shader::set_2d(const std::string& var_name, const mat::Vec2d& var) {
+    glUniform2d(m_uniform_map[var_name], var[0], var[1]);
+}
+
+void Shader::set_3i(const std::string& var_name, const mat::Vec3i& var) {
+    glUniform3i(m_uniform_map[var_name], var[0], var[1], var[2]);
+}
+
+void Shader::set_3f(const std::string& var_name, const mat::Vec3f& var) {
+    glUniform3f(m_uniform_map[var_name], var[0], var[1], var[2]);
+}
+
+void Shader::set_3d(const std::string& var_name, const mat::Vec3d& var) {
+    glUniform3d(m_uniform_map[var_name], var[0], var[1], var[2]);
+}
+
+void Shader::set_4i(const std::string& var_name, const mat::Vec4i& var) {
+    glUniform4i(m_uniform_map[var_name], var[0], var[1], var[2], var[3]);
+}
+
+void Shader::set_4f(const std::string& var_name, const mat::Vec4f& var) {
+    glUniform4f(m_uniform_map[var_name], var[0], var[1], var[2], var[3]);
+}
+
+void Shader::set_4d(const std::string& var_name, const mat::Vec4d& var) {
+    glUniform4d(m_uniform_map[var_name], var[0], var[1], var[2], var[3]);
+}
+
+void Shader::set_mat3f(const std::string& var_name, const mat::Mat3f& var) {
+    glUniformMatrix3fv(m_uniform_map[var_name], 1, false, &var(0,0));
+}
+
+void Shader::set_mat3d(const std::string& var_name, const mat::Mat3d& var) {
+    glUniformMatrix3dv(m_uniform_map[var_name], 1, false, &var(0,0));
+}
+
+void Shader::set_mat4f(const std::string& var_name, const mat::Mat4f& var) {
+    glUniformMatrix4fv(m_uniform_map[var_name], 1, false, &var(0,0));
+}
+
+void Shader::set_mat4d(const std::string& var_name, const mat::Mat4d& var) {
+    glUniformMatrix4dv(m_uniform_map[var_name], 1, false, &var(0,0));
+}
+
+
+
+
 ShaderManager::ShaderManager() {
     Logger::instance().log(Info, "Shader manager created");
 }
 
 ShaderManager::~ShaderManager() {
-    for (uint32_t i(0) ; i < m_shaders.size() ; ++i) {
-        if (m_shaders.is_valid(i)) {
-            glDeleteProgram(m_shaders[i].shader_id);
-        }
-    }
-
     Logger::instance().log(Info, "Shader manager destroyed");
 }
 
-uint32_t ShaderManager::get_shader_openg_gl_id(uint32_t ora_id) {
-    return m_shaders[ora_id].shader_id;
-}
-
-void ShaderManager::use_shader(uint32_t id) {
-    glUseProgram(m_shaders[id].shader_id);
-}
-
-uint32_t ShaderManager::load_shader(const std::string& vertex_path, const std::string& fragment_path) {
+int32_t ShaderManager::load_shader(const std::string& vertex_path, const std::string& fragment_path) {
     // Load shaders source code
     std::string vertex_source_code;
     std::string fragment_source_code;
 
-    if (!shader_load_source(fragment_path, fragment_source_code)) {
-        return UNVALID_32;
+    if (!load_source(fragment_path, fragment_source_code)) {
+        return -1;
     }
-    if (!shader_load_source(vertex_path, vertex_source_code)) {
-        return UNVALID_32;
+    if (!load_source(vertex_path, vertex_source_code)) {
+        return -1;
     }
 
     // Create shaders
     uint32_t vertex_shader;
     uint32_t fragment_shader;
 
-    if (!shader_create_shader(GL_VERTEX_SHADER, vertex_shader, vertex_source_code)) {
+    if (!create_shader(GL_VERTEX_SHADER, vertex_shader, vertex_source_code)) {
         glDeleteShader(vertex_shader);
-        return UNVALID_32;
+        return -1;
     }
 
-    if (!shader_create_shader(GL_FRAGMENT_SHADER, fragment_shader, fragment_source_code)) {
+    if (!create_shader(GL_FRAGMENT_SHADER, fragment_shader, fragment_source_code)) {
         glDeleteShader(vertex_shader);
         glDeleteShader(fragment_shader);
-        return UNVALID_32;
+        return -1;
     }
 
     // Create shader program
     uint32_t shader_program;
-    if (!shader_create_program(vertex_shader, fragment_shader, shader_program)) {
+    if (!create_program(vertex_shader, fragment_shader, shader_program)) {
         glDeleteShader(vertex_shader);
         glDeleteShader(fragment_shader);
-        return UNVALID_32;
+        return -1;
     }
 
     // Delete shaders
@@ -64,16 +158,24 @@ uint32_t ShaderManager::load_shader(const std::string& vertex_path, const std::s
     glDeleteShader(fragment_shader);
 
     // Create and put the shader in the vector
-    uint32_t index = m_shaders.add(Shader{shader_program});
+    int32_t index = m_shaders.add(shader_program);
+
     return index;
 }
 
-void ShaderManager::free_shader(uint32_t id) {
-    glDeleteProgram(m_shaders[id].shader_id);
-    m_shaders.remove(id);
+bool ShaderManager::free_shader(int32_t index) {
+    return m_shaders.remove(index);
 }
 
-bool ShaderManager::shader_load_source(const std::string path, std::string& source) {
+Shader* ShaderManager::get_shader(int32_t index) {
+    return &m_shaders.get(index);
+}
+
+bool ShaderManager::valid_shader(int32_t index) {
+    return m_shaders.validity(index);
+}
+
+bool ShaderManager::load_source(const std::string path, std::string& source) {
     // Open file
     std::fstream shader_file;
     shader_file.open(path);
@@ -93,7 +195,7 @@ bool ShaderManager::shader_load_source(const std::string path, std::string& sour
     return true;
 }
 
-bool ShaderManager::shader_create_shader(GLenum type, uint32_t& shader_index, const std::string& source) {
+bool ShaderManager::create_shader(GLenum type, uint32_t& shader_index, const std::string& source) {
     // Define error variable
     int success;
     char info_log[512];
@@ -124,9 +226,9 @@ bool ShaderManager::shader_create_shader(GLenum type, uint32_t& shader_index, co
     }
 
     return true;
-}
+}   
 
-bool ShaderManager::shader_create_program(uint32_t vertex_shader, uint32_t fragment_shader, uint32_t& shader_program) {
+bool ShaderManager::create_program(uint32_t vertex_shader, uint32_t fragment_shader, uint32_t& shader_program) {
     // Define error variable
     int success;
     char info_log[512];

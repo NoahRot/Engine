@@ -72,8 +72,8 @@ uint32_t FontManager::load_font(const std::string& file_path, uint32_t size) {
     }
 
     // Create altas texture
-    uint32_t texture_id = m_texture_manager->create_texture(atlas_w, atlas_h, 0, 0, 0, 0, false);
-    m_texture_manager->bind_texture(texture_id);
+    //uint32_t texture_id = m_texture_manager->create_texture(atlas_w, atlas_h, 0, 0, 0, 0, false);
+    //m_texture_manager->bind_texture(texture_id);
 
     int x_progression(0);
     for (auto& c : table_character) {
@@ -93,7 +93,7 @@ uint32_t FontManager::load_font(const std::string& file_path, uint32_t size) {
     Font font;
     font.character = table_character;
     font.size = size;
-    font.texture = texture_id;
+    //font.texture = texture_id;
     font.height = atlas_h;
 
     uint32_t id = m_font.add(font);
@@ -113,7 +113,7 @@ Font& FontManager::get_font(uint32_t font_id) {
 }
 
 void FontManager::bind_texture(uint32_t font_id) {
-    m_texture_manager->bind_texture(m_font[font_id].texture);
+    //m_texture_manager->bind_texture(m_font[font_id].texture);
 }
 
 const Character& FontManager::get_char(uint32_t font_id, char c) {

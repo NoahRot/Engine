@@ -9,12 +9,6 @@ VertexArray::VertexArray()
 }
 
 VertexArray::~VertexArray() {
-    for (auto buffer : m_vertex_buffers) {
-        delete buffer;
-    }
-
-    delete m_index_buffer;
-
     glDeleteVertexArrays(1, &m_index);
 }
 
@@ -30,7 +24,7 @@ void VertexArray::bind_index() const {
     m_index_buffer->bind();
 }
 
-void VertexArray::add_vertex_buffer(VertexBuffer* buffer, const VertexAttribLayout& attrib_layout) {
+void VertexArray::add_vertex_buffer(std::shared_ptr<VertexBuffer> buffer, const VertexAttribLayout& attrib_layout) {
     // Bind VAO and VBO
     bind();          // Bind the VAO
     buffer->bind();  // Bind the specific VBO
@@ -46,12 +40,12 @@ void VertexArray::add_vertex_buffer(VertexBuffer* buffer, const VertexAttribLayo
 
         // Configure the attribute pointer
         glVertexAttribPointer(
-            m_nbr_attrib,                            // Index of the attribute
-            va.size,                      // Number of components
-            va.type,                      // Type of data
-            va.normalized,                // Normalize flag
-            attrib_layout.stride(),       // Stride (space between consecutive attributes)
-            (const void*)offset           // Offset within the buffer (from the start of the buffer)
+            m_nbr_attrib,                   // Index of the attribute
+            va.size,                        // Number of components
+            va.type,                        // Type of data
+            va.normalized,                  // Normalize flag
+            attrib_layout.stride(),         // Stride (space between consecutive attributes)
+            reinterpret_cast<void*>(offset) // Offset within the buffer (from the start of the buffer)
         );
 
         // Update the offset for the next attribute, if necessary
@@ -63,12 +57,12 @@ void VertexArray::add_vertex_buffer(VertexBuffer* buffer, const VertexAttribLayo
     m_vertex_buffers.push_back(buffer);
 }
 
-void VertexArray::set_index_buffer(IndexBuffer* index_buffer) {
+void VertexArray::set_index_buffer(std::shared_ptr<IndexBuffer> index_buffer) {
     m_index_buffer = index_buffer;
 }
 
 uint32_t VertexArray::get_index_buffer_size() const {
-    return m_index_buffer->size();
+    return m_index_buffer->get_count();
 }
 
 }

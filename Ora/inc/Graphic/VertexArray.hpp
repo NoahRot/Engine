@@ -2,6 +2,7 @@
 
 #include <inttypes.h>
 #include <vector>
+#include <memory>
 
 #include <glad/glad.h>
 
@@ -23,9 +24,9 @@ public:
 
     void bind_index() const;
 
-    void add_vertex_buffer(VertexBuffer* buffer, const VertexAttribLayout& attrib_layout);
+    void add_vertex_buffer(std::shared_ptr<VertexBuffer> buffer, const VertexAttribLayout& attrib_layout);
 
-    void set_index_buffer(IndexBuffer* index_buffer);
+    void set_index_buffer(std::shared_ptr<IndexBuffer> index_buffer);
 
     uint32_t get_index_buffer_size() const;
 
@@ -33,8 +34,8 @@ private:
     uint32_t m_index;
 
     uint32_t m_nbr_attrib;
-    std::vector<VertexBuffer*> m_vertex_buffers;
-    IndexBuffer* m_index_buffer;
+    std::vector<std::shared_ptr<VertexBuffer>> m_vertex_buffers;
+    std::shared_ptr<IndexBuffer> m_index_buffer;
 };
 
 }
