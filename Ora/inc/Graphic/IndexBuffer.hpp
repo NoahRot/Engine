@@ -14,11 +14,13 @@ public:
     /// @brief Constructor
     /// @param data Pointer to the first element
     /// @param size Number of element
-    IndexBuffer(const uint32_t* data, uint32_t size);
+    /// @param static_draw Is the drawing static or not
+    IndexBuffer(const uint32_t* data, uint32_t size, bool static_draw = true);
 
     /// @brief Constructor
     /// @param data Vector of the indices
-    IndexBuffer(const std::vector<uint32_t>& data);
+    /// @param static_draw Is the drawing static or not
+    IndexBuffer(const std::vector<uint32_t>& data, bool static_draw = true);
 
     /// @brief Destructor
     ~IndexBuffer();
@@ -42,8 +44,8 @@ private:
 };
 
 template<typename T>
-std::shared_ptr<IndexBuffer> create_ibo(const std::vector<T>& buffer) {
-    return std::make_shared<IndexBuffer>(buffer);
+std::shared_ptr<IndexBuffer> create_ibo(const std::vector<T>& buffer, bool static_draw = true) {
+    return std::make_shared<IndexBuffer>(buffer, static_draw);
 }
 
 }

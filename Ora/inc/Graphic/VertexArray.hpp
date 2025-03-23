@@ -38,4 +38,8 @@ private:
     std::shared_ptr<IndexBuffer> m_index_buffer;
 };
 
+inline std::shared_ptr<VertexArray> create_vao() {
+    return std::make_shared<VertexArray>();
+}
+
 }

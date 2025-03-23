@@ -37,7 +37,7 @@ These are not strictly required but make the engine more functional and optimize
     [ ] Mesh (Basic model/geometry management)
     [ ] Material (Handles shaders, textures, and properties)
     [ ] Framebuffer (Allows post-processing, screen effects)
-    [ ] Font Rendering (Using FreeType for text rendering)
+    [V~] Font Rendering (Using FreeType for text rendering)
     [ ] 2D Renderer (Batch rendering for sprites, UI elements)
 
 7️⃣ Audio

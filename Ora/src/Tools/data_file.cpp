@@ -92,6 +92,12 @@ DataNode::operator double() {
 }
 
 
+
+
+
+DataFile::DataFile()
+{}
+
 DataFile::DataFile(const DataNode& node) 
 : m_root(node)
 {}

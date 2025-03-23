@@ -12,6 +12,8 @@
 #include "Log/Logger.hpp"
 #include "Engine/UniqueIndex.hpp"
 
+#include "External/stb_image/stb_image_write.h"
+
 namespace ora {
 
 class Texture
@@ -21,6 +23,10 @@ public:
     Texture(uint32_t texture_id, int32_t width, int32_t height, int32_t bpp);
 
     ~Texture();
+
+    int32_t get_height() const { return m_height; }
+
+    int32_t get_width() const { return m_width; }
 
     void bind(int32_t slot = 0);
 

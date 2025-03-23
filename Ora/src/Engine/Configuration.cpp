@@ -2,185 +2,91 @@
 
 namespace ora {
 
-Configuration load_config_xml(const std::string& path) {
+Configuration load_config(const std::string& path) {
 
-    // Create XML file and configuration
-    XML_Manager xml;
+    // Load configuration from a data file
     Configuration config;
-
-    // Read XML file
-    if (!xml.read(path)) {
-        Logger::instance().log(LogLevel::Error, xml.get_error());
+    DataFile data_file;
+    if (!data_file.load_txt(path)) {
         return config;
     }
 
-    // Create a mapping of the XML file
-    XML_Mapping mapping = xml.get_map();
-
-    // Check if engine field exist
-    if (!mapping.validity("engine")) {
-        Logger::instance().log(LogLevel::Error, "No 'engine' found int xml configuration file");
-        return config;
-    }
-
-    XML_Mapping& map_eng = mapping["engine"];
+    // Get the reference to the root
+    DataNode& node = data_file.get();
 
     // Logger parameters
 
-    if (!map_eng.validity("logger")) {
-        Logger::instance().log(LogLevel::Error, "No 'logger' found int xml configuration file");
-    }else{
-        XML_Mapping& current_map = map_eng["logger"];
-        if (current_map.validity("file_name")) {
-            config.log_file_name = current_map["file_name"].get_string();
-        }
-        if (current_map.validity("state")) {
-            config.log_state = current_map["state"].get_int();
-        }
-    }
+    config.log_file_name = node["engine"]["logger"]["file_name"].content;
+    config.log_state = (int)node["engine"]["logger"]["state"];
 
     // Window parameters
 
-    if (!map_eng.validity("window")) {
-        Logger::instance().log(LogLevel::Error, "No 'window' found int xml configuration file");
-    }else{
-        XML_Mapping& current_map = map_eng["window"];
-        if (current_map.validity("width")) {
-            config.win_width = current_map["width"].get_uint32();
-        }
-        if (current_map.validity("height")) {
-            config.win_height = current_map["height"].get_uint32();
-        }
-        if (current_map.validity("title")) {
-            config.win_title = current_map["title"].get_string();
-        }
-        if (current_map.validity("sdl_flags")) {
-            config.win_sdl_flags = current_map["sdl_flags"].get_uint32();
-        }
-        if (current_map.validity("win_flags")) {
-            config.win_win_flags = current_map["win_flags"].get_uint32();
-        }
-    }
+    config.win_width = node["engine"]["window"]["width"];
+    config.win_height = node["engine"]["window"]["height"];
+    config.win_title = node["engine"]["window"]["title"].content;
+    config.win_sdl_flags = node["engine"]["window"]["sdl_flags"];
+    config.win_win_flags = node["engine"]["window"]["win_flags"];
 
     // Timer parameter
 
-    if (!map_eng.validity("timer")) {
-        Logger::instance().log(LogLevel::Error, "No 'timer' found int xml configuration file");
-    }else{
-        XML_Mapping& current_map = map_eng["timer"];
-        if (current_map.validity("fps")) {
-            config.tim_fps = current_map["fps"].get_uint32();
-        }
-    }
+    config.tim_fps = node["engine"]["timer"]["fps"];
 
     // Audio parameters
 
-    if (!map_eng.validity("audio")) {
-        Logger::instance().log(LogLevel::Error, "No 'audio' found int xml configuration file");
-    }else{
-        XML_Mapping& current_map = map_eng["audio"];
-        if (current_map.validity("mix_flags")) {
-            config.aud_mix_flags = current_map["mix_flags"].get_int();
-        }
-        if (current_map.validity("frequency")) {
-            config.aud_frequency = current_map["frequency"].get_int();
-        }
-        if (current_map.validity("format")) {
-            config.aud_format = current_map["format"].get_int();
-        }
-        if (current_map.validity("channels")) {
-            config.aud_channels = current_map["channels"].get_int();
-        }
-        if (current_map.validity("chunksize")) {
-            config.aud_chunksize = current_map["chunksize"].get_int();
-        }
-    }
+    config.aud_mix_flags = node["engine"]["audio"]["mix_flags"];
+    config.aud_frequency = node["engine"]["audio"]["frequency"];
+    config.aud_format = (int)node["engine"]["audio"]["format"];
+    config.aud_channels = node["engine"]["audio"]["channels"];
+    config.aud_chunksize = node["engine"]["audio"]["chunksize"];
 
     // Texture parameters
 
-    if (!map_eng.validity("texture")) {
-        Logger::instance().log(LogLevel::Error, "No 'timer' found int xml configuration file");
-    }else{
-        XML_Mapping& current_map = map_eng["texture"];
-        if (current_map.validity("pixel_perfect")) {
-            config.tex_pixel_perfect = current_map["pixel_perfect"].get_bool();
-        }
-    }
+    config.tex_pixel_perfect = (int)node["engine"]["texture"]["pixel_perfect"];
 
     // Return configuration
     return config;
 }
 
-void save_config_xml(const Configuration& config, const std::string& path){
+void save_config(const Configuration& config, const std::string& path){
 
-    // Create the XML node system
-    XML_Node initial;
-    initial.title = "engine";
-    initial.parent = nullptr;
+    // Create data file
+    DataFile data_file;
+
+    // Create root node
+    DataNode& node = data_file.get();
 
     // Logger parameters
 
-    XML_Node log_node;
-    log_node.title = "logger";
-    log_node.parent = &initial;
-
-    log_node.children.push_back(XML_Node("file_name", config.log_file_name, &log_node));
-    log_node.children.push_back(XML_Node("state", std::to_string(config.log_state), &log_node));
-
-    initial.children.push_back(log_node);
+    node["engine"]["logger"]["file_name"] = config.log_file_name;
+    node["engine"]["logger"]["state"] = config.log_state;
 
     // Window parameters
 
-    XML_Node win_node;
-    win_node.title = "window";
-    win_node.parent = &initial;
-
-    win_node.children.push_back(XML_Node("width", std::to_string(config.win_width), &win_node));
-    win_node.children.push_back(XML_Node("height", std::to_string(config.win_height), &win_node));
-    win_node.children.push_back(XML_Node("title", config.win_title, &win_node));
-    win_node.children.push_back(XML_Node("sdl_flags", std::to_string(config.win_sdl_flags), &win_node));
-    win_node.children.push_back(XML_Node("win_flags", std::to_string(config.win_win_flags), &win_node));
-
-    initial.children.push_back(win_node);
+    node["engine"]["window"]["width"] = config.win_width;
+    node["engine"]["window"]["height"] = config.win_height;
+    node["engine"]["window"]["title"] = config.win_title;
+    node["engine"]["window"]["sdl_flags"] = config.win_sdl_flags;
+    node["engine"]["window"]["win_flags"] = config.win_win_flags;
 
     // Timer parameter
 
-    XML_Node tim_node;
-    tim_node.title = "timer";
-    tim_node.parent = &initial;
-
-    tim_node.children.push_back(XML_Node("fps", std::to_string(config.tim_fps), &tim_node));
-
-    initial.children.push_back(tim_node);
+    node["engine"]["timer"]["fps"] = config.tim_fps;
 
     // Audio parameters
 
-    XML_Node aud_node;
-    aud_node.title = "audio";
-    aud_node.parent = &initial;
-
-    aud_node.children.push_back(XML_Node("mix_flags", std::to_string(config.aud_mix_flags), &aud_node));
-    aud_node.children.push_back(XML_Node("frequency", std::to_string(config.aud_frequency), &aud_node));
-    aud_node.children.push_back(XML_Node("format", std::to_string(config.aud_format), &aud_node));
-    aud_node.children.push_back(XML_Node("channels", std::to_string(config.aud_channels), &aud_node));
-    aud_node.children.push_back(XML_Node("chunksize", std::to_string(config.aud_chunksize), &aud_node));
-
-    initial.children.push_back(aud_node);
+    node["engine"]["audio"]["mix_flags"] = config.aud_mix_flags;
+    node["engine"]["audio"]["frequency"] = config.aud_frequency;
+    node["engine"]["audio"]["format"] = config.aud_format;
+    node["engine"]["audio"]["channels"] = config.aud_channels;
+    node["engine"]["audio"]["chunksize"] = config.aud_chunksize;
 
     // Texture parameters
 
-    XML_Node tex_node;
-    tex_node.title = "texture";
-    tex_node.parent = &initial;
+    node["engine"]["texture"]["pixel_perfect"] = config.tex_pixel_perfect;
 
-    tex_node.children.push_back(XML_Node("pixel_perfect", std::to_string(config.tex_pixel_perfect), &tex_node));
-
-    initial.children.push_back(tex_node);
-
-    // Save in xml file
-    XML_Manager xml;
-    xml.push_root_node(initial);
-    xml.save(path);
+    // Save in file
+    
+    data_file.save_txt(path);
 }
 
 }

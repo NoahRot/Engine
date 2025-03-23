@@ -52,117 +52,32 @@ struct DataNode {
     operator double();
 
     template<typename T, uint32_t N>
-    DataNode& operator=(const mat::BaseVector<T,N>& vec) {
-        content = "";
-        for (auto i : vec) {
-            content += std::to_string(i) + " ";
-        }
-        return *this;
-    }
+    DataNode& operator=(const mat::BaseVector<T,N>& vec);
 
     template<typename T, uint32_t N>
-    operator mat::BaseVector<T,N>() {
-        mat::BaseVector<T, N> vec;
-
-        std::istringstream iss(content);
-        T value;
-        uint32_t index = 0;
-
-        // Read values from content and store in the vector
-        while (iss >> value && index < N) {
-            vec[index] = value;
-            index++;
-        }
-
-        return vec;
-    }
+    operator mat::BaseVector<T,N>();
 
     template<typename T, uint32_t N>
-    operator mat::Vector<T,N>() {
-        mat::BaseVector<T, N> vec;
-
-        std::istringstream iss(content);
-        T value;
-        uint32_t index = 0;
-
-        // Read values from content and store in the vector
-        while (iss >> value && index < N) {
-            vec[index] = value;
-            index++;
-        }
-
-        return vec;
-    }
+    operator mat::Vector<T,N>();
 
     template<typename T>
-    operator mat::Complex<T>() {
-        mat::Complex<T> vec;
-
-        std::istringstream iss(content);
-        T value;
-        uint32_t index = 0;
-
-        // Read values from content and store in the vector
-        while (iss >> value && index < 2) {
-            vec[index] = value;
-            index++;
-        }
-
-        return vec;
-    }
+    operator mat::Complex<T>();
 
     template<typename T>
-    operator mat::Quaternion<T>() {
-        mat::Quaternion<T> vec;
-
-        std::istringstream iss(content);
-        T value;
-        uint32_t index = 0;
-
-        // Read values from content and store in the vector
-        while (iss >> value && index < 4) {
-            vec[index] = value;
-            index++;
-        }
-
-        return vec;
-    }
+    operator mat::Quaternion<T>();
 
     template<typename T, uint32_t N, uint32_t M>
-    DataNode& operator=(const mat::Matrix<T,N,M>& mat) {
-        content = "";
-        for (auto i : mat) {
-            content += std::to_string(i) + " ";
-        }
-        return *this;
-    }
+    DataNode& operator=(const mat::Matrix<T,N,M>& mat);
 
     template<typename T, uint32_t N, uint32_t M>
-    operator mat::Matrix<T,N,M>() {
-        mat::Matrix<T,N,M> mat;
-
-        std::istringstream iss(content);
-        T value;
-        uint32_t row = 0, col = 0;
-
-        // Read values from content and store in the vector
-        while (iss >> value) {
-            mat(row, col) = value; // Populate the matrix
-            col++;
-            if (col == M) { // Move to next row
-                col = 0;
-                row++;
-            }
-            if (row == N) break; // Stop if full
-        }
-
-        return mat;
-    }
+    operator mat::Matrix<T,N,M>();
 
 };
 
 class DataFile {
 public:
+    DataFile();
+
     DataFile(const DataNode& node);
 
     DataFile(const std::string& path);
@@ -180,6 +95,116 @@ private:
 
     DataNode m_root;
 };
+
+
+
+template<typename T, uint32_t N>
+DataNode& DataNode::operator=(const mat::BaseVector<T,N>& vec) {
+    content = "";
+    for (auto i : vec) {
+        content += std::to_string(i) + " ";
+    }
+    return *this;
+}
+
+template<typename T, uint32_t N>
+DataNode::operator mat::BaseVector<T,N>() {
+    mat::BaseVector<T, N> vec;
+
+    std::istringstream iss(content);
+    T value;
+    uint32_t index = 0;
+
+    // Read values from content and store in the vector
+    while (iss >> value && index < N) {
+        vec[index] = value;
+        index++;
+    }
+
+    return vec;
+}
+
+template<typename T, uint32_t N>
+DataNode::operator mat::Vector<T,N>() {
+    mat::BaseVector<T, N> vec;
+
+    std::istringstream iss(content);
+    T value;
+    uint32_t index = 0;
+
+    // Read values from content and store in the vector
+    while (iss >> value && index < N) {
+        vec[index] = value;
+        index++;
+    }
+
+    return vec;
+}
+
+template<typename T>
+DataNode::operator mat::Complex<T>() {
+    mat::Complex<T> vec;
+
+    std::istringstream iss(content);
+    T value;
+    uint32_t index = 0;
+
+    // Read values from content and store in the vector
+    while (iss >> value && index < 2) {
+        vec[index] = value;
+        index++;
+    }
+
+    return vec;
+}
+
+template<typename T>
+DataNode::operator mat::Quaternion<T>() {
+    mat::Quaternion<T> vec;
+
+    std::istringstream iss(content);
+    T value;
+    uint32_t index = 0;
+
+    // Read values from content and store in the vector
+    while (iss >> value && index < 4) {
+        vec[index] = value;
+        index++;
+    }
+
+    return vec;
+}
+
+template<typename T, uint32_t N, uint32_t M>
+DataNode& DataNode::operator=(const mat::Matrix<T,N,M>& mat) {
+    content = "";
+    for (auto i : mat) {
+        content += std::to_string(i) + " ";
+    }
+    return *this;
+}
+
+template<typename T, uint32_t N, uint32_t M>
+DataNode::operator mat::Matrix<T,N,M>() {
+    mat::Matrix<T,N,M> mat;
+
+    std::istringstream iss(content);
+    T value;
+    uint32_t row = 0, col = 0;
+
+    // Read values from content and store in the vector
+    while (iss >> value) {
+        mat(row, col) = value; // Populate the matrix
+        col++;
+        if (col == M) { // Move to next row
+            col = 0;
+            row++;
+        }
+        if (row == N) break; // Stop if full
+    }
+
+    return mat;
+}
 
 
 }
