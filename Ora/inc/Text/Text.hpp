@@ -26,9 +26,11 @@ struct VertexText {
 
 class TextRenderer {
 public:
-    TextRenderer(Font* font, Shader* shader);
+    TextRenderer(Font* font, Shader* shader, uint32_t reserve = 1024);
 
     void submit_text(const std::string& text, mat::Vec2f position, uint8_t r, uint8_t g, uint8_t b);
+
+    void reset();
 
     void flush();
 
@@ -41,6 +43,7 @@ public:
 private:
     Font* m_font;
     Shader* m_shader;
+    uint32_t m_reserved;
 
     std::vector<VertexText> m_vertex;
     std::vector<uint32_t> m_index;

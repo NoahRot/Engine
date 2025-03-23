@@ -2,12 +2,27 @@
 
 namespace ora {
 
-TextRenderer::TextRenderer(Font* font, Shader* shader)
-: m_font(font), m_shader(shader), m_vao(nullptr), m_vbo(nullptr), m_ibo(nullptr)
+TextRenderer::TextRenderer(Font* font, Shader* shader, uint32_t reserve)
+: m_font(font), m_shader(shader), m_reserved(reserve), m_vao(nullptr), m_vbo(nullptr), m_ibo(nullptr)
 {
+    // Create text layout
     m_text_layout.add_float(3); // Add the position
     m_text_layout.add_float(3); // Add the color of the text
     m_text_layout.add_float(2); // Add the texture coordinates
+
+    // Reserve space
+    m_vertex.reserve(4 * reserve);
+    m_index.reserve(6 * reserve);
+
+    // Create vbo and ibo
+    m_vbo = create_vbo<VertexText>(4 * m_reserved, false);
+    m_ibo = create_ibo(6 * m_reserved, false);
+    m_vao = create_vao();
+
+    m_vao->bind();
+    m_vao->add_vertex_buffer(m_vbo, m_text_layout);
+    m_vao->set_index_buffer(m_ibo);
+    m_vao->unbind();
 }
 
 void TextRenderer::submit_text(const std::string& text, mat::Vec2f position, uint8_t r, uint8_t g, uint8_t b) {
@@ -45,16 +60,19 @@ void TextRenderer::submit_text(const std::string& text, mat::Vec2f position, uin
     }
 }
 
+void TextRenderer::reset() {
+    m_vertex.clear();
+    m_index.clear();
+}
+
 void TextRenderer::flush() {
-    m_vbo = create_vbo(m_vertex, false);
-    m_ibo = create_ibo(m_index, false);
 
-    m_vao = create_vao();
+    m_vbo->bind();
+    m_vbo->update(m_vertex.data(), m_vertex.size() * sizeof(VertexText));
 
-    m_vao->bind();
-    m_vao->add_vertex_buffer(m_vbo, m_text_layout);
-    m_vao->set_index_buffer(m_ibo);
-    m_vao->unbind();
+    m_ibo->bind();
+    m_ibo->update(m_index.data(), m_index.size());
+    
 }
 
 void TextRenderer::draw() {
