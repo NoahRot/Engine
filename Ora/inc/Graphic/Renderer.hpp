@@ -9,8 +9,7 @@ namespace ora {
 
 class Renderer {
 public:
-    Renderer(ShaderManager* shader_manager)
-    : m_shader_manager(shader_manager)
+    Renderer()
     {
         glDisable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -24,8 +23,8 @@ public:
         }
     }
 
-    void set_clear_color(float r, float g, float b, float a = 1.0f) const {
-        glClearColor(r, g, b, a);
+    void set_clear_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) const {
+        glClearColor(r/255.0f, g/255.0f, b/255.0f, a/255.0f);
     }
 
     void set_cull_face(bool cull_face) {
@@ -50,28 +49,17 @@ public:
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
-    void draw(const VertexArray& vao) {
-        vao.bind();
-        vao.bind_index();
+    void draw(std::shared_ptr<VertexArray> vao) {
+        vao->bind();
+        vao->bind_index();
 
-        glDrawElements(GL_TRIANGLES, vao.get_index_buffer_size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, vao->get_index_buffer_size(), GL_UNSIGNED_INT, 0);
 
-        vao.unbind();
-    }
-
-    template<typename T>
-    void draw(const Batch<T>& batch) {
-        m_shader_manager->use_shader(batch.get_shader());
-        batch.get_vao().bind();
-        batch.get_vao().bind_index();
-
-        glDrawElements(GL_TRIANGLES, batch.get_vao().get_index_buffer_size(), GL_UNSIGNED_INT, 0);
-
-        batch.get_vao().unbind();
+        vao->unbind();
     }
 
 private:
-    ShaderManager* m_shader_manager;
+
 };
 
 }

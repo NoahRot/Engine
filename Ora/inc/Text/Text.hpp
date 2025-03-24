@@ -43,7 +43,6 @@ public:
 private:
     Font* m_font;
     Shader* m_shader;
-    uint32_t m_reserved;
 
     std::vector<VertexText> m_vertex;
     std::vector<uint32_t> m_index;

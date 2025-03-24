@@ -38,7 +38,7 @@ These are not strictly required but make the engine more functional and optimize
     [ ] Material (Handles shaders, textures, and properties)
     [ ] Framebuffer (Allows post-processing, screen effects)
     [V~] Font Rendering (Using FreeType for text rendering)
-    [ ] 2D Renderer (Batch rendering for sprites, UI elements)
+    [V~] 2D Renderer (Batch rendering for sprites, UI elements)
 
 7️⃣ Audio
 

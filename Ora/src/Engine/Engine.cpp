@@ -9,9 +9,9 @@ OrangeEngine::OrangeEngine(const Configuration& init)
     keyboard(event_manager.keyboard()),
     mouse(event_manager.mouse()),
     timer(init.tim_fps),
-    audio_manager(init.aud_mix_flags, init.aud_frequency, init.aud_format, init.aud_channels, init.aud_chunksize)
-    //texture_manager(init.tex_pixel_perfect), 
-    //font_manager(&texture_manager)
+    audio_manager(init.aud_mix_flags, init.aud_frequency, init.aud_format, init.aud_channels, init.aud_chunksize),
+    texture_manager(init.tex_pixel_perfect),
+    font_manager(texture_manager)
 {
     logger.log(ora::Info, "Engine created");
 }

@@ -3,7 +3,7 @@
 namespace ora {
 
 TextRenderer::TextRenderer(Font* font, Shader* shader, uint32_t reserve)
-: m_font(font), m_shader(shader), m_reserved(reserve), m_vao(nullptr), m_vbo(nullptr), m_ibo(nullptr)
+: m_font(font), m_shader(shader), m_vao(nullptr), m_vbo(nullptr), m_ibo(nullptr)
 {
     // Create text layout
     m_text_layout.add_float(3); // Add the position
@@ -15,8 +15,8 @@ TextRenderer::TextRenderer(Font* font, Shader* shader, uint32_t reserve)
     m_index.reserve(6 * reserve);
 
     // Create vbo and ibo
-    m_vbo = create_vbo<VertexText>(4 * m_reserved, false);
-    m_ibo = create_ibo(6 * m_reserved, false);
+    m_vbo = create_vbo<VertexText>(4 * reserve, false);
+    m_ibo = create_ibo(6 * reserve, false);
     m_vao = create_vao();
 
     m_vao->bind();
