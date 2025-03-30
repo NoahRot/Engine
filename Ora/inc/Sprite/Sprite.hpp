@@ -7,6 +7,7 @@
 #include "Graphic/IndexBuffer.hpp"
 #include "Graphic/Layout.hpp"
 #include "Graphic/Shader.hpp"
+#include "Graphic/Camera2D.hpp"
 
 namespace ora {
 

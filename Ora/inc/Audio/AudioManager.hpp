@@ -5,8 +5,6 @@
 #include <SDL2/SDL_mixer.h>
 
 #include "Log/Logger.hpp"
-#include "Engine/UniqueIndex.hpp"
-#include "Memory/ContinuousVector.hpp"
 #include "Audio/Music.hpp"
 #include "Audio/Sound.hpp"
 #include "Memory/ObjectPool.hpp"

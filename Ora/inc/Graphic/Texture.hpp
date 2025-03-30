@@ -10,7 +10,6 @@
 
 #include "Memory/ObjectPool.hpp"
 #include "Log/Logger.hpp"
-#include "Engine/UniqueIndex.hpp"
 
 #include "External/stb_image/stb_image_write.h"
 

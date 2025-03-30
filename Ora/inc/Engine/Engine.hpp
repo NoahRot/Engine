@@ -11,6 +11,7 @@
 #include "Audio/AudioManager.hpp"
 #include "Graphic/Shader.hpp"
 #include "Graphic/Texture.hpp"
+#include "Graphic/Renderer.hpp"
 #include "Text/Text.hpp"
 
 namespace ora {
@@ -26,6 +27,7 @@ struct OrangeEngine {
     const Keyboard& keyboard;
     const Mouse& mouse;
     Timer timer;
+    Renderer& renderer;
     
     AudioManager audio_manager;
     ShaderManager shader_manager;

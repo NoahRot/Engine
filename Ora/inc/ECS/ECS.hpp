@@ -11,8 +11,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "Engine/UniqueIndex.hpp"
-
 namespace ora {
 
 /// @brief Entity component system class

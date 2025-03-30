@@ -1,69 +1,69 @@
 #pragma once
 
-#include "Window/Window.hpp"
-
 #include "mat/Math.hpp"
 
 namespace ora {
 
 class Camera2D {
 public:
-    Camera2D(Window* window, bool rotate) 
-    :   m_orthographic(mat::orthographic3<float>(0.0f, window->get_width(), 0.0f, window->get_height(), 1.0f, -1.0f)), 
-        m_position({0.0f, 0.0f, 0.0f}),
-        m_rotation(0.0f),
-        m_rotate(rotate)
-    {}
+    Camera2D(float window_width, float window_height)
+    : m_zoom(1.0f), m_window_width(window_width), m_window_height(window_height)
+    {
+        compute_matrix();
+    }
 
-    void set_position(const mat::Vec3f& position) {
+    void set_position(mat::Vec2f position) {
         m_position = position;
     }
 
-    void move(const mat::Vec3f& displacement) {
+    void move_position(mat::Vec2f displacement) {
         m_position += displacement;
     }
 
-    mat::Vec3f get_position() const {
+    void set_zoom(float zoom_) {
+        m_zoom = zoom_ > 0.1f ? zoom_ : 0.1f;
+        m_zoom = zoom_;
+    }
+
+    void zoom(float zoom_factor) {
+        set_zoom(zoom_factor*m_zoom);
+    }
+
+    mat::Vec2f get_position() const {
         return m_position;
     }
 
-    void set_rotation(float angle) {
-        m_rotation = angle;
-    }
-
-    void rotate(float rotation) {
-        m_rotation += rotation;
-    }
-
-    void enable_rotation(bool rotate) {
-        m_rotate = rotate;
-    }
-
-    float get_rotation() const {
-        return m_rotation;
-    }
-
-    mat::Mat4f get_proj() const {
-        return m_orthographic;
+    mat::Mat4f get_projection() const {
+        return m_projection;
     }
 
     mat::Mat4f get_view() const {
-        if (m_rotate) {
-            return mat::dot(mat::translate3<float>(m_position), mat::rotateZ<float>(m_rotation));
-        }else{
-            return mat::translate3<float>(m_position);
-        }
+        return m_view;
     }
 
-    mat::Mat4f get_view_proj() const {
-        return mat::dot(m_orthographic, get_view());
+    mat::Mat4f get_vp() const {
+        return mat::dot(m_projection, m_view);
+    }
+
+    void compute_matrix() {
+        // Orthographic projection (left, right, bottom, top)
+        float half_width = (m_window_width / 2.0f) / m_zoom;
+        float half_height = (m_window_height / 2.0f) / m_zoom;
+        m_projection = mat::orthographic3<float>(-half_width, half_width, -half_height, half_height, -1.0f, 1.0f);
+
+        // View Matrix (inverse transform)
+        mat::Vec3f position{-m_position[0], -m_position[1], 0.0f};
+        mat::Mat4f translation = mat::translate3<float>(position);
+        m_view = translation;
     }
 
 private:
-    mat::Mat4f m_orthographic;
-    mat::Vec3f m_position;
-    float m_rotation;
-    bool m_rotate;
+
+    mat::Vec2f m_position;
+    float m_zoom;
+    float m_window_width, m_window_height;
+    mat::Mat4f m_projection;
+    mat::Mat4f m_view;
 };
 
 }

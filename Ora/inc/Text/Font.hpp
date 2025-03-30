@@ -7,7 +7,6 @@
 #include "Text/Character.hpp"
 #include "Memory/ObjectPool.hpp"
 #include "Log/Logger.hpp"
-#include "Engine/UniqueIndex.hpp"
 #include "Graphic/Texture.hpp"
 
 #include <glad/glad.h>

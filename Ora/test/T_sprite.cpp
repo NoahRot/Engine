@@ -2,6 +2,8 @@
 #include "Window/Window.hpp"
 #include "Event/Event.hpp"
 #include "Time/Timer.hpp"
+#include "Time/Chrono.hpp"
+#include "Time/TimePoint.hpp"
 
 #include "Graphic/VertexArray.hpp"
 #include "Graphic/VertexBuffer.hpp"
@@ -9,6 +11,8 @@
 
 #include "Graphic/Shader.hpp"
 #include "Graphic/Texture.hpp"
+
+#include "Graphic/Renderer.hpp"
 
 #include "Sprite/Sprite.hpp"
 
@@ -29,9 +33,14 @@ int main(int argc, char* argv[]) {
     // Window
     ora::Window window(config.win_width, config.win_height, config.win_title, config.win_sdl_flags, config.win_win_flags);
 
+    // Renderer
+    ora::Renderer& renderer = ora::Renderer::instance();
+    renderer.set_clear_color(5, 10, 20);
+    renderer.set_blend(true);
+
     // Event
     ora::EventManager event_manager(&window);
-    //const ora::Keyboard& keyboard = event_manager.keyboard();
+    const ora::Keyboard& keyboard = event_manager.keyboard();
     const ora::Mouse& mouse = event_manager.mouse();
 
     // Timer
@@ -64,9 +73,6 @@ int main(int argc, char* argv[]) {
 
     // Sprites
     ora::SpriteBatch sprite_batch(texture, shader, 1024);
-    mat::Vec2f sprite_dimension{16, 16};
-    mat::Vec2f total_dimension{64, 64};
-    mat::Vec2f origin{100, 100};
 
     ora::SpriteSheet sprite_sheet(texture, 16, 16);
 
@@ -83,12 +89,19 @@ int main(int argc, char* argv[]) {
     ora::SpriteBatch normal_batch(normal_texture, normal_texture, shader_light, 8);
 
     // Create matrices
+    ora::Camera2D camera(window.get_width(), window.get_height());
 
-    mat::Mat4f mvp = mat::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), 1.0f, -1.0f);
+    // Create chrono
+    ora::Chrono frame_chrono;
+    frame_chrono.reset();
 
     while (!event_manager.is_quitting())
     {
+        frame_chrono.start();
+
         event_manager.manage();
+
+        renderer.clear();
 
         sprite_batch.reset();
         animation.update(timer.get_delta_time());
@@ -98,6 +111,29 @@ int main(int argc, char* argv[]) {
         normal_batch.reset();
         normal_sphere.add_to_batch(&normal_batch, {300.0f, 100.0f}, {(float)normal_texture->get_width(), (float)normal_texture->get_height()});
         normal_batch.flush();
+
+        if (keyboard.key_press(ora::KEY_CODE_W)) {
+            camera.move_position(mat::Vec2f{0.0f, 5.0f});
+        }
+        if (keyboard.key_press(ora::KEY_CODE_S)) {
+            camera.move_position(mat::Vec2f{0.0f, -5.0f});
+        }
+        if (keyboard.key_press(ora::KEY_CODE_A)) {
+            camera.move_position(mat::Vec2f{-5.0f, 0.0f});
+        }
+        if (keyboard.key_press(ora::KEY_CODE_D)) {
+            camera.move_position(mat::Vec2f{5.0f, 0.0f});
+        }
+
+        if (keyboard.key_press(ora::KEY_CODE_UP)) {
+            camera.zoom(1.01f);
+        }
+        if (keyboard.key_press(ora::KEY_CODE_DOWN)) {
+            camera.zoom(1.0f/1.01f);
+        }
+        camera.compute_matrix();
+
+        mat::Mat4f mvp = camera.get_vp();
 
         shader->use_shader();
         shader->set_mat4f("uProjection", mvp);
@@ -109,9 +145,13 @@ int main(int argc, char* argv[]) {
         normal_batch.draw(shader_light);
 
         window.present();
+
+        frame_chrono.end();
         timer.wait();
+
     }
     
+    logger.log(ora::Debug, "Mean time frame : " + std::to_string(frame_chrono.get_mean_time()) + " ms");
 
     return 0;
 }
